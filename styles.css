@@ -1,9 +1,19 @@
 /* Flow Urban - Dark Streetwear UI */
 :root{
-  --bg:#0b0b0f; --card:#141424; --text:#f3f4f6; --muted:#a5a7b2;
-  --accent:#b7ff3c; --accent2:#7c3cff; --danger:#ff3c6e;
-  --radius:16px; --shadow:0 14px 40px rgba(0,0,0,.45);
-  --border:1px solid rgba(255,255,255,.08);
+  --bg:#ffffff;
+  --card:#ffffff;
+  --text:#0b0b0f;
+  --muted:#5b5b66;
+
+  /* tus colores */
+  --accent:#D4AF37;   /* dorado */
+  --accent2:#111111;  /* negro */
+  --danger:#d64545;
+
+  --radius:16px;
+  --shadow: 0 16px 50px rgba(0,0,0,.10);
+  --border:1px solid rgba(0,0,0,.10);
+}
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -11,10 +21,7 @@ body{
   margin:0;
   color:var(--text);
   font-family:"Montserrat", system-ui, -apple-system, Segoe UI, Roboto, Arial;
-
-  background: linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.45)),
-              url("Copy of Copy of Dark Black Beige Grunge Motivational Quote Instagram Post_20260113_225833_0000.png")
-              center/cover no-repeat fixed;
+  background: var(--bg);
 
 }
 a{color:inherit;text-decoration:none}
@@ -189,5 +196,41 @@ input:focus,select:focus,textarea:focus{
   .pm__img{min-height:260px}
   .nav{display:none}
 }
+.header{
+  background: rgba(255,255,255,.92) !important;
+  border-bottom: var(--border) !important;
+  backdrop-filter: blur(10px) !important;
+}
+.hero__bgGlow{ display:none !important; }
 
+.hero__content,
+.filters,
+.cards,
+.contact,
+.drawer,
+.cartItem{
+  background: rgba(255,255,255,.92) !important;
+  border: var(--border) !important;
+  box-shadow: var(--shadow) !important;
+  color: var(--text) !important;
+}
+/* Botones tipo Barreto */
+.btn, button, .iconBtn, .cartBtn{
+  background: #111 !important;
+  color: #fff !important;
+  border: 1px solid rgba(0,0,0,.2) !important;
+  border-radius: 14px !important;
+}
 
+.btn:hover, button:hover, .iconBtn:hover, .cartBtn:hover{
+  filter: brightness(1.08);
+}
+
+/* Detalles dorados (accent) */
+.badge, .chip, .tag, .total strong{
+  color: var(--accent) !important;
+}
+
+a:hover{
+  color: var(--accent) !important;
+}
