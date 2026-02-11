@@ -387,3 +387,11 @@ function init(){
   updateCartUI();
 }
 init();
+window.addEventListener("load", () => {
+  const p = document.getElementById("preloader");
+  if (p) {
+    p.classList.add("hide");
+    setTimeout(() => p.remove(), 500);
+  }
+  document.body.classList.add("ready");
+});
