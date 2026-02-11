@@ -8,12 +8,16 @@
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
-  margin:0; color:var(--text);
-  font-family:"Montserrat",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-  background:
-    radial-gradient(1000px 500px at 20% 0%, rgba(124,60,255,.22), transparent 60%),
-    radial-gradient(800px 500px at 80% 20%, rgba(183,255,60,.15), transparent 60%),
-    var(--bg);
+  margin:0;
+  color:var(--text);
+  font-family:"Montserrat", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+
+  background-image: url("Copy of Copy of Dark Black Beige Grunge Motivational Quote Instagram Post_20260113_225833_0000.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
 }
 a{color:inherit;text-decoration:none}
 a:hover{opacity:.9}
@@ -187,3 +191,5 @@ input:focus,select:focus,textarea:focus{
   .pm__img{min-height:260px}
   .nav{display:none}
 }
+
+
