@@ -12,12 +12,10 @@ body{
   color:var(--text);
   font-family:"Montserrat", system-ui, -apple-system, Segoe UI, Roboto, Arial;
 
-  background-image: url("Copy of Copy of Dark Black Beige Grunge Motivational Quote Instagram Post_20260113_225833_0000.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-}
+  background: linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.45)),
+              url("Copy of Copy of Dark Black Beige Grunge Motivational Quote Instagram Post_20260113_225833_0000.png")
+              center/cover no-repeat fixed;
+
 }
 a{color:inherit;text-decoration:none}
 a:hover{opacity:.9}
