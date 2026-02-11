@@ -1,4 +1,4 @@
-/* Flow Urban - Dark Streetwear UI */
+u/* Flow Urban - Dark Streetwear UI */
 :root{
   --bg:#ffffff;
   --card:#ffffff;
@@ -234,3 +234,55 @@ input:focus,select:focus,textarea:focus{
 a:hover{
   color: var(--accent) !important;
 }
+/* ===== FORZAR ESTILO TIPO BARRETO (BLANCO) ===== */
+html, body{
+  background:#fff !important;
+  color:#0b0b0f !important;
+}
+
+.header{
+  background: rgba(255,255,255,.95) !important;
+  border-bottom: 1px solid rgba(0,0,0,.10) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.hero{
+  background: #fff !important;
+}
+
+.hero__bgGlow{
+  display:none !important;
+}
+
+/* cajas blancas */
+.hero__content,
+.filters,
+.cards,
+.contact,
+.drawer,
+.cartItem{
+  background: rgba(255,255,255,.94) !important;
+  border: 1px solid rgba(0,0,0,.10) !important;
+  box-shadow: 0 16px 50px rgba(0,0,0,.10) !important;
+  color:#0b0b0f !important;
+}
+
+/* textos que estaban claros */
+.hero__title, .hero__sub, .muted, .filters__meta, h1, h2, h3, h4, p, label{
+  color:#0b0b0f !important;
+}
+
+/* BOTONES tipo Barreto */
+.btn, button, .iconBtn, .cartBtn{
+  background:#111 !important;
+  color:#fff !important;
+  border: 1px solid rgba(0,0,0,.20) !important;
+  border-radius: 14px !important;
+}
+.btn:hover, button:hover, .iconBtn:hover, .cartBtn:hover{
+  filter: brightness(1.08);
+}
+
+/* detalles dorados */
+a:hover{ color:#D4AF37 !important; }
+.total strong{ color:#D4AF37 !important; }
