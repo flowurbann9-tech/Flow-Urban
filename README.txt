@@ -1,17 +1,16 @@
-FLOW URBAN (Ecuador) - Catálogo + Carrito + Pedido por WhatsApp
+FLOW URBAN (Ecuador) - Catálogo + Carrito + Pedido por WhatsApp (2 ventas)
 
-1) Cambia tu WhatsApp en products.js:
-   - Ecuador: 593 + tu número SIN el 0
-   - Ej: 0991234567 -> 593991234567
+✅ Ventas 1: 0987771119 -> 593987771119
+✅ Ventas 2: 0962722395 -> 593962722395
 
-2) Coloca tu logo en: assets/logo.png
+SUBIR A GITHUB:
+- Sube estos archivos (NO el .zip): index.html, styles.css, app.js, products.js, assets/
 
-3) Coloca fotos en: assets/products/
-   - En products.js cambia las rutas de image a tus nombres reales.
+IMÁGENES:
+- Logo: assets/logo.png
+- Productos: assets/products/prod1.jpg, prod2.jpg, ...
 
-4) Publicar en GitHub Pages:
-   - Crea repo: tuusuario.github.io
-   - Sube TODO el contenido de esta carpeta
-   - Settings -> Pages -> Deploy from a branch -> main / root
+GITHUB PAGES:
+- Settings -> Pages -> Deploy from a branch -> main / (root)
 
-Listo.
+LISTO.

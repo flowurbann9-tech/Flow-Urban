@@ -176,9 +176,12 @@
 
       <div class="contact">
         <div class="contact__box">
-          <h3>WhatsApp</h3>
-          <p id="waHint" class="muted">Configura tu número en <code>products.js</code></p>
-          <a class="btn btn--primary" id="waLink" href="#" target="_blank" rel="noopener">Abrir WhatsApp</a>
+          <h3>WhatsApp Ventas</h3>
+          <p id="waHint" class="muted">Elige a qué número escribir (Ventas 1 o Ventas 2).</p>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <a class="btn btn--primary" id="waLink1" href="#" target="_blank" rel="noopener">WhatsApp Ventas 1</a>
+            <a class="btn btn--ghost" id="waLink2" href="#" target="_blank" rel="noopener">WhatsApp Ventas 2</a>
+          </div>
         </div>
 
         <div class="contact__box">
@@ -268,7 +271,7 @@
         <hr class="sep">
 
         <h4 class="h4">Finalizar por WhatsApp</h4>
-        <p class="muted">Completa tus datos y te abrimos WhatsApp con el pedido listo.</p>
+        <p class="muted">Completa tus datos y te abrimos WhatsApp con el pedido listo (Ventas 1 por defecto).</p>
 
         <form id="checkoutForm" class="form">
           <label class="field">

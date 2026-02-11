@@ -3,8 +3,9 @@ export const STORE = {
   slogan: "Authentic store",
 
   // ECUADOR: 593 + tu número SIN el 0, sin +, sin espacios
-  // Ej: 0991234567 -> 593991234567
-  whatsapp: "593000000000",
+  // Ventas 1 y Ventas 2 (YA CONFIGURADOS)
+  whatsappSales1: "593987771119", // 0987771119
+  whatsappSales2: "593962722395", // 0962722395
 
   instagram: "https://instagram.com/",
   tiktok: "https://tiktok.com/@",

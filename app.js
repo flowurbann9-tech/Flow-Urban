@@ -41,7 +41,8 @@ const els = {
   toast: $("#toast"),
 
   waHint: $("#waHint"),
-  waLink: $("#waLink"),
+  waLink1: $("#waLink1"),
+  waLink2: $("#waLink2"),
   igLink: $("#igLink"),
   ttLink: $("#ttLink"),
 };
@@ -314,24 +315,24 @@ function buildWhatsAppOrderMessage(customer){
 }
 
 function openWhatsApp(message){
-  if(!STORE.whatsapp || STORE.whatsapp === "593000000000"){
-    toast("Configura tu WhatsApp en products.js (STORE.whatsapp)");
+  if(!STORE.whatsappSales1){
+    toast("No está configurado el WhatsApp Ventas 1");
     return;
   }
-  const url = `https://wa.me/${STORE.whatsapp}?text=${encodeURIComponent(message)}`;
+  const url = `https://wa.me/${STORE.whatsappSales1}?text=${encodeURIComponent(message)}`;
   window.open(url, "_blank", "noopener");
 }
 
 function wireUI(){
   els.year.textContent=String(new Date().getFullYear());
 
-  els.waLink.href = (STORE.whatsapp && STORE.whatsapp !== "593000000000") ? `https://wa.me/${STORE.whatsapp}` : "#";
+  els.waLink1.href = STORE.whatsappSales1 ? `https://wa.me/${STORE.whatsappSales1}` : "#";
+  els.waLink2.href = STORE.whatsappSales2 ? `https://wa.me/${STORE.whatsappSales2}` : "#";
+
   els.igLink.href = STORE.instagram || "#";
   els.ttLink.href = STORE.tiktok || "#";
 
-  els.waHint.textContent = (STORE.whatsapp && STORE.whatsapp !== "593000000000")
-    ? `WhatsApp listo: ${STORE.whatsapp}`
-    : `Configura tu número en products.js (STORE.whatsapp).`;
+  els.waHint.textContent = `Ventas 1: ${STORE.whatsappSales1} | Ventas 2: ${STORE.whatsappSales2}`;
 
   els.q.addEventListener("input", ()=>{ state.filters.q=els.q.value; renderGrid(); });
   els.category.addEventListener("change", ()=>{ state.filters.category=els.category.value; renderGrid(); });
