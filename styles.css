@@ -1,212 +1,434 @@
-<!doctype html>
-<html lang="es">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#0b0b0f" />
+:root{
+  --bg:#0b0b0f;
+  --panel:#121218;
+  --panel2:#1a1a22;
+  --text:#eaeaf2;
+  --muted:rgba(255,255,255,.72);
+  --gold:#d4af37;
+  --border:rgba(212,175,55,.35);
+  --shadow:0 10px 30px rgba(0,0,0,.20);
+  --radius:22px;
 
-  <title>Flow Urban | Authentic Store</title>
-  <meta name="description" content="Flow Urban - Tienda urbana. Catálogo, carrito y pedidos por WhatsApp." />
+  --white:#ffffff;
+  --black:#0b0b0f;
+}
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+*{ box-sizing:border-box; }
+html,body{ margin:0; padding:0; }
+body{
+  font-family:Montserrat, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background:#fff;
+  color:#111;
+}
 
-  <link rel="stylesheet" href="styles.css" />
-</head>
+/* TOP STRIP */
+.top-strip{
+  position:sticky;
+  top:0;
+  z-index:50;
+  display:flex;
+  gap:14px;
+  justify-content:center;
+  align-items:center;
+  padding:10px 12px;
+  background:linear-gradient(90deg, #0b0b0f, #141420);
+  color:rgba(255,255,255,.9);
+  font-size:13px;
+}
 
-<body>
-  <!-- LOADER PRO -->
-  <div id="preloader" aria-label="Cargando Flow Urban">
-    <div class="pre-wrap">
-      <img src="assets/loader.png" alt="Flow Urban" class="pre-logo" onerror="this.style.display='none'"/>
-      <div class="pre-bar"><span></span></div>
-      <div class="pre-text">Cargando Flow Urban…</div>
-    </div>
-  </div>
+/* HEADER */
+.header{
+  position:sticky;
+  top:44px;
+  z-index:40;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:12px 14px;
+  background:#fff;
+  border-bottom:1px solid rgba(0,0,0,.08);
+}
 
-  <div class="top-strip">
-    <span>🚚 Envíos a todo el país</span>
-    <span>📲 WhatsApp</span>
-    <span>🔥 Nuevos drops cada semana</span>
-  </div>
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+  color:#111;
+}
+.brand__logo{
+  width:36px;
+  height:36px;
+  border-radius:10px;
+  object-fit:cover;
+  box-shadow:0 6px 16px rgba(0,0,0,.15);
+}
+.brand__name{
+  font-family:"Bebas Neue", sans-serif;
+  font-size:26px;
+  letter-spacing:2px;
+  line-height:1;
+}
+.brand__tag{
+  font-size:12px;
+  opacity:.7;
+  margin-top:2px;
+}
 
-  <!-- ✅ HEADER LIMPIO (sin duplicados) -->
-  <header class="header">
-    <a class="brand" href="#inicio" aria-label="Flow Urban inicio">
-      <img src="assets/logo.png" alt="Flow Urban" class="brand__logo" onerror="this.style.display='none'"/>
-      <div class="brand__txt">
-        <div class="brand__name">FLOW URBAN</div>
-        <div class="brand__tag">Authentic store</div>
-      </div>
-    </a>
+.nav{
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+.nav a{
+  color:#111;
+  text-decoration:none;
+  font-size:13px;
+  opacity:.8;
+}
+.nav a:hover{ opacity:1; }
 
-    <nav class="nav" aria-label="Navegación principal">
-      <a href="#inicio">Inicio</a>
-      <a href="#catalogo">Catálogo</a>
-      <a href="#nosotros">Nosotros</a>
-      <a href="#envios">Envíos</a>
-      <a href="#contacto">Contacto</a>
-    </nav>
+/* CART BUTTON */
+.cartBtn{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  border:none;
+  background:#0b0b0f;
+  color:#fff;
+  padding:10px 12px;
+  border-radius:16px;
+  cursor:pointer;
+  box-shadow:0 10px 24px rgba(0,0,0,.18);
+}
+.cartCount{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:24px;
+  height:24px;
+  border-radius:999px;
+  background:rgba(212,175,55,.25);
+  border:1px solid rgba(212,175,55,.45);
+  color:#d4af37;
+  font-weight:700;
+}
 
-    <button class="cartBtn" id="openCartBtn" aria-label="Abrir carrito">
-      <span class="cartIcon" aria-hidden="true">🛒</span>
-      <span class="cartCount" id="cartCount">0</span>
-    </button>
-  </header>
+/* HERO */
+.hero{
+  padding:26px 14px 10px;
+}
 
-  <main>
-    <!-- HERO -->
-    <section id="inicio" class="hero">
-      <div class="hero__content">
-        <div class="heroTitle">FLOW URBAN</div>
-        <div class="heroSub">Estilo urbano auténtico. Drops, básicos y piezas con flow.</div>
+.hero__content{
+  max-width:980px;
+  margin:0 auto;
+  text-align:center;
+  padding:28px 16px;
+  border-radius:22px;
 
-        <div class="heroBtns">
-          <a class="btn btnPrimary" href="#catalogo">Ver catálogo</a>
-          <a class="btn btnGhost" id="btnWhatsappTop" href="#" rel="noopener">Hablar con nosotros</a>
-        </div>
+  /* Fondo plomo elegante + filito dorado */
+  background:rgba(18,18,22,.78);
+  border:1px solid rgba(212,175,55,.55);
+  box-shadow:var(--shadow);
+  color:#f2f2f2;
+}
+.hero__content .heroTitle{ color:#ffffff; }
+.hero__content .heroSub{ color:rgba(255,255,255,.78); }
+.hero__content .pill{ border:1px solid rgba(212,175,55,.35); color:rgba(255,255,255,.82); }
 
-        <div class="heroPills">
-          <div class="pill">🔥 Nuevos drops</div>
-          <div class="pill">🧵 Calidad premium</div>
-          <div class="pill">🚚 Envíos</div>
-          <div class="pill">💬 Pedidos por WhatsApp</div>
-        </div>
-      </div>
-    </section>
+.heroTitle{
+  font-family:"Bebas Neue", sans-serif;
+  font-size:64px;
+  letter-spacing:8px;
+  margin:0;
+}
+.heroSub{
+  margin:10px auto 0;
+  max-width:640px;
+  font-size:16px;
+  line-height:1.5;
+}
 
-    <!-- CATALOGO -->
-    <section id="catalogo" class="section">
-      <h2>Catálogo</h2>
-      <p class="muted">Busca tu estilo, elige talla y arma tu carrito.</p>
+.heroBtns{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
 
-      <div class="filters">
-        <div class="field">
-          <label>Buscar</label>
-          <input id="searchInput" placeholder="Ej: hoodie, oversize, neon..." />
-        </div>
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:12px 18px;
+  border-radius:18px;
+  text-decoration:none;
+  border:1px solid rgba(0,0,0,.08);
+  font-weight:700;
+  cursor:pointer;
+}
+.btnPrimary{
+  background:#0b0b0f;
+  color:#fff;
+  border:1px solid rgba(212,175,55,.35);
+}
+.btnGhost{
+  background:rgba(255,255,255,.10);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.18);
+}
 
-        <div class="field">
-          <label>Categoría</label>
-          <select id="categorySelect"></select>
-        </div>
+.heroPills{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+.pill{
+  padding:10px 12px;
+  border-radius:999px;
+  background:rgba(255,255,255,.06);
+  font-size:13px;
+}
 
-        <div class="field">
-          <label>Orden</label>
-          <select id="sortSelect">
-            <option value="featured">Destacados</option>
-            <option value="price_asc">Precio: menor a mayor</option>
-            <option value="price_desc">Precio: mayor a menor</option>
-            <option value="new">Nuevos</option>
-          </select>
-        </div>
+/* SECTIONS */
+.section{
+  max-width:980px;
+  margin:0 auto;
+  padding:22px 14px;
+}
+.section h2{
+  font-family:"Bebas Neue", sans-serif;
+  font-size:52px;
+  letter-spacing:2px;
+  margin:0 0 6px;
+}
+.muted{ opacity:.7; }
 
-        <button id="clearFilters" class="btn btnGhost">Limpiar</button>
-      </div>
+.card{
+  background:#fff;
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:22px;
+  padding:18px 16px;
+  box-shadow:0 10px 24px rgba(0,0,0,.08);
+}
 
-      <div class="count" id="productCount"></div>
-      <div class="grid" id="productGrid"></div>
-    </section>
+/* FILTERS */
+.filters{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr auto;
+  gap:12px;
+  align-items:end;
+  margin-top:12px;
+}
+.field label{
+  display:block;
+  font-size:13px;
+  opacity:.75;
+  margin-bottom:6px;
+}
+.field input,
+.field select{
+  width:100%;
+  padding:14px 14px;
+  border-radius:18px;
+  border:1px solid rgba(0,0,0,.08);
+  background:#f2f2f2;
+  outline:none;
+  font-size:15px;
+}
 
-    <!-- NOSOTROS -->
-    <section id="nosotros" class="section">
-      <h2>Nosotros</h2>
-      <p>Flow Urban es para los que caminan con confianza. Streetwear con identidad.</p>
+/* GRID */
+.count{ margin:12px 0; opacity:.7; }
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0,1fr));
+  gap:14px;
+}
 
-      <div class="card">
-        <h3>Calidad</h3>
-        <p>Materiales cómodos y duraderos. Piezas para el día a día y para romperla.</p>
+.product{
+  background:#fff;
+  border-radius:22px;
+  box-shadow:0 10px 24px rgba(0,0,0,.10);
+  overflow:hidden;
+  border:1px solid rgba(0,0,0,.06);
+}
+.product__img{
+  width:100%;
+  aspect-ratio:1/1;
+  background:#ddd;
+  object-fit:cover;
+  display:block;
+}
+.product__body{
+  padding:14px;
+}
+.product__title{
+  font-weight:800;
+  margin:0;
+  font-size:18px;
+}
+.product__meta{
+  opacity:.75;
+  margin-top:4px;
+  font-size:14px;
+}
+.badges{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+.badge{
+  font-size:12px;
+  padding:8px 10px;
+  border-radius:999px;
+  background:rgba(212,175,55,.18);
+  border:1px solid rgba(212,175,55,.30);
+  color:#8a6b00;
+}
+.product__actions{
+  display:flex;
+  gap:10px;
+  margin-top:12px;
+}
+.product__actions .btn{
+  flex:1;
+  border-radius:16px;
+}
 
-        <h3>Estilo</h3>
-        <p>Oversize, básicos y accesorios. Combina, rompe, repite.</p>
+/* WHATSAPP FLOAT */
+.waFloat{
+  position:fixed;
+  right:14px;
+  bottom:14px;
+  z-index:60;
+  background:#0b0b0f;
+  color:#fff;
+  border-radius:999px;
+  padding:14px 16px;
+  text-decoration:none;
+  font-weight:800;
+  box-shadow:0 14px 28px rgba(0,0,0,.22);
+  border:1px solid rgba(212,175,55,.30);
+}
 
-        <h3>Atención</h3>
-        <p>Pedido rápido por WhatsApp. Te confirmamos stock, envío y forma de pago.</p>
-      </div>
-    </section>
+/* DRAWER */
+.drawer{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  display:none;
+  z-index:80;
+}
+.drawer.isOpen{ display:block; }
+.drawer__panel{
+  position:absolute;
+  right:0;
+  top:0;
+  height:100%;
+  width:min(420px, 92vw);
+  background:#fff;
+  display:flex;
+  flex-direction:column;
+}
+.drawer__top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:16px;
+  border-bottom:1px solid rgba(0,0,0,.08);
+}
+.iconBtn{
+  border:none;
+  background:transparent;
+  font-size:20px;
+  cursor:pointer;
+}
+.drawer__body{
+  padding:14px 16px;
+  overflow:auto;
+  flex:1;
+}
+.drawer__bottom{
+  padding:16px;
+  border-top:1px solid rgba(0,0,0,.08);
+}
+.totalRow{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:12px;
+  font-size:16px;
+}
 
-    <!-- ENVIOS -->
-    <section id="envios" class="section">
-      <h2>Envíos y cambios</h2>
-      <p class="muted">Configura tus condiciones como prefieras.</p>
+/* LOADER */
+#preloader{
+  position:fixed;
+  inset:0;
+  background:#0b0b0f;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:1000;
+}
+.pre-wrap{
+  width:min(420px, 90vw);
+  text-align:center;
+}
+.pre-logo{
+  width:110px;
+  height:110px;
+  border-radius:26px;
+  object-fit:cover;
+  box-shadow:0 14px 28px rgba(0,0,0,.35);
+  border:1px solid rgba(212,175,55,.35);
+  margin-bottom:18px;
+}
+.pre-bar{
+  height:8px;
+  border-radius:999px;
+  background:rgba(255,255,255,.10);
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.14);
+}
+.pre-bar span{
+  display:block;
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg, rgba(212,175,55,.35), rgba(255,255,255,.32));
+  animation:preload 1.2s infinite;
+}
+.pre-text{
+  margin-top:12px;
+  color:rgba(255,255,255,.78);
+  font-weight:700;
+}
+@keyframes preload{
+  0%{ width:0%; transform:translateX(-10%); }
+  50%{ width:70%; }
+  100%{ width:0%; transform:translateX(110%); }
+}
 
-      <div class="card">
-        <h3>Envíos</h3>
-        <ul>
-          <li>Envíos a tu ciudad / barrio (ejemplo).</li>
-          <li>Tiempo estimado 24-72h (ejemplo).</li>
-        </ul>
+/* FOOTER */
+.footer{
+  text-align:center;
+  padding:26px 14px 40px;
+  opacity:.75;
+}
 
-        <h3>Cambios</h3>
-        <ul>
-          <li>La prenda debe estar nueva y con etiqueta.</li>
-          <li>Escríbenos por WhatsApp para coordinar.</li>
-        </ul>
+/* RESPONSIVE */
+@media (max-width: 820px){
+  .nav{ display:none; }
+  .filters{ grid-template-columns:1fr 1fr; }
+  .grid{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+  .heroTitle{ font-size:54px; letter-spacing:6px; }
+}
 
-        <h3>Pagos</h3>
-        <ul>
-          <li>Transferencia / efectivo / contraentrega (ejemplo).</li>
-          <li>Si quieres tarjeta, se puede integrar después.</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- CONTACTO -->
-    <section id="contacto" class="section">
-      <h2>Contacto</h2>
-      <p class="muted">¿Dudas? Escríbenos. Te respondemos rápido.</p>
-
-      <div class="card">
-        <h3>WhatsApp Ventas</h3>
-        <p id="waInfo">Ventas 1: 593987777119 | Ventas 2: 593962722395</p>
-
-        <div class="heroBtns">
-          <a class="btn btnPrimary" id="waBtn1" href="#" rel="noopener">WhatsApp Ventas 1</a>
-          <a class="btn btnPrimary" id="waBtn2" href="#" rel="noopener">WhatsApp Ventas 2</a>
-        </div>
-
-        <h3 style="margin-top:18px;">Redes</h3>
-        <p class="muted">Pon tus links en <b>products.js</b> para Instagram/TikTok.</p>
-
-        <div class="heroBtns">
-          <a class="btn btnGhost" id="igBtn" href="#" rel="noopener">Instagram</a>
-          <a class="btn btnGhost" id="ttBtn" href="#" rel="noopener">TikTok</a>
-        </div>
-      </div>
-    </section>
-
-    <footer class="footer">
-      Hecho con 💥 para streetwear.
-    </footer>
-  </main>
-
-  <!-- FLOAT WHATSAPP -->
-  <a class="waFloat" id="waFloat" href="#" rel="noopener">WhatsApp</a>
-
-  <!-- CART DRAWER -->
-  <div class="drawer" id="cartDrawer" aria-hidden="true">
-    <div class="drawer__panel">
-      <div class="drawer__top">
-        <h3>Tu carrito</h3>
-        <button class="iconBtn" id="closeCartBtn" aria-label="Cerrar">✕</button>
-      </div>
-
-      <div class="drawer__body" id="cartItems"></div>
-
-      <div class="drawer__bottom">
-        <div class="totalRow">
-          <span>Total</span>
-          <b id="cartTotal">$0.00</b>
-        </div>
-
-        <button class="btn btnPrimary" id="checkoutBtn">Pedir por WhatsApp</button>
-        <button class="btn btnGhost" id="clearCartBtn">Vaciar</button>
-      </div>
-    </div>
-  </div>
-
-  <script src="products.js"></script>
-  <script src="app.js"></script>
-</body>
-</html>
+@media (max-width: 420px){
+  .grid{ grid-template-columns:1fr 1fr; }
+}
