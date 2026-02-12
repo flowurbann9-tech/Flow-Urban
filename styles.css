@@ -505,3 +505,7 @@ body.ready .header{
   flex-direction:column;
   line-height:1.05;
 }
+.header{
+  background: #141414; /* plomo elegante */
+}
+
