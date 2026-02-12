@@ -204,9 +204,27 @@
         <button class="btn btnGhost" id="clearCartBtn">Vaciar</button>
       </div>
     </div>
-  </div>
+    <!-- ✅ APAGAR LOADER SIEMPRE -->
+  <script>
+    function hidePreloader() {
+      const p = document.getElementById("preloader");
+      if (!p) return;
+      p.style.opacity = "0";
+      p.style.transition = "opacity .3s ease";
+      setTimeout(() => {
+        p.style.display = "none";
+      }, 350);
+    }
 
-  <script src="products.js"></script>
-  <script src="app.js"></script>
-</body>
+    // Cuando cargue todo
+    window.addEventListener("load", hidePreloader);
+
+    // Por si algo falla, se apaga igual en 5s
+    setTimeout(hidePreloader, 5000);
+  </script>
+
+  <!-- ✅ Cargar JS sin bloquear y en orden -->
+  <script src="products.js" defer></script>
+  <script src="app.js" defer></script>
+  </body>
           </html>
