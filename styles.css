@@ -1,110 +1,222 @@
-<!doctype html>
-<html lang="es">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Flow Urban | Authentic store</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
+/* ===== Base ===== */
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial}
+a{color:inherit}
+main{min-height:100vh}
 
-<body>
-  <!-- Preloader / pantalla de carga -->
-  <div id="preloader" class="preloader" aria-label="Cargando Flow Urban">
-    <div class="preloader__box">
-      <!-- IMPORTANTE: sube tu imagen como assets/loader.png -->
-      <img class="preloader__logo" src="assets/loader.png" alt="Flow Urban" onerror="this.style.display='none'">
-      <div class="preloader__text">Cargando Flow Urban...</div>
-      <div class="preloader__bar"><div class="preloader__barFill"></div></div>
-    </div>
-  </div>
+/* ===== Top bar ===== */
+.topbar{
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #0b0b0f;
+  color: #fff;
+  font-size: 14px;
+}
+.topbar__inner{
+  display:flex;
+  gap:14px;
+  align-items:center;
+  justify-content:center;
+  padding:10px 12px;
+  white-space: nowrap;
+  overflow:auto;
+}
+.topbar__inner::-webkit-scrollbar{height:0}
+.topbar__link{color:#fff;text-decoration:none;opacity:.9}
+.topbar__link:active{opacity:1}
 
-  <!-- Barra superior -->
-  <div class="topbar">
-    <div class="topbar__inner">
-      <span>🚚 Envíos a todo el país</span>
-      <a class="topbar__link" href="https://wa.me/593987771119" target="_blank" rel="noopener">📲 WhatsApp</a>
-      <span>🔥 Nuevos drops cada semana</span>
-    </div>
-  </div>
+/* ===== Header ===== */
+.siteHeader{
+  position: sticky;
+  top: 44px; /* debajo del topbar */
+  z-index: 999;
+  background: rgba(255,255,255,.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0,0,0,.06);
+}
+.siteHeader__inner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:10px 14px;
+}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#111;min-width:0}
+.brand__logo{width:38px;height:38px;object-fit:cover;border-radius:10px;background:#111}
+.brand__text{min-width:0}
+.brand__title{
+  font-weight:900;
+  letter-spacing:.16em;
+  font-size:18px;
+  line-height:1.05;
+  white-space:nowrap; /* 1 sola línea */
+}
+.brand__subtitle{font-size:12px;opacity:.7;line-height:1.1;white-space:nowrap}
 
-  <!-- Header -->
-  <header class="siteHeader">
-    <div class="siteHeader__inner">
-      <a class="brand" href="#inicio">
-        <!-- IMPORTANTE: sube tu logo como assets/logo.png -->
-        <img class="brand__logo" src="assets/logo.png" alt="Flow Urban logo" onerror="this.style.display='none'">
-        <div class="brand__text">
-          <div class="brand__title">FLOW URBAN</div>
-          <div class="brand__subtitle">Authentic store</div>
-        </div>
-      </a>
+.nav{
+  display:flex;
+  gap:14px;
+  padding:0 14px 10px;
+  overflow:auto;
+}
+.nav a{color:#111;text-decoration:none;font-weight:700;opacity:.7;white-space:nowrap}
+.nav a:active{opacity:1}
+.nav::-webkit-scrollbar{height:0}
 
-      <button class="cartBtn" id="openCartBtn" aria-label="Abrir carrito">
-        <span class="cartBtn__icon">🛒</span>
-        <span class="cartCount" id="cartCount">0</span>
-      </button>
-    </div>
+/* ===== Cart ===== */
+.cartBtn{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  border:none;
+  cursor:pointer;
+  background:#0b0b0f;
+  color:#fff;
+  padding:12px 14px;
+  border-radius:18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.18);
+}
+.cartBtn__icon{font-size:18px;line-height:1}
+.cartCount{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:30px;
+  height:30px;
+  border-radius:999px;
+  background: rgba(255,215,0,.15);
+  border: 2px solid rgba(201,162,39,.75); /* dorado */
+  font-weight:900;
+}
 
-    <nav class="nav">
-      <a href="#inicio">Inicio</a>
-      <a href="#catalogo">Catálogo</a>
-      <a href="#nosotros">Nosotros</a>
-      <a href="#envios">Envíos</a>
-      <a href="#contacto">Contacto</a>
-    </nav>
-  </header>
+/* ===== Preloader ===== */
+.preloader{
+  position:fixed;
+  inset:0;
+  background:#0b0b0f;
+  z-index:2000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:22px;
+}
+.preloader.is-hidden{opacity:0;pointer-events:none;transition:opacity .25s ease}
+.preloader__box{
+  width:min(92vw, 420px);
+  border-radius:22px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 30px 80px rgba(0,0,0,.55);
+  padding:22px 18px;
+  text-align:center;
+}
+.preloader__logo{
+  width: 380px;   /* ~10cm aprox */
+  max-width: 100%;
+  height: 190px;  /* ~5cm aprox */
+  object-fit: contain;
+  display:block;
+  margin: 0 auto 14px;
+  border-radius:14px;
+}
+.preloader__text{color:#fff;font-weight:800;letter-spacing:.02em;margin-bottom:12px;opacity:.9}
+.preloader__bar{
+  height:8px; /* barra más pequeña */
+  border-radius:999px;
+  overflow:hidden;
+  background: rgba(255,255,255,.14);
+}
+.preloader__barFill{
+  height:100%;
+  width:35%;
+  background: rgba(201,162,39,.9);
+  animation: preloaderMove 1.2s ease-in-out infinite;
+}
+@keyframes preloaderMove{
+  0%{transform:translateX(-120%)}
+  100%{transform:translateX(320%)}
+}
 
-  <main id="inicio">
-    <!-- HERO -->
-    <section class="hero" id="inicio">
-      <div class="hero__wrap">
-        <div class="hero__content">
-          <!-- Si NO quieres logo aquí, borra este <img> -->
-          <img class="hero__logo" src="assets/hero.png" alt="Flow Urban" onerror="this.style.display='none'">
-          <h1 class="hero__title">FLOW URBAN</h1>
-          <p class="hero__subtitle">Estilo urbano auténtico. Drops, básicos y piezas con flow.</p>
+/* ===== Hero ===== */
+.hero{
+  padding:28px 16px 18px;
+}
+.hero__wrap{
+  display:flex;
+  justify-content:center;
+}
+.hero__content{
+  width:min(680px, 100%);
+  background: #4a4a4f; /* plomo elegante */
+  border: 2px solid rgba(201,162,39,.85); /* filo dorado */
+  border-radius: 26px;
+  padding: 28px 18px;
+  text-align:center;
+  box-shadow: 0 18px 60px rgba(0,0,0,.22);
+}
+.hero__logo{
+  width:110px;
+  height:110px;
+  object-fit:contain;
+  display:block;
+  margin: 0 auto 10px;
+}
+.hero__title{
+  margin: 0 0 10px;
+  font-size: 44px;
+  font-weight: 900;
+  letter-spacing: .22em;
+  color:#fff;
+  white-space:nowrap; /* FLOW URBAN en una línea */
+}
+.hero__subtitle{
+  margin: 0 0 18px;
+  font-size: 18px;
+  color: rgba(255,255,255,.85);
+}
+.hero__actions{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-bottom:14px;
+}
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding: 12px 18px;
+  border-radius: 999px;
+  text-decoration:none;
+  font-weight: 800;
+}
+.btn--primary{
+  background:#0b0b0f;
+  color:#fff;
+  border:2px solid rgba(201,162,39,.85);
+}
+.btn--ghost{
+  background: rgba(0,0,0,.12);
+  color:#fff;
+  border: 1px solid rgba(255,255,255,.22);
+}
+.hero__chips{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+.chip{
+  padding:10px 14px;
+  border-radius:999px;
+  color: rgba(255,255,255,.9);
+  border: 1px solid rgba(201,162,39,.45);
+  background: rgba(0,0,0,.10);
+  font-weight:700;
+}
 
-          <div class="hero__actions">
-            <a class="btn btn--primary" href="#catalogo">Ver catálogo</a>
-            <a class="btn btn--ghost" href="#contacto">Hablar con nosotros</a>
-          </div>
-
-          <div class="hero__chips">
-            <span class="chip">🔥 Nuevos drops</span>
-            <span class="chip">🧵 Calidad premium</span>
-            <span class="chip">🚚 Envíos</span>
-            <span class="chip">💬 Pedidos por WhatsApp</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ====== AQUÍ DEJA TU CONTENIDO NORMAL (catálogo / nosotros / envíos / contacto) ======
-         Si tú ya tienes secciones y scripts, pégalos debajo tal cual estaban.
-         OJO: si tu proyecto ya tiene su contenido más abajo, NO lo borres.
-    -->
-
-    <!-- EJEMPLO de anclas (si ya las tienes, deja las tuyas) -->
-    <section id="catalogo"></section>
-    <section id="nosotros"></section>
-    <section id="envios"></section>
-    <section id="contacto"></section>
-  </main>
-
-  <script>
-    // Oculta el preloader cuando la página termina de cargar
-    window.addEventListener('load', () => {
-      const p = document.getElementById('preloader');
-      if (!p) return;
-      p.classList.add('is-hidden');
-      setTimeout(() => p.remove(), 350);
-    });
-  </script>
-
-  <!-- Si tu web usa archivos JS (products.js / app.js), vuelve a ponerlos aquí como estaban -->
-  <!-- EJEMPLO:
-  <script src="products.js"></script>
-  <script src="app.js"></script>
-  -->
-</body>
-</html>
+/* Responsive */
+@media (max-width:420px){
+  .hero__title{font-size:36px;letter-spacing:.18em}
+}
