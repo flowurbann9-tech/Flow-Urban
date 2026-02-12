@@ -250,3 +250,9 @@ body{
   50%{transform:translateX(120%)}
   100%{transform:translateX(-10%)}
                               }
+/* === FIX: ocultar loader cuando la página carga === */
+.preloader.is-hidden{
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease;
+}
