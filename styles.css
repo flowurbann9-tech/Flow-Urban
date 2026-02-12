@@ -1,258 +1,110 @@
-/* Flow Urban - styles.css (FIX) */
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Flow Urban | Authentic store</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
 
-:root{
-  --bg:#f3f3f5;
-  --card:#ffffff;
-  --text:#0b0b0f;
-  --muted:#5b5b66;
+<body>
+  <!-- Preloader / pantalla de carga -->
+  <div id="preloader" class="preloader" aria-label="Cargando Flow Urban">
+    <div class="preloader__box">
+      <!-- IMPORTANTE: sube tu imagen como assets/loader.png -->
+      <img class="preloader__logo" src="assets/loader.png" alt="Flow Urban" onerror="this.style.display='none'">
+      <div class="preloader__text">Cargando Flow Urban...</div>
+      <div class="preloader__bar"><div class="preloader__barFill"></div></div>
+    </div>
+  </div>
 
-  --accent:#c8a64b;   /* dorado elegante */
-  --accent2:#111111;  /* negro */
+  <!-- Barra superior -->
+  <div class="topbar">
+    <div class="topbar__inner">
+      <span>🚚 Envíos a todo el país</span>
+      <a class="topbar__link" href="https://wa.me/593987771119" target="_blank" rel="noopener">📲 WhatsApp</a>
+      <span>🔥 Nuevos drops cada semana</span>
+    </div>
+  </div>
 
-  --danger:#d64545;
+  <!-- Header -->
+  <header class="siteHeader">
+    <div class="siteHeader__inner">
+      <a class="brand" href="#inicio">
+        <!-- IMPORTANTE: sube tu logo como assets/logo.png -->
+        <img class="brand__logo" src="assets/logo.png" alt="Flow Urban logo" onerror="this.style.display='none'">
+        <div class="brand__text">
+          <div class="brand__title">FLOW URBAN</div>
+          <div class="brand__subtitle">Authentic store</div>
+        </div>
+      </a>
 
-  --radius:16px;
-  --shadow: 0 10px 30px rgba(0,0,0,.12);
-  --border:1px solid rgba(0,0,0,.10);
-}
+      <button class="cartBtn" id="openCartBtn" aria-label="Abrir carrito">
+        <span class="cartBtn__icon">🛒</span>
+        <span class="cartCount" id="cartCount">0</span>
+      </button>
+    </div>
 
-*{box-sizing:border-box}
-html,body{height:100%}
+    <nav class="nav">
+      <a href="#inicio">Inicio</a>
+      <a href="#catalogo">Catálogo</a>
+      <a href="#nosotros">Nosotros</a>
+      <a href="#envios">Envíos</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+  </header>
 
-body{
-  margin:0;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial;
-  color:var(--text);
-  background:var(--bg);
-}
+  <main id="inicio">
+    <!-- HERO -->
+    <section class="hero" id="inicio">
+      <div class="hero__wrap">
+        <div class="hero__content">
+          <!-- Si NO quieres logo aquí, borra este <img> -->
+          <img class="hero__logo" src="assets/hero.png" alt="Flow Urban" onerror="this.style.display='none'">
+          <h1 class="hero__title">FLOW URBAN</h1>
+          <p class="hero__subtitle">Estilo urbano auténtico. Drops, básicos y piezas con flow.</p>
 
-/* TOPBAR */
-.topbar{
-  background:#101014;
-  color:#fff;
-  font-size:13px;
-}
-.topbar__inner{
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  padding:8px 10px;
-  flex-wrap:wrap;
-}
-.sep{opacity:.55}
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="#catalogo">Ver catálogo</a>
+            <a class="btn btn--ghost" href="#contacto">Hablar con nosotros</a>
+          </div>
 
-/* ===== HEADER LIMPIO (evita duplicados) ===== */
-.site-header{
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  padding: 10px 14px;
-  background:#ffffff;
-  border-bottom: 1px solid rgba(0,0,0,.08);
-}
+          <div class="hero__chips">
+            <span class="chip">🔥 Nuevos drops</span>
+            <span class="chip">🧵 Calidad premium</span>
+            <span class="chip">🚚 Envíos</span>
+            <span class="chip">💬 Pedidos por WhatsApp</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-.brand{display:flex;align-items:center;gap:10px;min-width:0;}
-.brand__logo{width:38px;height:38px;border-radius:10px;object-fit:cover;}
-.brand__text{min-width:0;}
-.brand__name{font-weight:800;letter-spacing:2px;font-size:18px;line-height:1;}
-.brand__tag{font-size:14px;color:rgba(0,0,0,.55);line-height:1.2;margin-top:2px;}
+    <!-- ====== AQUÍ DEJA TU CONTENIDO NORMAL (catálogo / nosotros / envíos / contacto) ======
+         Si tú ya tienes secciones y scripts, pégalos debajo tal cual estaban.
+         OJO: si tu proyecto ya tiene su contenido más abajo, NO lo borres.
+    -->
 
-.cartBtn{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding: 10px 14px;
-  border-radius: 18px;
-  border: none;
-  background:#121216;
-  color:#fff;
-  box-shadow: 0 10px 24px rgba(0,0,0,.18);
-}
-.cartBtn__icon{font-size:18px;line-height:1;}
-.cartBtn__count{
-  min-width: 34px;
-  height: 28px;
-  border-radius: 999px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#1e1e25;
-  border:2px solid rgba(200,166,75,.65);
-  color:#a8ff5a;
-  font-weight:800;
-}
+    <!-- EJEMPLO de anclas (si ya las tienes, deja las tuyas) -->
+    <section id="catalogo"></section>
+    <section id="nosotros"></section>
+    <section id="envios"></section>
+    <section id="contacto"></section>
+  </main>
 
-/* CONTAINERS */
-.container{width:min(1050px, 92%); margin:0 auto;}
-.section{padding: 22px 0;}
-.sectionTitle{font-size:44px; margin:0 0 6px;}
-.sectionLead{margin:0 0 14px; color:rgba(0,0,0,.65); font-size:18px;}
-.card{
-  background:var(--card);
-  border: var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 16px;
-}
+  <script>
+    // Oculta el preloader cuando la página termina de cargar
+    window.addEventListener('load', () => {
+      const p = document.getElementById('preloader');
+      if (!p) return;
+      p.classList.add('is-hidden');
+      setTimeout(() => p.remove(), 350);
+    });
+  </script>
 
-/* HERO (PLOMO + FILO DORADO, SIN BARROCO) */
-.hero{padding: 18px 16px 26px;background: transparent;}
-.hero__wrap{display:flex;justify-content:center;}
-.hero__bgGlow{display:none;}
-
-.hero__content{
-  width:min(920px, 100%);
-  background:#4b4b4f;                 /* plomo */
-  color:#ffffff;
-  border:2px solid var(--accent);     /* filo dorado */
-  border-radius: 24px;
-  box-shadow: 0 14px 40px rgba(0,0,0,.25);
-  padding: 26px 18px;
-  text-align:center;
-}
-
-.hero__logo img{
-  width: 160px;
-  max-width: 55vw;
-  height: auto;
-  display:block;
-  margin: 0 auto 12px;
-}
-
-.hero__title{
-  font-size:44px;
-  letter-spacing:10px;
-  line-height:1;
-  margin:0 0 10px;
-  color:#fff;
-}
-.hero__subtitle{
-  color:rgba(255,255,255,.85);
-  font-size:18px;
-  line-height:1.4;
-  margin:0 0 18px;
-}
-
-.hero__actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom:16px;}
-.btn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  padding: 12px 18px;
-  border-radius: 999px;
-  text-decoration:none;
-  font-weight:800;
-  cursor:pointer;
-}
-.btnPrimary{background:#0f0f12;color:#fff;border:2px solid rgba(200,166,75,.55);}
-.btnSecondary{background:rgba(255,255,255,.10);color:#fff;border:1px solid rgba(255,255,255,.25);}
-.btnGhost{background:#eee; color:#111; border:1px solid rgba(0,0,0,.10);}
-
-.hero__chips{
-  display:flex;
-  gap:10px;
-  justify-content:center;
-  flex-wrap:wrap;
-}
-.chip{
-  padding:10px 14px;
-  border-radius:999px;
-  border:1px solid rgba(200,166,75,.45);
-  background:rgba(0,0,0,.15);
-  color:rgba(255,255,255,.88);
-}
-
-/* FILTROS + GRID */
-.filters__grid{
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap:12px;
-}
-@media (min-width: 820px){
-  .filters__grid{grid-template-columns: 2fr 1fr 1fr 180px;}
-}
-.field{display:flex; flex-direction:column; gap:6px;}
-.field span{color:rgba(0,0,0,.65); font-weight:700;}
-.field input, .field select{
-  width:100%;
-  padding: 12px 12px;
-  border-radius: 14px;
-  border:1px solid rgba(0,0,0,.15);
-  outline:none;
-  font-size:16px;
-}
-.filters__meta{margin-top:10px; color:rgba(0,0,0,.65); font-weight:700;}
-
-.grid{
-  margin-top:14px;
-  display:grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap:12px;
-}
-@media (min-width: 900px){
-  .grid{grid-template-columns: repeat(3, minmax(0, 1fr));}
-}
-
-/* Footer */
-.footer{padding:18px 0; color:rgba(0,0,0,.65);}
-
-/* WhatsApp floating */
-.waFloat{
-  position:fixed;
-  right:14px;
-  bottom:14px;
-  z-index:60;
-  background:#111;
-  color:#fff;
-  padding: 12px 16px;
-  border-radius:999px;
-  text-decoration:none;
-  font-weight:900;
-  box-shadow: 0 14px 30px rgba(0,0,0,.25);
-}
-
-/* LOADER */
-.preloader{
-  position:fixed;
-  inset:0;
-  background:#0b0b0c;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:9999;
-}
-.preloader__box{text-align:center; padding:22px;}
-.preloader__logo{width:84px;height:auto;display:block;margin:0 auto 14px;}
-.preloader__bar{
-  width:min(340px, 80vw);
-  height:10px;
-  background:rgba(255,255,255,.12);
-  border-radius:999px;
-  overflow:hidden;
-  margin: 0 auto 10px;
-}
-.preloader__bar span{
-  display:block;
-  height:100%;
-  width:45%;
-  background: var(--accent);
-  border-radius:999px;
-  animation: loadmove 1.2s infinite ease-in-out;
-}
-.preloader__text{color:rgba(255,255,255,.85); font-weight:800;}
-@keyframes loadmove{
-  0%{transform:translateX(-10%)}
-  50%{transform:translateX(120%)}
-  100%{transform:translateX(-10%)}
-                              }
-/* === FIX: ocultar loader cuando la página carga === */
-.preloader.is-hidden{
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .25s ease;
-}
+  <!-- Si tu web usa archivos JS (products.js / app.js), vuelve a ponerlos aquí como estaban -->
+  <!-- EJEMPLO:
+  <script src="products.js"></script>
+  <script src="app.js"></script>
+  -->
+</body>
+</html>
