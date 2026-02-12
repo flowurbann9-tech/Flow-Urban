@@ -1,300 +1,94 @@
-<!DOCTYPE html>
-
+<!doctype html>
 <html lang="es">
 <head>
-<link href="assets/logo.png" rel="icon" type="image/png"/>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1" name="viewport"/>
-<meta content="#0b0b0f" name="theme-color"/>
-<title>Flow Urban | Authentic Store</title>
-<meta content="Flow Urban - Tienda urbana. Catálogo, carrito y pedidos por WhatsApp." name="description"/>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Montserrat:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="styles.css" rel="stylesheet">
-</link></head>
-<body><!-- LOADER PRO -->
-<div aria-label="assets/loader.png" id="preloader">
-<div class="pre-wrap">
-<img alt="Flow Urban" class="pre-logo" src="assets/loader.png.png"/>
-<div class="pre-bar"><span></span></div>
-<div class="pre-text">Cargando Flow Urban…</div>
-</div>
-</div>
-<!-- TOP BAR tipo tienda -->
-<div class="topbar">
-<div class="topbar__inner">
-<span>🚚 Envíos a todo el país</span>
-<span class="dot">•</span>
-<a class="topbar__link" href="https://wa.me/593987771119" rel="noopener" target="_blank">📲 WhatsApp</a>
-<span class="dot">•</span>
-<span>🔥 Nuevos drops cada semana</span>
-</div>
-</div>
-<!-- WHATSAPP flotante -->
-<a aria-label="WhatsApp" class="wa-float" href="https://wa.me/593987771119" rel="noopener" target="_blank">
-  WhatsApp
-</a>
-<header class="header">
-<a aria-label="Ir a inicio" class="brand" href="#inicio">
-<img alt="Flow Urban" class="brand__logo" src="assets/logo.png"/>
-<div class="brand__text">
-<div class="brand__name">FLOW URBAN</div>
-<div class="brand__tag">Authentic store</div>
-</div>
-</a>
-<!-- lo demás puede ir a la derecha: nav / carrito / etc -->
-<img alt="Flow Urban" class="header__centerLogo" src="assets/logo.png"/></header>
-<nav aria-label="Navegación principal" class="nav">
-<a href="#catalogo">Catálogo</a>
-<a href="#nosotros">Nosotros</a>
-<a href="#envios">Envíos</a>
-</nav>
-<button aria-label="Abrir carrito" class="cartBtn" id="openCart">
-    🛒 <span class="cartBtn__badge" id="cartCount">0</span>
-</button>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0b0b0f" />
 
-<a aria-label="Ir al inicio" class="brand" href="#inicio">
-<img alt="Flow Urban logo" class="brand__logo" onerror="this.style.display='none'" src="assets/logo.png"/>
-<div class="brand__text">
-<div class="brand__name">FLOW URBAN</div>
-<div class="brand__tag">Authentic store</div>
-</div>
-</a>
-<nav aria-label="Navegación principal" class="nav">
-<a href="#catalogo">Catálogo</a>
-<a href="#nosotros">Nosotros</a>
-<a href="#envios">Envíos</a>
-<a href="#contacto">Contacto</a>
-</nav>
-<button aria-label="Abrir carrito" class="cartBtn" id="openCartBtn">
-      🛒 <span class="cartBtn__badge" id="cartCount">0</span>
-</button>
+  <title>Flow Urban | Authentic Store</title>
+  <meta name="description" content="Flow Urban - Tienda urbana. Catálogo, carrito y pedidos por WhatsApp." />
 
-<main>
-<!-- HERO -->
-<section class="hero" id="inicio">
-<div aria-hidden="true" class="hero__bgGlow"></div>
-<div class="hero__content">
-<div class="hero__logoWrap">
-<img alt="Flow Urban" class="hero__logo" onerror="this.style.display='none'; document.querySelector('.hero__title').style.display='block';" src="assets/hero-logo.png"/>
-</div>
-<h1 class="hero__title" style="display:none;">Flow Urban</h1>
-<p class="hero__subtitle">
-          Estilo urbano auténtico. Drops, básicos y piezas con flow.
-        </p>
-<div class="hero__cta">
-<a class="btn btn--primary" href="#catalogo">Ver catálogo</a>
-<a class="btn btn--ghost" href="#contacto">Hablar con nosotros</a>
-</div>
-<div aria-label="Beneficios" class="hero__chips">
-<span class="chip">🔥 Nuevos drops</span>
-<span class="chip">🧵 Calidad premium</span>
-<span class="chip">🚚 Envíos</span>
-<span class="chip">💬 Pedidos por WhatsApp</span>
-</div>
-</div>
-</section>
-<!-- CATALOGO -->
-<section class="section" id="catalogo">
-<div class="section__head">
-<h2 class="section__title">Catálogo</h2>
-<p class="section__desc">Busca tu estilo, elige talla y arma tu carrito.</p>
-</div>
-<div class="filters">
-<label class="field">
-<span>Buscar</span>
-<input autocomplete="off" id="q" placeholder="Ej: hoodie, oversize, negro..." type="search"/>
-</label>
-<label class="field">
-<span>Categoría</span>
-<select id="category"></select>
-</label>
-<label class="field">
-<span>Orden</span>
-<select id="sort">
-<option value="featured">Destacados</option>
-<option value="price_asc">Precio: menor a mayor</option>
-<option value="price_desc">Precio: mayor a menor</option>
-<option value="name_asc">Nombre: A → Z</option>
-</select>
-</label>
-<button class="btn btn--ghost btn--small" id="clearFilters">Limpiar</button>
-<div class="filters__meta">
-<span id="resultsCount">0</span> productos
-        </div>
-</div>
-<div aria-live="polite" class="grid" id="grid"></div>
-</section>
-<!-- NOSOTROS -->
-<section class="section section--alt" id="nosotros">
-<div class="section__head">
-<h2 class="section__title">Nosotros</h2>
-<p class="section__desc">
-          Flow Urban es para los que caminan con confianza. Streetwear con identidad.
-        </p>
-</div>
-<div class="cards">
-<article class="infoCard">
-<h3>Calidad</h3>
-<p>Materiales cómodos y duraderos. Piezas para el día a día y para romperla.</p>
-</article>
-<article class="infoCard">
-<h3>Estilo</h3>
-<p>Oversize, básicos y accesorios. Combina, rompe, repite.</p>
-</article>
-<article class="infoCard">
-<h3>Atención</h3>
-<p>Pedido rápido por WhatsApp. Te confirmamos stock, envío y forma de pago.</p>
-</article>
-</div>
-</section>
-<!-- ENVIOS -->
-<section class="section" id="envios">
-<div class="section__head">
-<h2 class="section__title">Envíos y cambios</h2>
-<p class="section__desc">Configura tus condiciones como prefieras.</p>
-</div>
-<div class="cards">
-<article class="infoCard">
-<h3>Envíos</h3>
-<ul class="list">
-<li>Envíos a tu ciudad / barrio.</li>
-<li>Tiempo estimado: 24–72h (ajústalo).</li>
-<li>Pago de envío: depende de zona (ajústalo).</li>
-</ul>
-</article>
-<article class="infoCard">
-<h3>Cambios</h3>
-<ul class="list">
-<li>Cambios por talla dentro de 7 días (ejemplo).</li>
-<li>La prenda debe estar nueva y con etiqueta.</li>
-<li>Escríbenos por WhatsApp para coordinar.</li>
-</ul>
-</article>
-<article class="infoCard">
-<h3>Pagos</h3>
-<ul class="list">
-<li>Transferencia / efectivo / contraentrega (ejemplo).</li>
-<li>Si quieres tarjeta, se puede integrar después.</li>
-</ul>
-</article>
-</div>
-</section>
-<!-- CONTACTO -->
-<section class="section section--alt" id="contacto">
-<div class="section__head">
-<h2 class="section__title">Contacto</h2>
-<p class="section__desc">¿Dudas? Escríbenos. Te respondemos rápido.</p>
-</div>
-<div class="contact">
-<div class="contact__box">
-<h3>WhatsApp Ventas</h3>
-<p class="muted" id="waHint">Elige a qué número escribir (Ventas 1 o Ventas 2).</p>
-<div style="display:flex; gap:10px; flex-wrap:wrap;">
-<a class="btn btn--primary" href="#" id="waLink1" rel="noopener" target="_blank">WhatsApp Ventas 1</a>
-<a class="btn btn--ghost" href="#" id="waLink2" rel="noopener" target="_blank">WhatsApp Ventas 2</a>
-</div>
-</div>
-<div class="contact__box">
-<h3>Redes</h3>
-<p class="muted">Pon tus links en <code>products.js</code> para Instagram/TikTok.</p>
-<div class="contact__social">
-<a href="#" id="igLink" rel="noopener" target="_blank">Instagram</a>
-<a href="#" id="ttLink" rel="noopener" target="_blank">TikTok</a>
-</div>
-</div>
-</div>
-</section>
-</main>
-<footer class="footer">
-<div>© <span id="year"></span> Flow Urban — Authentic store.</div>
-<div class="muted">Hecho con 💥 para streetwear.</div>
-</footer>
-<!-- PRODUCT MODAL -->
-<div aria-hidden="true" class="modal" id="productModal">
-<div class="modal__backdrop" data-close="true"></div>
-<div aria-labelledby="pmTitle" aria-modal="true" class="modal__panel" role="dialog">
-<button aria-label="Cerrar" class="modal__close" data-close="true">✕</button>
-<div class="pm">
-<img alt="" class="pm__img" id="pmImg">
-<div class="pm__body">
-<div class="pm__meta">
-<span class="badge" id="pmBadge"></span>
-<span class="muted" id="pmCat"></span>
-</div>
-<h3 class="pm__title" id="pmTitle"></h3>
-<p class="pm__desc muted" id="pmDesc"></p>
-<div class="pm__row">
-<div class="pm__price" id="pmPrice"></div>
-<div class="muted" id="pmSku"></div>
-</div>
-<div class="pm__controls">
-<label class="field">
-<span>Talla</span>
-<select id="pmSize"></select>
-</label>
-<label class="field">
-<span>Cantidad</span>
-<input id="pmQty" min="1" type="number" value="1">
-</input></label>
-</div>
-<button class="btn btn--primary" id="pmAdd">Agregar al carrito</button>
-</div>
-</img></div>
-</div>
-</div>
-<!-- CART DRAWER -->
-<aside aria-hidden="true" class="drawer" id="cartDrawer">
-<div class="drawer__backdrop" data-close="true"></div>
-<div aria-labelledby="cartTitle" aria-modal="true" class="drawer__panel" role="dialog">
-<div class="drawer__head">
-<h3 id="cartTitle">Tu carrito</h3>
-<button aria-label="Cerrar" class="drawer__close" data-close="true">✕</button>
-</div>
-<div class="drawer__body">
-<div class="cartItems" id="cartItems"></div>
-<div class="cartSummary">
-<div class="row">
-<span>Subtotal</span>
-<strong id="subtotal">$0</strong>
-</div>
-<div class="row muted">
-<span>Envío</span>
-<span id="shipping">$0</span>
-</div>
-<div class="row total">
-<span>Total</span>
-<strong id="total">$0</strong>
-</div>
-</div>
-<hr class="sep"/>
-<h4 class="h4">Finalizar por WhatsApp</h4>
-<p class="muted">Completa tus datos y te abrimos WhatsApp con el pedido listo (Ventas 1 por defecto).</p>
-<form class="form" id="checkoutForm">
-<label class="field">
-<span>Nombre</span>
-<input id="cName" placeholder="Tu nombre" required=""/>
-</label>
-<label class="field">
-<span>Teléfono</span>
-<input id="cPhone" placeholder="Tu teléfono" required=""/>
-</label>
-<label class="field">
-<span>Dirección / Ciudad</span>
-<input id="cAddress" placeholder="Tu dirección" required=""/>
-</label>
-<label class="field">
-<span>Notas</span>
-<textarea id="cNotes" placeholder="Color, referencias, horario, etc." rows="3"></textarea>
-</label>
-<button class="btn btn--primary" type="submit">Enviar pedido</button>
-<button class="btn btn--ghost" id="clearCart" type="button">Vaciar carrito</button>
-</form>
-</div>
-</div>
-</aside>
-<div aria-atomic="true" aria-live="polite" class="toast" id="toast"></div>
-<script src="app.js" type="module"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+  <!-- LOADER -->
+  <div id="preloader" aria-label="Cargando Flow Urban">
+    <div class="pre-wrap">
+      <img src="assets/loader.png.png" alt="Flow Urban" class="pre-logo" />
+      <div class="pre-bar"><span></span></div>
+      <div class="pre-text">Cargando Flow Urban...</div>
+    </div>
+  </div>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar__inner">
+      <div class="topbar__item">🚚 Envíos a todo el país</div>
+      <div class="topbar__sep">•</div>
+      <div class="topbar__item">📲 WhatsApp</div>
+      <div class="topbar__sep">•</div>
+      <div class="topbar__item">🔥 Nuevos drops cada semana</div>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="brand">
+      <img class="brand__logo" src="assets/logo.png" alt="Flow Urban">
+      <div class="brand__text">
+        <div class="brand__name">FLOW URBAN</div>
+        <div class="brand__tag">Authentic store</div>
+      </div>
+    </div>
+
+    <button class="cartBtn" type="button" aria-label="Carrito">
+      🛒 <span class="cartBtn__badge">0</span>
+    </button>
+  </header>
+
+  <!-- HERO -->
+  <section id="inicio" class="hero">
+    <div class="hero__bgGlow"></div>
+
+    <div class="hero__content heroCard">
+      <h1 class="hero__title">FLOW URBAN</h1>
+      <p class="hero__sub">Estilo urbano auténtico. Drops, básicos y piezas con flow.</p>
+
+      <div class="hero__cta">
+        <a class="btn btn--primary" href="#catalogo">Ver catálogo</a>
+        <a class="btn btn--ghost" href="#contacto">Hablar con nosotros</a>
+      </div>
+
+      <div class="chips">
+        <span class="chip">🔥 Nuevos drops</span>
+        <span class="chip">🧵 Calidad premium</span>
+        <span class="chip">🚚 Envíos</span>
+        <span class="chip">💬 Pedidos por WhatsApp</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATALOGO (placeholder) -->
+  <section id="catalogo" class="section">
+    <h2>Catálogo</h2>
+    <p class="muted">Busca tu estilo, elige talla y arma tu carrito.</p>
+    <!-- Aquí sigue tu catálogo real si ya lo tienes en otro bloque -->
+  </section>
+
+  <script>
+    // Oculta loader cuando carga todo
+    window.addEventListener("load", () => {
+      const pre = document.getElementById("preloader");
+      if (pre) pre.classList.add("hide");
+      setTimeout(() => pre && pre.remove(), 650);
+    });
+  </script>
+
 </body>
 </html>
