@@ -32,14 +32,26 @@
   </div>
 
   <!-- ✅ HEADER LIMPIO (sin duplicados) -->
-  <header class="header">
-    <a class="brand" href="#inicio" aria-label="Flow Urban inicio">
-      <img src="assets/logo.png" alt="Flow Urban" class="brand__logo" onerror="this.style.display='none'"/>
-      <div class="brand__txt">
-        <div class="brand__name">FLOW URBAN</div>
-        <div class="brand__tag">Authentic store</div>
-      </div>
-    </a>
+  <header class="site-header">
+  <div class="header-inner">
+    <!-- IZQUIERDA: texto -->
+    <div class="brand">
+      <div class="brand-name">FLOW URBAN</div>
+      <div class="brand-sub">Authentic store</div>
+    </div>
+
+    <!-- CENTRO: logo -->
+    <div class="brand-center">
+      <img src="assets/logo.png" alt="Flow Urban" class="brand-logo" />
+    </div>
+
+    <!-- DERECHA: carrito -->
+    <button class="cart-btn" id="cartBtn" aria-label="Carrito">
+      <span class="cart-ico">🛒</span>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+  </header>
 
     <nav class="nav" aria-label="Navegación principal">
       <a href="#inicio">Inicio</a>
