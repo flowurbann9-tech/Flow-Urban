@@ -31,11 +31,47 @@ code{background:rgba(255,255,255,.06);padding:2px 6px;border-radius:8px}
 .sep{border:0;border-top:1px solid rgba(255,255,255,.1);margin:16px 0}
 
 .header{
-  position:sticky;top:0;z-index:20;
-  display:flex;align-items:center;justify-content:space-between;gap:16px;
-  padding:12px 18px;background:rgba(10,10,14,.72);
-  backdrop-filter:blur(10px);border-bottom:var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 10px 16px;
+  background: rgba(10,10,14,.72);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,.08);
 }
+
+/* LOGO MÁS GRANDE Y BACÁN */
+.brand{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  min-width: 180px;
+}
+
+.brand__logo--big{
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  border-radius: 16px;
+  padding: 6px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+  box-shadow: 0 14px 40px rgba(0,0,0,.35);
+}
+
+/* En PC que se vea todavía mejor */
+@media (min-width: 900px){
+  .brand__logo--big{
+    width: 90px;
+    height: 90px;
+  }
+}
+
 .brand{display:flex;align-items:center;gap:12px;min-width:220px}
 .brand__logo{width:42px;height:42px;border-radius:10px;object-fit:cover;border:1px solid rgba(255,255,255,.12)}
 .brand__name{font-family:"Bebas Neue",sans-serif;letter-spacing:.12em;font-size:22px;line-height:1}
