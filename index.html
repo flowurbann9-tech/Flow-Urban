@@ -238,6 +238,12 @@
   <!-- ✅ Cargar JS sin bloquear y en orden -->
   <script src="products.js" defer></script>
   <script src="app.js" defer></script>
+    <script>
+  window.addEventListener("load", () => {
+    const pre = document.getElementById("preloader");
+    if(pre) pre.style.display = "none";
+  });
+    </script>
   </body>
   <div id="preloader">
   <div class="pre-wrap">
