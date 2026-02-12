@@ -206,5 +206,22 @@
   <!-- Scripts -->
   <script src="products.js"></script>
   <script src="app.js"></script>
+  <script>
+  // Quita el loader cuando todo cargue (imágenes, css, etc.)
+  window.addEventListener("load", () => {
+    const p = document.getElementById("preloader");
+    if (!p) return;
+    p.classList.add("is-hidden");
+    setTimeout(() => p.remove(), 350);
+  });
+
+  // Respaldo: si algo falla, lo quita igual en 4 segundos
+  setTimeout(() => {
+    const p = document.getElementById("preloader");
+    if (!p) return;
+    p.classList.add("is-hidden");
+    setTimeout(() => p.remove(), 350);
+  }, 4000);
+  </script>
 </body>
   </html>
