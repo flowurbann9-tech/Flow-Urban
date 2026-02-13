@@ -8,30 +8,40 @@
 </head>
 
 <body>
-  <!-- TOP BAR -->
+  <!-- Loader -->
+  <div id="preloader" class="preloader" aria-live="polite" aria-label="Cargando Flow Urban">
+    <div class="preloader__box">
+      <img class="preloader__img" src="assets/loader.png" alt="Flow Urban" />
+      <div class="preloader__text">Cargando Flow Urban...</div>
+      <div class="preloader__bar"><span class="preloader__barFill"></span></div>
+    </div>
+  </div>
+
+  <!-- Top info bar -->
   <div class="topbar">
     <div class="topbar__inner">
       <span>🚚 Envíos a todo el país</span>
-      <span>📲 WhatsApp</span>
+      <span class="dot">•</span>
+      <a class="topbar__link" href="#contacto">📲 WhatsApp</a>
+      <span class="dot">•</span>
       <span>🔥 Nuevos drops cada semana</span>
     </div>
   </div>
 
-  <!-- HEADER -->
+  <!-- Header -->
   <header class="header">
     <div class="header__inner">
-      <a class="brand" href="#inicio" aria-label="Inicio">
-        <img src="assets/logo.png" alt="Flow Urban" class="brand__logo" />
+      <div class="brand">
+        <img class="brand__logo" src="assets/logo.png" alt="Flow Urban" />
         <div class="brand__text">
           <div class="brand__name">FLOW URBAN</div>
-          <div class="brand__sub">Authentic store</div>
+          <div class="brand__tag">Authentic store</div>
         </div>
-      </a>
+      </div>
 
-      <!-- SOLO 1 CARRITO -->
-      <button class="cartbtn" id="cartBtn" aria-label="Carrito">
-        <span class="cartbtn__icon">🛒</span>
-        <span class="cartbtn__count" id="cartCount">0</span>
+      <button id="cartButton" class="cartBtn" type="button" aria-label="Ver carrito">
+        <span class="cartBtn__icon">🛒</span>
+        <span id="cartCount" class="cartBtn__count">0</span>
       </button>
     </div>
 
@@ -42,127 +52,132 @@
     </nav>
   </header>
 
-  <!-- LOADER (CUANDO CARGA) -->
-  <div class="loader" id="loader">
-    <div class="loader__card">
-      <img src="assets/loader.png" alt="Cargando Flow Urban" class="loader__img" />
-      <div class="loader__text">Cargando Flow Urban...</div>
-      <div class="loader__bar">
-        <div class="loader__fill" id="loaderFill"></div>
-      </div>
-    </div>
-  </div>
+  <main>
+    <!-- Hero -->
+    <section id="inicio" class="hero">
+      <div class="heroCard">
+        <div class="heroCard__title">FLOW URBAN</div>
+        <div class="heroCard__desc">Estilo urbano auténtico. Drops, básicos y piezas con flow.</div>
 
-  <main class="main">
-    <!-- HERO -->
-    <section class="hero" id="inicio">
-      <div class="hero__card">
-        <h1 class="hero__title">FLOW URBAN</h1>
-        <p class="hero__desc">Estilo urbano auténtico. Drops, básicos y piezas con flow.</p>
-
-        <div class="hero__actions">
+        <div class="heroCard__actions">
           <a class="btn btn--primary" href="#catalogo">Ver catálogo</a>
-          <button class="btn btn--ghost" id="waBtnMain">Hablar con nosotros</button>
+          <a id="btnWhatsappHero" class="btn btn--ghost" href="#contacto">Hablar con nosotros</a>
         </div>
 
-        <div class="hero__pills">
-          <span class="pill">🔥 Nuevos drops</span>
-          <span class="pill">🧵 Calidad premium</span>
-          <span class="pill">🚚 Envíos</span>
-          <span class="pill">💬 Pedidos por WhatsApp</span>
+        <div class="heroCard__chips">
+          <span class="chip">🔥 Nuevos drops</span>
+          <span class="chip">🧵 Calidad premium</span>
+          <span class="chip">🚚 Envíos</span>
+          <span class="chip">💬 Pedidos por WhatsApp</span>
         </div>
       </div>
     </section>
 
-    <!-- CATALOGO -->
-    <section class="section" id="catalogo">
-      <h2 class="section__title">Catálogo</h2>
-      <p class="section__sub">Busca tu estilo, elige talla y arma tu carrito.</p>
+    <!-- Catalog -->
+    <section id="catalogo" class="section">
+      <h2>Catálogo</h2>
+      <p class="muted">Busca tu estilo, elige talla y arma tu carrito.</p>
 
       <div class="filters">
         <label class="field">
           <span>Buscar</span>
-          <input id="q" type="search" placeholder="Ej: hoodie, oversize, negro" />
+          <input id="searchInput" type="search" placeholder="Ej: hoodie, oversize, negro" />
         </label>
 
         <label class="field">
           <span>Categoría</span>
-          <select id="category"></select>
+          <select id="categorySelect"></select>
         </label>
 
         <label class="field">
           <span>Orden</span>
-          <select id="sort">
+          <select id="sortSelect">
             <option value="featured">Destacados</option>
-            <option value="priceAsc">Precio (menor a mayor)</option>
-            <option value="priceDesc">Precio (mayor a menor)</option>
-            <option value="nameAsc">Nombre (A-Z)</option>
+            <option value="priceAsc">Precio: menor a mayor</option>
+            <option value="priceDesc">Precio: mayor a menor</option>
+            <option value="nameAsc">Nombre: A → Z</option>
           </select>
         </label>
 
-        <button class="btn btn--primary" id="clearFilters">Limpiar</button>
+        <button id="clearFilters" class="btn btn--small" type="button">Limpiar</button>
       </div>
 
-      <div class="meta">
-        <span id="countText">0 productos</span>
-      </div>
-
-      <div class="grid" id="grid"></div>
+      <div id="resultsMeta" class="resultsMeta"></div>
+      <div id="catalogGrid" class="catalogGrid"></div>
     </section>
 
-    <!-- CONTACTO -->
-    <section class="section" id="contacto">
-      <h2 class="section__title">Contacto</h2>
-      <p class="section__sub">¿Dudas? Escríbenos. Te respondemos rápido.</p>
+    <!-- About -->
+    <section class="section">
+      <h2>Nosotros</h2>
+      <div class="card">
+        <h3>Calidad</h3>
+        <p>Materiales cómodos y duraderos. Piezas para el día a día y para romperla.</p>
+        <h3>Estilo</h3>
+        <p>Oversize, básicos y accesorios. Combina, rompe, repite.</p>
+        <h3>Atención</h3>
+        <p>Pedido rápido por WhatsApp. Te confirmamos stock, envío y forma de pago.</p>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contacto" class="section">
+      <h2>Contacto</h2>
+      <p class="muted">¿Dudas? Escríbenos. Te respondemos rápido.</p>
 
       <div class="card">
         <h3>WhatsApp Ventas</h3>
-        <p>Ventas 1: <strong id="waNumber1Text"></strong> | Ventas 2: <strong id="waNumber2Text"></strong></p>
+        <p id="waNumbers" class="muted"></p>
 
-        <div class="row">
-          <a class="btn btn--primary" id="waLink1" href="#" target="_blank" rel="noopener">WhatsApp Ventas 1</a>
-          <a class="btn btn--primary" id="waLink2" href="#" target="_blank" rel="noopener">WhatsApp Ventas 2</a>
+        <div class="stack">
+          <a id="waBtn1" class="btn btn--primary" href="#" target="_blank" rel="noreferrer">WhatsApp Ventas 1</a>
+          <a id="waBtn2" class="btn btn--primary" href="#" target="_blank" rel="noreferrer">WhatsApp Ventas 2</a>
         </div>
-
-        <hr class="sep"/>
 
         <h3>Redes</h3>
         <div class="row">
-          <a class="btn btn--ghost" id="igLink" href="#" target="_blank" rel="noopener">Instagram</a>
-          <a class="btn btn--ghost" id="ttLink" href="#" target="_blank" rel="noopener">TikTok</a>
+          <a id="igBtn" class="btn btn--ghost" href="#" target="_blank" rel="noreferrer">Instagram</a>
+          <a id="ttBtn" class="btn btn--ghost" href="#" target="_blank" rel="noreferrer">TikTok</a>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- FLOATING WHATSAPP -->
-  <a class="waFloat" id="waFloat" href="#" target="_blank" rel="noopener">WhatsApp</a>
+  <!-- Floating WhatsApp -->
+  <a id="waFloat" class="waFloat" href="#" target="_blank" rel="noreferrer" aria-label="WhatsApp">
+    WhatsApp
+  </a>
 
-  <!-- CART DRAWER -->
-  <div class="drawer" id="drawer" aria-hidden="true">
+  <!-- Cart Drawer -->
+  <div id="cartDrawer" class="drawer" aria-hidden="true">
     <div class="drawer__panel">
       <div class="drawer__head">
-        <div class="drawer__title">Carrito</div>
-        <button class="drawer__close" id="drawerClose">✕</button>
+        <div class="drawer__title">Tu carrito</div>
+        <button id="closeCart" class="drawer__close" type="button" aria-label="Cerrar">✕</button>
       </div>
 
-      <div class="drawer__body" id="cartItems"></div>
+      <div id="cartItems" class="drawer__items"></div>
 
       <div class="drawer__foot">
-        <div class="total">
+        <div class="totalRow">
           <span>Total</span>
           <strong id="cartTotal">$0.00</strong>
         </div>
-
-        <button class="btn btn--primary btn--full" id="checkoutBtn">
+        <button id="checkoutBtn" class="btn btn--primary btn--full" type="button">
           Pedir por WhatsApp
+        </button>
+        <button id="clearCartBtn" class="btn btn--ghost btn--full" type="button">
+          Vaciar carrito
         </button>
       </div>
     </div>
-    <div class="drawer__backdrop" id="drawerBackdrop"></div>
+    <div id="drawerBackdrop" class="drawer__backdrop"></div>
   </div>
 
-  <script src="products.js"></script>
-  <script src="app.js"></script>
+  <footer class="footer">
+    <div class="footer__inner">Hecho con 💥 para streetwear.</div>
+  </footer>
+
+  <script type="module" src="products.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
