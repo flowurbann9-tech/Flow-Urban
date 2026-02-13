@@ -2,66 +2,42 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Flow Urban | Authentic store</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="./styles.css" />
 </head>
-  
 
 <body>
-  <!-- TOP BAR -->
-<div class="topbar">
-  <div class="topbar-row">
-    <span>🚚 Envíos a todo el país</span>
-    <span class="dot">•</span>
-    <a class="topbar-link" href="https://wa.me/593987771119" target="_blank" rel="noopener">
-      📲 WhatsApp
-    </a>
-  </div>
 
-  <div class="topbar-row2">
-    🔥 Nuevos drops cada semana
-  </div>
-</div>
-
-  <!-- LOADER -->
-  <div id="loader" class="loader">
-    <div class="loader-card">
-      <img class="loader-img" src="assets/loader.png" alt="Flow Urban" />
-      <div class="loader-text">Cargando Flow Urban...</div>
-      <div class="loader-bar"><span></span></div>
+  <!-- TOP BAR (la franja negra de arriba como Barreto) -->
+  <div class="topbar">
+    <div class="topbar-row">
+      <span>🚚 Envíos a todo el país</span>
+      <span class="dot">•</span>
+      <a class="topbar-link" href="https://wa.me/593987771119" target="_blank" rel="noopener">📲 WhatsApp</a>
+    </div>
+    <div class="topbar-row topbar-row2">
+      🔥 Nuevos drops cada semana
     </div>
   </div>
 
-  <!-- HEADER TOP (NEGRO) -->
-  <!-- TOP BAR (barra negra finita) -->
-<div class="topbar">
-  <div class="topbar-line1">
-    <span>🚚 Envíos a todo el país</span>
-    <span class="topbar-dot">•</span>
-    <a class="topbar-link" href="https://wa.me/593987771119" target="_blank" rel="noopener">
-      📲 WhatsApp
-    </a>
-  </div>
-
-  <div class="topbar-line2">
-    🔥 Nuevos drops cada semana
-  </div>
-</div>
-  <header class="topbar">
-    <div class="topbar-inner">
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
       <div class="brand">
-        <img class="brand-logo" src="assets/logo.png" alt="Flow Urban" />
-        <div class="brand-txt">
+        <img class="brand-logo" src="./assets/logo.png" alt="Flow Urban" />
+        <div class="brand-text">
           <div class="brand-name">FLOW URBAN</div>
           <div class="brand-sub">Authentic store</div>
         </div>
       </div>
 
-      <div class="top-actions">
-        <a id="topWhatsappLink" class="top-link" href="#" target="_blank" rel="noopener">WHATSAPP</a>
+      <div class="header-actions">
+        <a class="btn btn-outline" href="https://wa.me/593987771119" target="_blank" rel="noopener">
+          WHATSAPP
+        </a>
 
-        <button id="openCartBtn" class="cart-btn" type="button" aria-label="Carrito">
+        <button id="cartBtn" class="cart-btn" type="button" aria-label="Abrir carrito">
           <span class="cart-ico">🛒</span>
           <span id="cartCount" class="cart-count">0</span>
         </button>
@@ -75,60 +51,61 @@
     </nav>
   </header>
 
-  <!-- HERO (estilo Barretto: foto grande) -->
-  <main class="page">
+  <!-- HERO (estilo barreto) -->
+  <main>
     <section id="inicio" class="hero">
-      <div class="hero-media">
-        <!-- ESTA imagen ya la tienes: assets/hero.jpg -->
-        <img src="assets/hero.jpg" alt="Flow Urban Hero" />
-      </div>
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="hero-overlay" aria-hidden="true"></div>
 
-      <div class="hero-overlay">
-        <h1 class="hero-title">URBAN NIGHTS</h1>
-        <p class="hero-sub">Streetwear auténtico. Oversize, básicos y drops con flow.</p>
+      <div class="hero-content">
+        <div class="hero-title">URBAN NIGHTS</div>
+        <div class="hero-sub">
+          Streetwear auténtico. Oversize, básicos y drops con flow.
+        </div>
 
-        <div class="hero-buttons">
-          <a class="btn gold" href="#catalogo">SHOP NOW</a>
-          <a class="btn outline" href="#catalogo">LOOKBOOK</a>
+        <div class="hero-cta">
+          <a class="btn btn-gold" href="#catalogo">SHOP NOW</a>
+          <a class="btn btn-outline-light" href="#catalogo">LOOKBOOK</a>
         </div>
       </div>
     </section>
 
-    <!-- NUEVOS DROPS -->
-    <section class="section">
+    <!-- CATÁLOGO -->
+    <section id="catalogo" class="section">
       <h2 class="section-title">NEW DROPS</h2>
       <p class="section-sub">Busca tu estilo, elige talla y arma tu carrito.</p>
 
-      <!-- FILTROS -->
-      <div class="filters">
-        <div class="field">
-          <label>Buscar</label>
-          <input id="searchInput" type="text" placeholder="Ej: hoodie, oversize, negro" />
+      <div class="filters-card">
+        <div class="filters-grid">
+          <div class="field">
+            <label>Buscar</label>
+            <input id="searchInput" type="text" placeholder="Ej: hoodie, oversize, negro" />
+          </div>
+
+          <div class="field">
+            <label>Categoría</label>
+            <select id="categorySelect"></select>
+          </div>
+
+          <div class="field">
+            <label>Orden</label>
+            <select id="sortSelect">
+              <option value="featured">Destacados</option>
+              <option value="priceAsc">Precio: menor a mayor</option>
+              <option value="priceDesc">Precio: mayor a menor</option>
+              <option value="nameAsc">Nombre: A-Z</option>
+              <option value="nameDesc">Nombre: Z-A</option>
+            </select>
+          </div>
+
+          <button id="clearBtn" class="btn btn-dark" type="button">Limpiar</button>
         </div>
 
-        <div class="field">
-          <label>Categoría</label>
-          <select id="categorySelect"></select>
+        <div class="count-row">
+          <span id="productCount">0 productos</span>
         </div>
-
-        <div class="field">
-          <label>Orden</label>
-          <select id="sortSelect">
-            <option value="featured">Destacados</option>
-            <option value="price_asc">Precio: menor a mayor</option>
-            <option value="price_desc">Precio: mayor a menor</option>
-            <option value="name_asc">Nombre: A-Z</option>
-          </select>
-        </div>
-
-        <button id="clearBtn" class="btn dark" type="button">Limpiar</button>
       </div>
 
-      <div class="count">
-        <span id="productCount"></span>
-      </div>
-
-      <!-- GRID PRODUCTOS -->
       <div id="productsGrid" class="grid"></div>
     </section>
 
@@ -139,11 +116,22 @@
 
       <div class="contact-card">
         <h3>WhatsApp Ventas</h3>
-        <p id="waNumbers"></p>
+        <p class="contact-text">
+          Ventas 1: 593987771119 | Ventas 2: 593962722395
+        </p>
 
         <div class="contact-actions">
-          <a id="waLink1" class="btn dark" href="#" target="_blank" rel="noopener">WhatsApp Ventas 1</a>
-          <a id="waLink2" class="btn dark" href="#" target="_blank" rel="noopener">WhatsApp Ventas 2</a>
+          <a id="waLink1" class="btn btn-dark" target="_blank" rel="noopener">WhatsApp Ventas 1</a>
+          <a id="waLink2" class="btn btn-dark" target="_blank" rel="noopener">WhatsApp Ventas 2</a>
+        </div>
+
+        <div class="socials">
+          <h3>Redes</h3>
+          <p class="contact-text">Pon tus links en <b>products.js</b> para Instagram/TikTok.</p>
+          <div class="social-actions">
+            <a id="igLink" class="btn btn-soft" target="_blank" rel="noopener">Instagram</a>
+            <a id="ttLink" class="btn btn-soft" target="_blank" rel="noopener">TikTok</a>
+          </div>
         </div>
       </div>
     </section>
@@ -155,27 +143,62 @@
 
   <!-- CART DRAWER -->
   <aside id="cartDrawer" class="cart-drawer" aria-hidden="true">
-    <div class="cart-panel">
-      <div class="cart-head">
-        <div class="cart-title">Tu carrito</div>
-        <button id="closeCartBtn" class="icon-btn" type="button">✕</button>
+    <div class="cart-head">
+      <div class="cart-title">Carrito</div>
+      <button id="closeCart" class="icon-btn" type="button" aria-label="Cerrar">✕</button>
+    </div>
+
+    <div id="cartItems" class="cart-items"></div>
+
+    <div class="cart-foot">
+      <div class="cart-total">
+        <span>Total</span>
+        <strong id="cartTotal">$0</strong>
       </div>
-
-      <div id="cartItems" class="cart-items"></div>
-
-      <div class="cart-foot">
-        <div class="totals">
-          <div><span>Subtotal</span><strong id="subtotal">$0.00</strong></div>
-          <div><span>Envío</span><strong id="shipping">$0.00</strong></div>
-          <div class="total"><span>Total</span><strong id="total">$0.00</strong></div>
-        </div>
-
-        <button id="checkoutBtn" class="btn gold full" type="button">Pedir por WhatsApp</button>
-      </div>
+      <button id="checkoutBtn" class="btn btn-gold wide" type="button">
+        Pedir por WhatsApp
+      </button>
     </div>
   </aside>
 
-  <script type="module" src="products.js"></script>
-  <script type="module" src="app.js"></script>
+  <!-- PRODUCT MODAL -->
+  <div id="productModal" class="modal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="modalTitle" class="modal-title"></h3>
+        <button id="modalClose" class="icon-btn" type="button" aria-label="Cerrar">✕</button>
+      </div>
+      <div id="modalBody" class="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast" class="toast" aria-hidden="true">
+    <span id="toastText"></span>
+  </div>
+
+  <!-- LOADER (tu imagen + barra pequeña) -->
+  <div id="loaderOverlay" class="loader">
+    <div class="loader-card">
+      <img class="loader-img" src="./assets/loader.png" alt="Cargando Flow Urban" />
+      <div class="loader-text">Cargando Flow Urban...</div>
+      <div class="loader-bar">
+        <div class="loader-bar-fill"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="./products.js"></script>
+  <script src="./app.js"></script>
+
+  <!-- Ocultar loader al cargar -->
+  <script>
+    window.addEventListener("load", () => {
+      const overlay = document.getElementById("loaderOverlay");
+      if (overlay) overlay.classList.add("hide");
+      setTimeout(() => overlay && overlay.remove(), 350);
+    });
+  </script>
 </body>
 </html>
