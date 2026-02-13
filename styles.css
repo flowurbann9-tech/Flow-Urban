@@ -405,3 +405,5 @@ a{ color:inherit; text-decoration:none; }
   text-decoration:underline;
   text-underline-offset:3px;
 }
+/* Si tu header es fijo, evita que tape la topbar */
+body{ padding-top: 0; }
