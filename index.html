@@ -2,197 +2,151 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Flow Urban | Authentic store</title>
-
   <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
-  <!-- TOP BAR -->
-  <div class="topbar">
-    <div class="topbar__inner">
-      <span>🚚 Envíos a todo el país</span>
-      <a class="topbar__link" href="https://wa.me/593987777119" target="_blank" rel="noopener">📲 WhatsApp</a>
-      <span>🔥 Nuevos drops cada semana</span>
+
+  <!-- LOADER -->
+  <div id="loader" class="loader">
+    <div class="loader-card">
+      <img class="loader-img" src="assets/loader.png" alt="Flow Urban" />
+      <div class="loader-text">Cargando Flow Urban...</div>
+      <div class="loader-bar"><span></span></div>
     </div>
   </div>
 
-  <!-- HEADER (NEGRO + DORADO) -->
-  <header class="header">
-    <div class="header__inner">
-      <a class="brand" href="#inicio">
-        <img class="brand__logo" src="assets/logo.png" alt="Flow Urban" />
-        <div class="brand__text">
-          <div class="brand__name">FLOW URBAN</div>
-          <div class="brand__sub">Authentic store</div>
+  <!-- HEADER TOP (NEGRO) -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <img class="brand-logo" src="assets/logo.png" alt="Flow Urban" />
+        <div class="brand-txt">
+          <div class="brand-name">FLOW URBAN</div>
+          <div class="brand-sub">Authentic store</div>
         </div>
-      </a>
+      </div>
 
-      <nav class="nav">
-        <a href="#inicio">Inicio</a>
-        <a href="#catalogo">Catálogo</a>
-        <a href="#contacto">Contacto</a>
-      </nav>
+      <div class="top-actions">
+        <a id="topWhatsappLink" class="top-link" href="#" target="_blank" rel="noopener">WHATSAPP</a>
 
-      <div class="actions">
-        <a class="btn btn--ghost" href="https://wa.me/593987777119" target="_blank" rel="noopener">WHATSAPP</a>
-
-        <!-- ✅ UN SOLO CARRITO (ID correcto para app.js) -->
-        <button id="openCartBtn" class="cartBtn" aria-label="Abrir carrito">
-          <span class="cartBtn__icon">🛒</span>
-          <span id="cartCount" class="cartBtn__count">0</span>
+        <button id="openCartBtn" class="cart-btn" type="button" aria-label="Carrito">
+          <span class="cart-ico">🛒</span>
+          <span id="cartCount" class="cart-count">0</span>
         </button>
       </div>
     </div>
+
+    <nav class="nav">
+      <a href="#inicio">INICIO</a>
+      <a href="#catalogo">CATÁLOGO</a>
+      <a href="#contacto">CONTACTO</a>
+    </nav>
   </header>
 
-  <!-- HERO (IMAGEN GRANDE ESTILO BARRETO) -->
-  <main id="inicio" class="hero">
-    <div class="hero__overlay"></div>
-
-    <div class="hero__content">
-      <h1 class="hero__title">FLOW URBAN</h1>
-      <p class="hero__desc">Streetwear auténtico. Oversize, básicos y drops con flow.</p>
-
-      <div class="hero__cta">
-        <a class="btn btn--gold" href="#catalogo">SHOP NOW</a>
-        <a class="btn btn--ghost" href="https://wa.me/593987777119" target="_blank" rel="noopener">WHATSAPP</a>
+  <!-- HERO (estilo Barretto: foto grande) -->
+  <main class="page">
+    <section id="inicio" class="hero">
+      <div class="hero-media">
+        <!-- ESTA imagen ya la tienes: assets/hero.jpg -->
+        <img src="assets/hero.jpg" alt="Flow Urban Hero" />
       </div>
-    </div>
-  </main>
 
-  <!-- CATÁLOGO -->
-  <section id="catalogo" class="section">
-    <div class="container">
-      <h2 class="section__title">Catálogo</h2>
-      <p class="section__sub">Busca tu estilo, elige talla y arma tu carrito.</p>
+      <div class="hero-overlay">
+        <h1 class="hero-title">URBAN NIGHTS</h1>
+        <p class="hero-sub">Streetwear auténtico. Oversize, básicos y drops con flow.</p>
 
-      <div class="filters card">
-        <label class="field">
-          <span>Buscar</span>
-          <input id="searchInput" type="search" placeholder="Ej: hoodie, oversize, negro" />
-        </label>
+        <div class="hero-buttons">
+          <a class="btn gold" href="#catalogo">SHOP NOW</a>
+          <a class="btn outline" href="#catalogo">LOOKBOOK</a>
+        </div>
+      </div>
+    </section>
 
-        <label class="field">
-          <span>Categoría</span>
+    <!-- NUEVOS DROPS -->
+    <section class="section">
+      <h2 class="section-title">NEW DROPS</h2>
+      <p class="section-sub">Busca tu estilo, elige talla y arma tu carrito.</p>
+
+      <!-- FILTROS -->
+      <div class="filters">
+        <div class="field">
+          <label>Buscar</label>
+          <input id="searchInput" type="text" placeholder="Ej: hoodie, oversize, negro" />
+        </div>
+
+        <div class="field">
+          <label>Categoría</label>
           <select id="categorySelect"></select>
-        </label>
+        </div>
 
-        <label class="field">
-          <span>Orden</span>
+        <div class="field">
+          <label>Orden</label>
           <select id="sortSelect">
             <option value="featured">Destacados</option>
             <option value="price_asc">Precio: menor a mayor</option>
             <option value="price_desc">Precio: mayor a menor</option>
             <option value="name_asc">Nombre: A-Z</option>
           </select>
-        </label>
+        </div>
 
-        <button id="clearFilters" class="btn btn--dark">Limpiar</button>
+        <button id="clearBtn" class="btn dark" type="button">Limpiar</button>
       </div>
 
-      <!-- ✅ AQUÍ app.js pinta los productos (los “cuadros”) -->
-      <div id="productGrid" class="grid"></div>
-    </div>
-  </section>
+      <div class="count">
+        <span id="productCount"></span>
+      </div>
 
-  <!-- CONTACTO -->
-  <section id="contacto" class="section">
-    <div class="container">
-      <h2 class="section__title">Contacto</h2>
-      <p class="section__sub">¿Dudas? Escríbenos. Te respondemos rápido.</p>
+      <!-- GRID PRODUCTOS -->
+      <div id="productsGrid" class="grid"></div>
+    </section>
 
-      <div class="card contactCard">
+    <!-- CONTACTO -->
+    <section id="contacto" class="section">
+      <h2 class="section-title">Contacto</h2>
+      <p class="section-sub">¿Dudas? Escríbenos. Te respondemos rápido.</p>
+
+      <div class="contact-card">
         <h3>WhatsApp Ventas</h3>
-        <p>Ventas 1: 593987777119 | Ventas 2: 593962722395</p>
+        <p id="waNumbers"></p>
 
-        <div class="contactBtns">
-          <a class="btn btn--dark" href="https://wa.me/593987777119" target="_blank" rel="noopener">WhatsApp Ventas 1</a>
-          <a class="btn btn--dark" href="https://wa.me/593962722395" target="_blank" rel="noopener">WhatsApp Ventas 2</a>
+        <div class="contact-actions">
+          <a id="waLink1" class="btn dark" href="#" target="_blank" rel="noopener">WhatsApp Ventas 1</a>
+          <a id="waLink2" class="btn dark" href="#" target="_blank" rel="noopener">WhatsApp Ventas 2</a>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ✅ DRAWER CARRITO (IDs que usa app.js) -->
-  <aside id="cartDrawer" class="drawer" aria-hidden="true">
-    <div class="drawer__panel">
-      <div class="drawer__header">
-        <h3>Tu carrito</h3>
-        <button class="iconBtn" id="closeCartBtn" aria-label="Cerrar">✕</button>
+    <footer class="footer">
+      Hecho con 💥 para streetwear.
+    </footer>
+  </main>
+
+  <!-- CART DRAWER -->
+  <aside id="cartDrawer" class="cart-drawer" aria-hidden="true">
+    <div class="cart-panel">
+      <div class="cart-head">
+        <div class="cart-title">Tu carrito</div>
+        <button id="closeCartBtn" class="icon-btn" type="button">✕</button>
       </div>
 
-      <div id="cartItems" class="cartItems"></div>
+      <div id="cartItems" class="cart-items"></div>
 
-      <div class="drawer__footer">
+      <div class="cart-foot">
         <div class="totals">
-          <span>Total</span>
-          <strong id="cartTotal">$0.00</strong>
+          <div><span>Subtotal</span><strong id="subtotal">$0.00</strong></div>
+          <div><span>Envío</span><strong id="shipping">$0.00</strong></div>
+          <div class="total"><span>Total</span><strong id="total">$0.00</strong></div>
         </div>
 
-        <button id="clearCart" class="btn btn--ghost w100">Vaciar carrito</button>
-
-        <form id="checkoutForm" class="checkout">
-          <input id="cName" placeholder="Tu nombre" required />
-          <input id="cPhone" placeholder="Tu WhatsApp" required />
-          <input id="cAddress" placeholder="Dirección / Ciudad" required />
-          <textarea id="cNotes" placeholder="Notas (color, referencia, etc.)"></textarea>
-          <button class="btn btn--gold w100" type="submit">Pedir por WhatsApp</button>
-          <small id="waHint" class="hint">Se abrirá WhatsApp con tu pedido listo.</small>
-        </form>
+        <button id="checkoutBtn" class="btn gold full" type="button">Pedir por WhatsApp</button>
       </div>
     </div>
-    <div class="drawer__backdrop" id="drawerBackdrop"></div>
   </aside>
 
-  <!-- ✅ MODAL PRODUCTO (IDs que usa app.js) -->
-  <div id="productModal" class="modal" aria-hidden="true">
-    <div class="modal__panel">
-      <button id="closeProductBtn" class="iconBtn modal__close" aria-label="Cerrar">✕</button>
-
-      <div class="pm">
-        <img id="pmImg" class="pm__img" alt="Producto" />
-        <div class="pm__info">
-          <h3 id="pmTitle"></h3>
-          <p id="pmDesc" class="pm__desc"></p>
-
-          <div class="pm__row">
-            <label>
-              Talla
-              <select id="pmSize"></select>
-            </label>
-
-            <label>
-              Cantidad
-              <input id="pmQty" type="number" min="1" value="1" />
-            </label>
-          </div>
-
-          <div class="pm__actions">
-            <button id="pmAdd" class="btn btn--gold">Agregar al carrito</button>
-            <button id="pmBuy" class="btn btn--dark">Pedir por WhatsApp</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="modal__backdrop" id="modalBackdrop"></div>
-  </div>
-
-  <!-- ✅ TOAST -->
-  <div id="toast" class="toast" aria-hidden="true"></div>
-
-  <!-- ✅ LOADER (imagen + barra pequeña) -->
-  <div id="pageLoader" class="loader">
-    <div class="loaderBox">
-      <img class="loaderBox__img" src="assets/loader.png" alt="Cargando Flow Urban" />
-      <div class="loaderBar"><span></span></div>
-      <div class="loaderText">Cargando Flow Urban…</div>
-    </div>
-  </div>
-
-  <!-- SCRIPTS -->
-  <script src="products.js"></script>
-  <script src="app.js"></script>
+  <script type="module" src="products.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
-            </html>
+</html>
