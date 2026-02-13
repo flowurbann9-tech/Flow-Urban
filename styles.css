@@ -1,413 +1,114 @@
-/* Flow Urban - estilo "barreto" (limpio, elegante, gris + dorado) */
+/* FLOW URBAN - MÁSTER STYLE (Black & Gold Edition)
+   Diseño: Urbano, Elegante, Alto Impacto
+*/
 
-:root{
-  --bg: #ffffff;
-  --text: #111111;
-  --muted: #6b7280;
-  --card: #f6f6f6;
-  --shadow: 0 14px 32px rgba(0,0,0,.12);
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;700;900&display=swap');
+
+:root {
+  --bg: #050505;           /* Negro profundo */
+  --text: #ffffff;         /* Blanco para contraste */
+  --gold: #EBC03F;         /* El dorado de tu logo */
+  --dark-card: #121212;    /* Gris muy oscuro para tarjetas */
+  --muted: #a0a0a0;
+  --line: rgba(235, 192, 63, 0.2); /* Dorado sutil para bordes */
+  --shadow: 0 14px 32px rgba(0,0,0,0.8);
   --radius: 22px;
-  --gold: #b79339;
-  --dark: #0b0b0f;
-  --chip: rgba(255,255,255,.08);
 }
 
-*{box-sizing:border-box}
-html,body{margin:0;padding:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
-body{background:var(--bg);color:var(--text)}
+*{ box-sizing: border-box; }
 
-/* Preloader */
-.preloader{
-  position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
-  background:#07070b;z-index:9999;
+body {
+  background: var(--bg) !important;
+  color: var(--text) !important;
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
 }
-.preloader__box{
-  width:min(520px,90vw);
-  padding:26px 22px;
-  border-radius:18px;
-  text-align:center;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.14);
-  box-shadow: 0 18px 48px rgba(0,0,0,.35);
+
+/* --- PRELOADER (Ajustado al Flow) --- */
+.preloader { background: #000; }
+.preloader__box { 
+  background: var(--dark-card); 
+  border: 1px solid var(--gold);
+  box-shadow: 0 0 30px rgba(235, 192, 63, 0.15);
 }
-.preloader__img{
-  width: min(380px, 70vw);
-  height:auto;
-  display:block;
-  margin:0 auto 14px;
+.preloader__barFill { background: var(--gold); }
+
+/* --- HEADER Y NAVEGACIÓN --- */
+.header { 
+  background: rgba(0,0,0,0.95) !important; 
+  border-bottom: 1px solid var(--gold);
+  backdrop-filter: blur(10px);
 }
-.preloader__text{color:#f2f2f2;font-weight:600;letter-spacing:.2px;margin-bottom:12px}
-.preloader__bar{
-  height:6px;border-radius:999px;background:rgba(255,255,255,.14);overflow:hidden;
+.brand__name { 
+  font-family: 'Bebas Neue', sans-serif; 
+  letter-spacing: 3px; 
+  color: var(--gold);
+  font-size: 26px;
 }
-.preloader__barFill{
-  display:block;height:100%;width:35%;
+.nav a { 
+  color: var(--text); 
+  text-transform: uppercase; 
+  letter-spacing: 1px; 
+}
+.nav a:hover { color: var(--gold); }
+
+/* --- HERO SECTION (El impacto visual) --- */
+.heroCard {
+  background: linear-gradient(135deg, #1a1a1a 0%, #000 100%);
+  border: 1px solid var(--gold);
+  box-shadow: 0 0 40px rgba(235, 192, 63, 0.1);
+}
+.heroCard__title { 
+  font-family: 'Bebas Neue', sans-serif; 
+  color: var(--gold); 
+  text-shadow: 2px 2px 0px rgba(0,0,0,1);
+}
+
+/* --- CATÁLOGO DE PRODUCTOS --- */
+.pcard {
+  background: var(--dark-card) !important;
+  border: 1px solid rgba(255,255,255,0.05);
+  transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.pcard:hover {
+  border-color: var(--gold);
+  transform: translateY(-8px) scale(1.02);
+}
+.pcard__name { color: var(--text); }
+.pcard__price { color: var(--gold); font-size: 22px; }
+
+/* --- BOTONES --- */
+.btn--primary, .cartBtn {
+  background: var(--gold) !important;
+  color: #000 !important;
+  font-weight: 900;
+  border: none;
+  text-transform: uppercase;
+  transition: 0.3s;
+}
+.btn--primary:hover, .cartBtn:hover {
+  background: #fff !important;
+  box-shadow: 0 0 20px var(--gold);
+}
+
+/* --- WHATSAPP Y DRAWERS --- */
+.waFloat {
   background: var(--gold);
-  animation: loadmove 1.2s infinite ease-in-out;
+  color: #000;
+  border: none;
 }
-@keyframes loadmove{
-  0%{transform:translateX(-110%)}
-  100%{transform:translateX(310%)}
+.drawer__panel {
+  background: #0f0f0f;
+  border-left: 2px solid var(--gold);
+  color: white;
 }
+.cartItem { border-bottom: 1px solid rgba(255,255,255,0.1); }
 
-/* Topbar */
-.topbar{background:#0b0b0f;color:#fff;font-size:14px}
-.topbar__inner{max-width:1100px;margin:0 auto;padding:10px 16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center}
-.topbar__link{
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: #f1f1f1;
-  border: 1px solid #e7e7e7;
-  text-decoration: none;
-  color: #111;
-  font-weight: 700;
-
-  width: fit-content;     /* 🔥 NO se estira */
-  max-width: 100%;
-  white-space: nowrap;
+/* --- FILTROS (Inputs) --- */
+.field input, .field select {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  color: white;
 }
-
-.topbar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap: 10px;
-}
-
-.topbar__right{
-  display:flex;
-  justify-content:flex-end;
-  gap:10px;
-}
-/* Header */
-.header{position:sticky;top:0;background:#fff;z-index:50;border-bottom:1px solid #eee}
-.header__inner{max-width:1100px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:14px}
-.brand{display:flex;align-items:center;gap:10px;min-width:0}
-.brand__logo{width:40px;height:40px;border-radius:10px;object-fit:cover;background:#111}
-.brand__name{font-weight:900;letter-spacing:.18em;font-size:18px;white-space:nowrap}
-.brand__tag{font-size:13px;color:var(--muted)}
-.brand__text{min-width:0}
-.nav{max-width:1100px;margin:0 auto;padding:0 16px 10px;display:flex;gap:16px}
-.nav a{color:#111;text-decoration:none;font-weight:600;font-size:14px}
-.nav a:hover{opacity:.7}
-
-/* Cart button */
-.cartBtn{
-  display:flex;align-items:center;gap:10px;
-  border:none;background:#111;color:#fff;
-  padding:10px 14px;border-radius:999px;
-  box-shadow:0 10px 25px rgba(0,0,0,.18);
-  cursor:pointer;
-}
-.cartBtn__count{
-  min-width:32px;height:28px;border-radius:999px;
-  display:grid;place-items:center;
-  background:#1f2937;color:#d1fae5;
-  border:2px solid rgba(183,147,57,.7);
-  font-weight:800;
-}
-
-/* Sections */
-main{max-width:1100px;margin:0 auto;padding:0 16px}
-.section{padding:28px 0}
-h2{font-size:44px;margin:0 0 6px}
-.muted{color:var(--muted);margin:0 0 18px}
-
-/* Hero */
-.hero{padding:18px 0 10px}
-.heroCard{
-  background:#5a5a5f;
-  border-radius:28px;
-  border:2px solid rgba(183,147,57,.9);
-  box-shadow: var(--shadow);
-  padding:28px 18px;
-  text-align:center;
-  color:#f5f5f5;
-}
-.heroCard__title{font-weight:900;letter-spacing:.28em;font-size:44px;margin-bottom:12px}
-.heroCard__desc{max-width:720px;margin:0 auto 18px;font-size:18px;opacity:.95}
-.heroCard__actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
-.heroCard__chips{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.chip{
-  padding:10px 14px;border-radius:999px;
-  border:1px solid rgba(183,147,57,.55);
-  background: rgba(0,0,0,.12);
-  color:#fff;font-weight:600;
-}
-
-/* Buttons */
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;
-  padding:12px 18px;border-radius:999px;
-  text-decoration:none;border:1px solid transparent;
-  font-weight:800;cursor:pointer;
-}
-.btn--primary{background:#0b0b0f;color:#fff;border-color:rgba(183,147,57,.6)}
-.btn--ghost{background:rgba(0,0,0,.18);color:#fff;border-color:rgba(255,255,255,.18)}
-.btn--small{padding:12px 16px;background:#0b0b0f;color:#fff}
-.btn--full{width:100%}
-
-/* Filters */
-.filters{
-  display:grid;
-  grid-template-columns: 1fr 200px 220px 140px;
-  gap:14px;
-  align-items:end;
-  margin-bottom:14px;
-}
-.field span{display:block;font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:700}
-.field input,.field select{
-  width:100%;
-  padding:14px 14px;
-  border-radius:16px;
-  border:1px solid #ddd;
-  background:#fff;
-  font-size:16px;
-}
-.resultsMeta{color:var(--muted);font-weight:700;margin:6px 0 12px}
-
-/* Catalog grid + cards */
-.catalogGrid{
-  display:grid;
-  grid-template-columns: repeat(2, minmax(0,1fr));
-  gap:16px;
-}
-.pcard{
-  background:#fff;border-radius:22px;
-  box-shadow:0 10px 26px rgba(0,0,0,.10);
-  overflow:hidden;
-  border:1px solid #eee;
-}
-.pcard__imgWrap{
-  position:relative;
-  height:170px;
-  background: #e5e7eb;
-}
-.pcard__img{
-  width:100%;height:100%;object-fit:cover;display:block;
-}
-.pcard__imgWrap.is-missing::after{
-  content:"Imagen";
-  position:absolute;inset:0;
-  display:grid;place-items:center;
-  color:#6b7280;
-  font-weight:800;
-}
-.pcard__body{padding:14px 14px 16px}
-.pcard__top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
-.pcard__name{font-weight:900;font-size:18px;margin:0}
-.pcard__price{font-weight:900;font-size:18px}
-.badge{
-  display:inline-block;margin-top:10px;
-  padding:6px 10px;border-radius:999px;
-  background:#f3f4f6;color:#111;font-weight:800;font-size:12px;
-}
-.sizes{margin:10px 0 0;color:var(--muted);font-weight:700;font-size:13px}
-.pcard__actions{display:flex;gap:10px;margin-top:12px}
-.pcard__actions .btn{flex:1}
-
-/* Generic card */
-.card{
-  background:#fff;border-radius:22px;
-  padding:18px;border:1px solid #eee;
-  box-shadow:0 10px 26px rgba(0,0,0,.06);
-}
-.stack{display:grid;gap:10px;margin:10px 0 16px}
-.row{display:flex;gap:10px;flex-wrap:wrap}
-
-/* Drawer */
-.drawer{position:fixed;inset:0;display:none;z-index:60}
-.drawer.is-open{display:block}
-.drawer__backdrop{position:absolute;inset:0;background:rgba(0,0,0,.55)}
-.drawer__panel{
-  position:absolute;right:0;top:0;height:100%;
-  width:min(420px,92vw);
-  background:#fff;
-  box-shadow:-18px 0 40px rgba(0,0,0,.25);
-  display:flex;flex-direction:column;
-}
-.drawer__head{padding:14px 16px;border-bottom:1px solid #eee;display:flex;align-items:center;justify-content:space-between}
-.drawer__title{font-weight:900;font-size:18px}
-.drawer__close{border:none;background:transparent;font-size:22px;cursor:pointer}
-.drawer__items{padding:10px 16px;overflow:auto;flex:1}
-.drawer__foot{padding:14px 16px;border-top:1px solid #eee;display:grid;gap:10px}
-.totalRow{display:flex;justify-content:space-between;align-items:center;font-size:16px}
-.cartItem{display:grid;grid-template-columns:1fr auto;gap:10px;padding:10px 0;border-bottom:1px solid #f1f1f1}
-.cartItem__name{font-weight:800}
-.cartItem__meta{color:var(--muted);font-weight:700;font-size:13px;margin-top:2px}
-.cartItem__qty{display:flex;gap:8px;align-items:center}
-.qtyBtn{border:1px solid #ddd;background:#fff;border-radius:12px;padding:8px 10px;cursor:pointer;font-weight:900}
-.qtyNum{min-width:26px;text-align:center;font-weight:900}
-
-/* Floating WhatsApp */
-.waFloat{
-  position:fixed;right:18px;bottom:18px;
-  z-index:70;
-  background:#0b0b0f;color:#fff;text-decoration:none;
-  padding:14px 18px;border-radius:999px;
-  box-shadow:0 14px 32px rgba(0,0,0,.22);
-  border:1px solid rgba(183,147,57,.45);
-  font-weight:900;
-}
-
-/* Footer */
-.footer{padding:26px 0;color:var(--muted)}
-.footer__inner{max-width:1100px;margin:0 auto;padding:0 16px}
-
-/* Responsive */
-@media (max-width: 900px){
-  h2{font-size:40px}
-  .filters{grid-template-columns: 1fr 1fr; }
-  .btn--small{grid-column: 1 / -1}
-  .catalogGrid{grid-template-columns: 1fr}
-  .heroCard__title{font-size:40px;letter-spacing:.22em}
-}
-.actionbar{
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  background: #fff;
-  border-bottom: 1px solid var(--line);
-  padding: 10px 12px;
-  display: flex;
-  gap: 10px;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.actionbar-left, .actionbar-right{
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.icon-btn{
-  border: 1px solid var(--line);
-  background: #f1f1f1;
-  padding: 10px 12px;
-  border-radius: 999px;
-  font-weight: 700;
-  font-size: 14px;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.icon-btn:active{
-  transform: scale(0.98);
-  }
-.actionbar{
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  background: #fff;
-  border-bottom: 1px solid #e7e7e7;
-  padding: 10px 12px;
-
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-}
-
-.actionbar-left, .actionbar-right{
-  display:flex;
-  gap:10px;
-  align-items:center;
-  flex-wrap: wrap;
-}
-
-.icon-btn{
-  border: 1px solid #e7e7e7;
-  background: #f1f1f1;
-  padding: 10px 12px;
-  border-radius: 999px;
-  font-weight: 800;
-  font-size: 14px;
-  cursor:pointer;
-
-  width: fit-content;       /* 🔥 NO anchos */
-  white-space: nowrap;
-}
-/* Colores originales Flow Urban */
-:root {
-    --bg-dark: #000000;
-    --gold-brand: #FFD700; /* El color de tu logo */
-    --text-white: #FFFFFF;
-}
-
-body {
-    background-color: var(--bg-dark);
-    color: var(--text-white);
-    font-family: 'Inter', sans-serif;
-}
-
-/* Cambiar el color de los botones y enlaces al dorado del logo */
-.navbar a:hover, .btn-primary {
-    color: var(--gold-brand) !important;
-    border-bottom: 2px solid var(--gold-brand);
-}
-
-.hero-section {
-    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('TU_IMAGEN_AQUI');
-    height: 100vh;
-    display: flex;
-    align-items: center;
-}
-:root {
-    --negro-pro: #080808;
-    --dorado-flow: #EBC03F; /* El tono de tu logo */
-    --blanco: #ffffff;
-    --gris-oscuro: #1a1a1a;
-}
-
-body {
-    background-color: var(--negro-pro) !important;
-    color: var(--blanco) !important;
-    font-family: 'Bebas Neue', sans-serif; /* Tipografía urbana */
-}
-
-/* Navbar con clase */
-.navbar {
-    background: rgba(0,0,0,0.9) !important;
-    border-bottom: 2px solid var(--dorado-flow);
-}
-
-.nav-link {
-    color: var(--blanco) !important;
-    text-transform: uppercase;
-}
-
-.nav-link:hover {
-    color: var(--dorado-flow) !important;
-}
-
-/* Botones con el color de tu marca */
-.btn-custom {
-    background-color: var(--dorado-flow);
-    color: black;
-    font-weight: bold;
-    border-radius: 0; /* Estilo cuadrado es más urban */
-    padding: 12px 30px;
-    transition: 0.3s;
-}
-
-.btn-custom:hover {
-    background-color: white;
-    box-shadow: 0 0 15px var(--dorado-flow);
-}
-
-/* Tarjetas de productos */
-.card {
-    background: var(--gris-oscuro);
-    border: 1px solid #333;
-    transition: transform 0.3s;
-}
-
-.card:hover {
-    transform: translateY(-10px);
-    border-color: var(--dorado-flow);
-}
-
+.field input:focus { border-color: var(--gold); outline: none; }
