@@ -4,8 +4,8 @@ export const STORE = {
 
   // ECUADOR: 593 + tu número SIN el 0, sin +, sin espacios
   // Ventas 1 y Ventas 2 (YA CONFIGURADOS)
-  whatsappSales1: "593987771119", // 0987771119
-  whatsappSales2: "593962722395", // 0962722395
+  whatsappSales1: "593962722395", // 0987771119
+  whatsappSales2: "59387771119", // 0962722395
 
   instagram: "https://instagram.com/",
   tiktok: "https://tiktok.com/@",
@@ -59,3 +59,10 @@ export const PRODUCTS = [
     image: "assets/products/prod4.jpg",
   }
 ];
+document.getElementById("btnVentas1")?.addEventListener("click", () => {
+  alert("Ventas 1");
+});
+
+document.getElementById("btnVentas2")?.addEventListener("click", () => {
+  alert("Ventas 2");
+});
