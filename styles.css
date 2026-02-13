@@ -356,3 +356,58 @@ body {
     display: flex;
     align-items: center;
 }
+:root {
+    --negro-pro: #080808;
+    --dorado-flow: #EBC03F; /* El tono de tu logo */
+    --blanco: #ffffff;
+    --gris-oscuro: #1a1a1a;
+}
+
+body {
+    background-color: var(--negro-pro) !important;
+    color: var(--blanco) !important;
+    font-family: 'Bebas Neue', sans-serif; /* Tipografía urbana */
+}
+
+/* Navbar con clase */
+.navbar {
+    background: rgba(0,0,0,0.9) !important;
+    border-bottom: 2px solid var(--dorado-flow);
+}
+
+.nav-link {
+    color: var(--blanco) !important;
+    text-transform: uppercase;
+}
+
+.nav-link:hover {
+    color: var(--dorado-flow) !important;
+}
+
+/* Botones con el color de tu marca */
+.btn-custom {
+    background-color: var(--dorado-flow);
+    color: black;
+    font-weight: bold;
+    border-radius: 0; /* Estilo cuadrado es más urban */
+    padding: 12px 30px;
+    transition: 0.3s;
+}
+
+.btn-custom:hover {
+    background-color: white;
+    box-shadow: 0 0 15px var(--dorado-flow);
+}
+
+/* Tarjetas de productos */
+.card {
+    background: var(--gris-oscuro);
+    border: 1px solid #333;
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    border-color: var(--dorado-flow);
+}
+
