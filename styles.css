@@ -298,3 +298,36 @@ h2{font-size:44px;margin:0 0 6px}
 .icon-btn:active{
   transform: scale(0.98);
   }
+.actionbar{
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: #fff;
+  border-bottom: 1px solid #e7e7e7;
+  padding: 10px 12px;
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+
+.actionbar-left, .actionbar-right{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap: wrap;
+}
+
+.icon-btn{
+  border: 1px solid #e7e7e7;
+  background: #f1f1f1;
+  padding: 10px 12px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 14px;
+  cursor:pointer;
+
+  width: fit-content;       /* 🔥 NO anchos */
+  white-space: nowrap;
+}
