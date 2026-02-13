@@ -1,114 +1,131 @@
-/* FLOW URBAN - MÁSTER STYLE (Black & Gold Edition)
-   Diseño: Urbano, Elegante, Alto Impacto
+/* FLOW URBAN - MÁSTER STYLE 
+   Basado en estructura "Barreto" 
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;700;900&display=swap');
-
 :root {
-  --bg: #050505;           /* Negro profundo */
-  --text: #ffffff;         /* Blanco para contraste */
-  --gold: #EBC03F;         /* El dorado de tu logo */
-  --dark-card: #121212;    /* Gris muy oscuro para tarjetas */
-  --muted: #a0a0a0;
-  --line: rgba(235, 192, 63, 0.2); /* Dorado sutil para bordes */
-  --shadow: 0 14px 32px rgba(0,0,0,0.8);
+  --bg: #050505;           /* Fondo Negro Flow */
+  --text: #ffffff;         /* Texto Blanco */
+  --muted: #888888;
+  --card: #121212;         /* Tarjetas oscuras */
+  --shadow: 0 14px 32px rgba(0,0,0,0.6);
   --radius: 22px;
+  --gold: #EBC03F;         /* Tu Dorado Original */
+  --dark: #000000;
+  --chip: rgba(255,255,255,.08);
 }
 
-*{ box-sizing: border-box; }
-
-body {
-  background: var(--bg) !important;
-  color: var(--text) !important;
-  font-family: 'Inter', sans-serif;
-  margin: 0;
-  padding: 0;
+*{box-sizing:border-box}
+html,body{
+    margin:0;padding:0;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
 }
 
-/* --- PRELOADER (Ajustado al Flow) --- */
-.preloader { background: #000; }
-.preloader__box { 
-  background: var(--dark-card); 
+/* Preloader - Mantengo tu estructura pero con tus colores */
+.preloader{
+  position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+  background:#000000;z-index:9999;
+}
+.preloader__box{
+  width:min(520px,90vw);
+  padding:26px 22px;
+  border-radius:18px;
+  text-align:center;
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--gold);
+  box-shadow: 0 0 20px rgba(235, 192, 63, 0.2);
+}
+.preloader__barFill{
+  background: var(--gold);
+  animation: loadmove 1.2s infinite ease-in-out;
+}
+
+/* Topbar y Actionbar - Eliminamos el blanco */
+.topbar, .actionbar {
+  background: #000000 !important;
+  color: #fff;
+  border-bottom: 1px solid rgba(235, 192, 63, 0.3);
+}
+
+.topbar__link, .icon-btn {
+  background: var(--card) !important;
+  border: 1px solid #333 !important;
+  color: var(--gold) !important;
+  font-weight: 700;
+}
+
+/* Header */
+.header{
+    position:sticky;top:0;
+    background:rgba(0,0,0,0.9);
+    backdrop-filter: blur(10px);
+    z-index:50;
+    border-bottom:1px solid var(--gold);
+}
+.brand__name{
+    font-weight: 900;
+    letter-spacing: .2em;
+    font-size: 20px;
+    color: var(--gold);
+}
+.nav a{color: #fff !important; text-transform: uppercase; font-size: 12px;}
+.nav a:hover{color: var(--gold) !important;}
+
+/* Hero Card - Basado en tu diseño pero potenciado */
+.heroCard{
+  background: linear-gradient(135deg, #111, #000);
+  border-radius: 28px;
   border: 1px solid var(--gold);
-  box-shadow: 0 0 30px rgba(235, 192, 63, 0.15);
+  box-shadow: var(--shadow);
+  color: #fff;
 }
-.preloader__barFill { background: var(--gold); }
-
-/* --- HEADER Y NAVEGACIÓN --- */
-.header { 
-  background: rgba(0,0,0,0.95) !important; 
-  border-bottom: 1px solid var(--gold);
-  backdrop-filter: blur(10px);
-}
-.brand__name { 
-  font-family: 'Bebas Neue', sans-serif; 
-  letter-spacing: 3px; 
-  color: var(--gold);
-  font-size: 26px;
-}
-.nav a { 
-  color: var(--text); 
-  text-transform: uppercase; 
-  letter-spacing: 1px; 
-}
-.nav a:hover { color: var(--gold); }
-
-/* --- HERO SECTION (El impacto visual) --- */
-.heroCard {
-  background: linear-gradient(135deg, #1a1a1a 0%, #000 100%);
-  border: 1px solid var(--gold);
-  box-shadow: 0 0 40px rgba(235, 192, 63, 0.1);
-}
-.heroCard__title { 
-  font-family: 'Bebas Neue', sans-serif; 
-  color: var(--gold); 
-  text-shadow: 2px 2px 0px rgba(0,0,0,1);
+.heroCard__title{
+    font-weight: 900;
+    letter-spacing: .15em;
+    color: var(--gold);
 }
 
-/* --- CATÁLOGO DE PRODUCTOS --- */
-.pcard {
-  background: var(--dark-card) !important;
-  border: 1px solid rgba(255,255,255,0.05);
-  transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+/* Catálogo y Cards (Lo que me pediste) */
+.pcard{
+  background: var(--card);
+  border-radius: 22px;
+  overflow: hidden;
+  border: 1px solid #222;
+  transition: 0.3s;
 }
 .pcard:hover {
-  border-color: var(--gold);
-  transform: translateY(-8px) scale(1.02);
+    border-color: var(--gold);
+    transform: translateY(-5px);
 }
-.pcard__name { color: var(--text); }
-.pcard__price { color: var(--gold); font-size: 22px; }
+.pcard__body { background: var(--card); }
+.pcard__name { color: #fff; }
+.pcard__price { color: var(--gold); }
 
-/* --- BOTONES --- */
+/* Inputs y Filtros - Fondo oscuro para que no desentone */
+.field input, .field select {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  color: #fff;
+  border-radius: 12px;
+}
+
+/* Botones Master Flow */
 .btn--primary, .cartBtn {
   background: var(--gold) !important;
   color: #000 !important;
-  font-weight: 900;
   border: none;
-  text-transform: uppercase;
-  transition: 0.3s;
-}
-.btn--primary:hover, .cartBtn:hover {
-  background: #fff !important;
-  box-shadow: 0 0 20px var(--gold);
 }
 
-/* --- WHATSAPP Y DRAWERS --- */
-.waFloat {
+.cartBtn__count {
+    background: #000;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+}
+
+/* WhatsApp Float */
+.waFloat{
   background: var(--gold);
   color: #000;
   border: none;
 }
-.drawer__panel {
-  background: #0f0f0f;
-  border-left: 2px solid var(--gold);
-  color: white;
-}
-.cartItem { border-bottom: 1px solid rgba(255,255,255,0.1); }
-
-/* --- FILTROS (Inputs) --- */
-.field input, .field select {
-  background: #1a1a1a;
-  border: 1px solid #333;
-  color: white;
-}
-.field input:focus { border-color: var(--gold); outline: none; }
