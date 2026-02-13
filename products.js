@@ -58,16 +58,7 @@ export const PRODUCTS = [
     desc: "Ajustable. Básico que combina con todo.",
     image: "assets/products/prod4.jpg",
   }
-    {
-    id: "FU-005",
-    name: "Gorra 'FU Classic'",
-    category: "Accesorios",
-    price: 14.99,
-    badge: "",
-    sizes: ["Única"],
-    desc: "Ajustable. Básico que combina con todo.",
-    image: "assets/products/prod5.jpg",
-      }
+    
 ];
 document.getElementById("btnVentas1")?.addEventListener("click", () => {
   alert("Ventas 1");
