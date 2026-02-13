@@ -239,3 +239,36 @@ h2{font-size:44px;margin:0 0 6px}
   .catalogGrid{grid-template-columns: 1fr}
   .heroCard__title{font-size:40px;letter-spacing:.22em}
 }
+.actionbar{
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+  padding: 10px 12px;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.actionbar-left, .actionbar-right{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.icon-btn{
+  border: 1px solid var(--line);
+  background: #f1f1f1;
+  padding: 10px 12px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.icon-btn:active{
+  transform: scale(0.98);
+  }
