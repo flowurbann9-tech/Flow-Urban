@@ -331,3 +331,28 @@ h2{font-size:44px;margin:0 0 6px}
   width: fit-content;       /* 🔥 NO anchos */
   white-space: nowrap;
 }
+/* Colores originales Flow Urban */
+:root {
+    --bg-dark: #000000;
+    --gold-brand: #FFD700; /* El color de tu logo */
+    --text-white: #FFFFFF;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-white);
+    font-family: 'Inter', sans-serif;
+}
+
+/* Cambiar el color de los botones y enlaces al dorado del logo */
+.navbar a:hover, .btn-primary {
+    color: var(--gold-brand) !important;
+    border-bottom: 2px solid var(--gold-brand);
+}
+
+.hero-section {
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('TU_IMAGEN_AQUI');
+    height: 100vh;
+    display: flex;
+    align-items: center;
+}
