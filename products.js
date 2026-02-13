@@ -5,7 +5,7 @@ export const STORE = {
   // ECUADOR: 593 + tu número SIN el 0, sin +, sin espacios
   // Ventas 1 y Ventas 2 (YA CONFIGURADOS)
   whatsappSales1: "593962722395", // 0987771119
-  whatsappSales2: "59387771119", // 0962722395
+  whatsappSales2: "593987771119", // 0962722395
 
   instagram: "https://instagram.com/",
   tiktok: "https://tiktok.com/@",
@@ -58,6 +58,16 @@ export const PRODUCTS = [
     desc: "Ajustable. Básico que combina con todo.",
     image: "assets/products/prod4.jpg",
   }
+    {
+    id: "FU-005",
+    name: "Gorra 'FU Classic'",
+    category: "Accesorios",
+    price: 14.99,
+    badge: "",
+    sizes: ["Única"],
+    desc: "Ajustable. Básico que combina con todo.",
+    image: "assets/products/prod5.jpg",
+      }
 ];
 document.getElementById("btnVentas1")?.addEventListener("click", () => {
   alert("Ventas 1");
