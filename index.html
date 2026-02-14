@@ -1,36 +1,20 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Flow Urban | Authentic store</title>
-
+  <title>Flow Urban — Authentic store</title>
+  <meta name="theme-color" content="#0b0b0f" />
   <link rel="stylesheet" href="styles.css" />
-
-  <!-- Preload imágenes para que cargue más rápido -->
-  <link rel="preload" as="image" href="assets/hero.jpg">
-  <link rel="preload" as="image" href="assets/logo.png">
-  <link rel="preload" as="image" href="assets/loader.png">
 </head>
 
 <body>
-
-  <!-- LOADER (pantalla de carga) -->
-  <div id="loader" class="loader" aria-hidden="false">
-    <div class="loader-card">
-      <img class="loader-img" src="assets/loader.png" alt="Flow Urban" />
-      <div class="loader-text">Cargando Flow Urban…</div>
-      <div class="loader-bar"><div class="loader-bar-fill"></div></div>
-    </div>
-  </div>
-
-  <!-- TOP BAR (la barrita negra arriba) -->
-  <div class="topbar">
-    <div class="topbar-inner">
+  <!-- TOP TICKER -->
+  <div class="ticker">
+    <div class="ticker__inner">
       <span>🚚 Envíos a todo el país</span>
       <span class="dot">•</span>
-      <!-- IMPORTANTE: este ID lo usa app.js -->
-      <a id="waLink1" class="topbar-link" href="#" target="_blank" rel="noopener">📲 WhatsApp</a>
+      <a class="pill-link" id="topWa" href="#" rel="noopener">📲 WhatsApp</a>
       <span class="dot">•</span>
       <span>🔥 Nuevos drops cada semana</span>
     </div>
@@ -38,162 +22,126 @@
 
   <!-- HEADER -->
   <header class="header">
-    <div class="header-inner">
-      <div class="brand">
-        <img class="brand-logo" src="assets/logo.png" alt="Flow Urban" />
-        <div class="brand-text">
-          <div class="brand-title">FLOW URBAN</div>
-          <div class="brand-subtitle">Authentic store</div>
-        </div>
-      </div>
-
-      <div class="header-actions">
-        <!-- Botón WhatsApp grande (arriba) -->
-        <a id="waLink2" class="btn btn-outline btn-whatsapp" href="#" target="_blank" rel="noopener">WHATSAPP</a>
-
-        <!-- Carrito (UN SOLO carrito) -->
-        <button id="openCartBtn" class="btn btn-cart" type="button" aria-label="Abrir carrito">
-          <span class="cart-ico">🛒</span>
-          <span id="cartCount" class="cart-badge">0</span>
-        </button>
+    <div class="header__left">
+      <img class="brand__logo" src="assets/logo.png" alt="Flow Urban" loading="eager" />
+      <div class="brand__txt">
+        <div class="brand__name">FLOW URBAN</div>
+        <div class="brand__sub">Authentic store</div>
       </div>
     </div>
 
-    <nav class="nav">
-      <a href="#inicio">INICIO</a>
-      <a href="#catalogo">CATÁLOGO</a>
-      <a href="#contacto">CONTACTO</a>
-    </nav>
+    <div class="header__right">
+      <a class="btn btn--ghost btn--wa" id="waHeader" href="#" rel="noopener">WHATSAPP</a>
+      <button class="btn btn--cart" id="openCartBtn" type="button" aria-haspopup="dialog" aria-controls="cartDrawer">
+        <span class="cartIcon">🛒</span>
+        <span class="cartCount" id="cartCount">0</span>
+      </button>
+    </div>
   </header>
 
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="#inicio">INICIO</a>
+    <a href="#catalogo">CATÁLOGO</a>
+    <a href="#contacto">CONTACTO</a>
+  </nav>
+
   <!-- HERO -->
-  <main>
-    <section id="inicio" class="hero">
-      <img class="hero-img" src="assets/hero.jpg" alt="Urban Nights" />
-
-      <div class="hero-overlay">
-        <h1 class="hero-title">URBAN NIGHTS</h1>
-        <p class="hero-sub">
-          Streetwear auténtico. Oversize, básicos y drops con flow.
-        </p>
-
-        <div class="hero-actions">
-          <a class="btn btn-gold" href="#catalogo">SHOP NOW</a>
-          <a class="btn btn-ghost" href="#catalogo">LOOKBOOK</a>
+  <main id="inicio">
+    <section class="hero">
+      <img class="hero__img" src="assets/hero.jpg" alt="Flow Urban" loading="eager" />
+      <div class="hero__overlay">
+        <div class="hero__kicker">URBAN NIGHTS</div>
+        <div class="hero__desc">Streetwear auténtico. Oversize, básicos y drops con flow.</div>
+        <div class="hero__actions">
+          <a class="btn btn--gold" href="#catalogo">SHOP NOW</a>
+          <a class="btn btn--ghost" href="#catalogo">LOOKBOOK</a>
         </div>
       </div>
     </section>
 
-    <!-- CATÁLOGO -->
-    <section id="catalogo" class="catalog">
-      <div class="catalog-head">
-        <h2 class="catalog-title">NEW DROPS</h2>
-        <p class="catalog-sub">Busca tu estilo, elige talla y arma tu carrito.</p>
-      </div>
+    <!-- CATALOGO -->
+    <section class="section" id="catalogo">
+      <h2 class="h2">NEW DROPS</h2>
+      <p class="muted">Busca tu estilo, elige talla y arma tu carrito.</p>
 
       <div class="filters">
-        <div class="filter">
-          <label for="searchInput">Buscar</label>
-          <input id="searchInput" type="text" placeholder="Ej: hoodie, oversize, negro" />
+        <div class="field">
+          <label>Buscar</label>
+          <input id="searchInput" type="search" placeholder="Ej: hoodie, oversize, negro" />
         </div>
 
-        <div class="filter">
-          <label for="categorySelect">Categoría</label>
+        <div class="field">
+          <label>Categoría</label>
           <select id="categorySelect"></select>
         </div>
 
-        <div class="filter">
-          <label for="sortSelect">Orden</label>
+        <div class="field">
+          <label>Orden</label>
           <select id="sortSelect">
             <option value="featured">Destacados</option>
-            <option value="price_asc">Precio: menor a mayor</option>
-            <option value="price_desc">Precio: mayor a menor</option>
-            <option value="name_asc">Nombre A–Z</option>
+            <option value="priceAsc">Precio: menor a mayor</option>
+            <option value="priceDesc">Precio: mayor a menor</option>
+            <option value="nameAsc">Nombre: A–Z</option>
           </select>
         </div>
 
-        <button id="clearFiltersBtn" class="btn btn-dark" type="button">Limpiar</button>
+        <button class="btn btn--dark" id="clearBtn" type="button">Limpiar</button>
       </div>
 
-      <div class="count-row">
-        <div id="countLabel" class="count-label">0 productos</div>
-      </div>
+      <div class="count" id="resultsCount"></div>
 
-      <!-- GRID: aquí app.js pinta los productos -->
-      <div id="productGrid" class="product-grid"></div>
+      <div class="grid" id="productsGrid"></div>
     </section>
 
     <!-- CONTACTO -->
-    <section id="contacto" class="contact">
-      <h2>Contacto</h2>
-      <p>¿Quieres armar tu pedido rápido? Escríbenos por WhatsApp.</p>
-
-      <div class="contact-actions">
-        <a id="igLink" class="btn btn-outline" href="#" target="_blank" rel="noopener">Instagram</a>
-        <a id="ttLink" class="btn btn-outline" href="#" target="_blank" rel="noopener">TikTok</a>
-        <a id="waLink1b" class="btn btn-gold" href="#" target="_blank" rel="noopener">Hablar por WhatsApp</a>
+    <section class="section section--dark" id="contacto">
+      <h2 class="h2">Contacto</h2>
+      <p class="muted">¿Quieres armar tu pedido rápido? Escríbenos por WhatsApp.</p>
+      <div class="contactBtns">
+        <a class="btn btn--ghost" href="#" id="igBtn" rel="noopener">Instagram</a>
+        <a class="btn btn--ghost" href="#" id="ttBtn" rel="noopener">TikTok</a>
       </div>
+      <a class="btn btn--gold btn--wide" id="waContact" href="#" rel="noopener">Hablar por WhatsApp</a>
     </section>
   </main>
 
-  <!-- DRAWER CARRITO -->
-  <aside id="cartDrawer" class="drawer" aria-hidden="true">
-    <div class="drawer-panel">
-      <div class="drawer-head">
-        <div class="drawer-title">Carrito</div>
-        <button id="closeCartBtn" class="icon-btn" type="button" aria-label="Cerrar">✕</button>
-      </div>
+  <!-- FLOATING WHATSAPP -->
+  <a class="floatWa" id="floatWa" href="#" aria-label="WhatsApp" rel="noopener">💬</a>
 
-      <div id="cartItems" class="cart-items">
-        <!-- app.js llena esto -->
-      </div>
+  <!-- CART DRAWER (NO debe abrirse solo) -->
+  <div class="backdrop" id="backdrop" aria-hidden="true"></div>
 
-      <div class="drawer-foot">
-        <div class="cart-total-row">
-          <span>Total</span>
-          <strong id="cartTotal">$0,00</strong>
-        </div>
+  <aside class="drawer" id="cartDrawer" aria-hidden="true" role="dialog" aria-label="Carrito">
+    <div class="drawer__top">
+      <div class="drawer__title">Carrito</div>
+      <button class="iconBtn" id="closeCartBtn" type="button" aria-label="Cerrar">✕</button>
+    </div>
 
-        <button id="checkoutWhatsAppBtn" class="btn btn-gold btn-full" type="button">
-          Pedir por WhatsApp
-        </button>
-        <div class="helper">Te armamos el pedido por WhatsApp con tallas y cantidades.</div>
+    <div class="drawer__body" id="cartItems"></div>
+
+    <div class="drawer__bottom">
+      <div class="totalRow">
+        <span>Total</span>
+        <strong id="cartTotal">$0,00</strong>
       </div>
+      <a class="btn btn--gold btn--wide" id="waOrderBtn" href="#" rel="noopener">Pedir por WhatsApp</a>
+      <div class="small muted">Te armamos el pedido por WhatsApp con tallas y cantidades.</div>
     </div>
   </aside>
 
-  <!-- MODAL PRODUCTO -->
-  <dialog id="productModal" class="modal">
-    <div class="modal-card">
-      <button id="closeModalBtn" class="icon-btn modal-close" type="button" aria-label="Cerrar">✕</button>
-      <div id="modalContent"></div>
+  <!-- LOADER -->
+  <div class="loader" id="loader" aria-hidden="false">
+    <div class="loader__card">
+      <img class="loader__img" src="assets/loader.png" alt="Cargando Flow Urban" />
+      <div class="loader__txt">Cargando Flow Urban…</div>
+      <div class="loader__bar">
+        <div class="loader__barFill" id="barFill"></div>
+      </div>
     </div>
-  </dialog>
+  </div>
 
-  <!-- Scripts -->
   <script src="products.js"></script>
   <script src="app.js"></script>
-
-  <!-- Fix: enlaces WhatsApp + ocultar loader rápido -->
-  <script>
-    // 1) Links extra (botón contacto “Hablar por WhatsApp”)
-    //    app.js ya setea waLink1 y waLink2; aquí solo copiamos a waLink1b.
-    window.addEventListener("DOMContentLoaded", () => {
-      const a1 = document.getElementById("waLink1");
-      const a1b = document.getElementById("waLink1b");
-      if (a1 && a1b) a1b.href = a1.href;
-    });
-
-    // 2) Loader: se quita al cargar o máximo en 2.5s (para que NO se quede pegado)
-    const loader = document.getElementById("loader");
-    const killLoader = () => {
-      if (!loader) return;
-      loader.classList.add("hide");
-      loader.setAttribute("aria-hidden", "true");
-      setTimeout(() => loader.remove(), 450);
-    };
-    window.addEventListener("load", killLoader);
-    setTimeout(killLoader, 2500);
-  </script>
 </body>
-</html>
+  </html>
