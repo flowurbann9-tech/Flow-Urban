@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Flow Urban — Authentic store</title>
   <meta name="theme-color" content="#0b0b0f" />
-  <link rel="stylesheet" href="styles.css?v=5" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
-  
+
 <body>
   <!-- TOP TICKER -->
   <div class="ticker">
@@ -90,7 +90,6 @@
       </div>
 
       <div class="count" id="resultsCount"></div>
-
       <div class="grid" id="productsGrid"></div>
     </section>
 
@@ -107,10 +106,11 @@
   </main>
 
   <!-- FLOATING WHATSAPP -->
-  <!-- FLOATING WHATSAPP -->
+  <a id="floatWa" class="floatWa" href="#" target="_blank" rel="noopener" aria-label="WhatsApp">
+    <img src="assets/wa-flow.png" alt="WhatsApp" class="waIcon" />
+  </a>
 
-
-  <!-- CART DRAWER (NO debe abrirse solo) -->
+  <!-- CART DRAWER -->
   <div class="backdrop" id="backdrop" aria-hidden="true"></div>
 
   <aside class="drawer" id="cartDrawer" aria-hidden="true" role="dialog" aria-label="Carrito">
@@ -141,12 +141,8 @@
       </div>
     </div>
   </div>
-  <!-- FLOATING WHATSAPP -->
-<a id="floatWa" class="floatWa" href="#" target="_blank" rel="noopener" aria-label="WhatsApp">
-  <img src="assets/wa-flow.png" alt="WhatsApp" class="waIcon" />
-</a>
 
-  <script src="products.js"></script>
-  <script src="app.js"></script>
+  <!-- IMPORTANTÍSIMO: como products.js/app.js usan export/import, deben cargarse como MODULE -->
+  <script type="module" src="app.js"></script>
 </body>
-  </html>
+</html>
