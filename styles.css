@@ -504,21 +504,20 @@ body.drawerOpen .drawer{
 }
 
 .floatWa .waIcon{
-  width: 44px;
-  height: 44px;
+  width: 56px;       /* MÁS GRANDE */
+  height: 56px;      /* MÁS GRANDE */
   object-fit: contain;
-  border-radius: 999px; /* por si tu PNG no es perfecto */
+  border-radius: 999px;
   filter: drop-shadow(0 6px 10px rgba(0,0,0,.35));
 }
 
 /* En pantallas pequeñas un poquito más chico */
 @media (max-width: 480px){
-  .floatWa{
-    width: 58px;
-    height: 58px;
-    right: 14px;
-    bottom: 14px;
+  .floatWa .waIcon{
+    width: 52px;
+    height: 52px;
   }
+}
   .floatWa .waIcon{
     width: 40px;
     height: 40px;
