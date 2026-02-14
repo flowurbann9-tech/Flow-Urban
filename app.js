@@ -2,7 +2,7 @@ import { STORE, PRODUCTS } from "./products.js";
 
 (() => {
   const WA_NUMBER = STORE?.whatsappNumber || "593962722395";
-  const WA_TEXT_DEFAULT = "Hola Flow Urban, quiero hacer un pedido.";
+  const WA_TEXT_DEFAULT = "Hola Flow Urban 👋🔥 Quiero hacer un pedido 🛍️ ¿Me ayudas, por favor?";
 
   const els = {
     topWa: document.getElementById("topWa"),
