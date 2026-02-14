@@ -1,6 +1,9 @@
 import { STORE, PRODUCTS } from "./products.js";
 
 (() => {
+  const WA_NUMBER = STORE?.whatsappNumber || "593962722395";
+  const WA_TEXT_DEFAULT = "Hola Flow Urban, quiero hacer un pedido.";
+
   const els = {
     topWa: document.getElementById("topWa"),
     waHeader: document.getElementById("waHeader"),
@@ -31,7 +34,8 @@ import { STORE, PRODUCTS } from "./products.js";
     barFill: document.getElementById("barFill"),
   };
 
-  const CART_KEY = "flowurban_cart_v2";
+  const waLink = (text = WA_TEXT_DEFAULT) =>
+    `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`;
 
   const money = (n) => {
     try {
@@ -41,6 +45,10 @@ import { STORE, PRODUCTS } from "./products.js";
     }
   };
 
+  const isVideo = (url) => /\.(mp4|webm|ogg)$/i.test(url || "");
+
+  // Cart in localStorage
+  const CART_KEY = "flowurban_cart_v1";
   const loadCart = () => {
     try {
       const raw = localStorage.getItem(CART_KEY);
@@ -64,82 +72,84 @@ import { STORE, PRODUCTS } from "./products.js";
     return total;
   };
 
-  // ============ DRAWER (NO abrir solo) ============
+  // Drawer controls
   function openDrawer() {
     document.body.classList.add("drawerOpen");
-    els.cartDrawer.setAttribute("aria-hidden", "false");
-    els.backdrop.setAttribute("aria-hidden", "false");
+    els.cartDrawer?.setAttribute("aria-hidden", "false");
+    els.backdrop?.setAttribute("aria-hidden", "false");
   }
   function closeDrawer() {
     document.body.classList.remove("drawerOpen");
-    els.cartDrawer.setAttribute("aria-hidden", "true");
-    els.backdrop.setAttribute("aria-hidden", "true");
+    els.cartDrawer?.setAttribute("aria-hidden", "true");
+    els.backdrop?.setAttribute("aria-hidden", "true");
   }
 
-  // ============ WHATSAPP LINKS (TODO al MISMO número) ============
+  // ✅ PONE EL NÚMERO EN TODOS LOS BOTONES (ARRIBA / HEADER / CONTACTO / FLOTANTE)
   function setWaLinks() {
-    const number = STORE.whatsappSales2 || STORE.whatsappSales1;
-    const base = `https://wa.me/${number}`;
-    const text = encodeURIComponent("Hola Flow Urban, quiero hacer un pedido.");
+    if (els.topWa) els.topWa.href = waLink();
+    if (els.waHeader) els.waHeader.href = waLink();
+    if (els.waContact) els.waContact.href = waLink();
+    if (els.floatWa) els.floatWa.href = waLink();
 
-    const link = `${base}?text=${text}`;
+    // socials (pon tus links reales)
+    if (els.igBtn) els.igBtn.href = "#";
+    if (els.ttBtn) els.ttBtn.href = "#";
 
-    if (els.topWa) els.topWa.href = link;
-    if (els.waHeader) els.waHeader.href = link;
-    if (els.waContact) els.waContact.href = link;
-    if (els.floatWa) els.floatWa.href = link;
-
-    // socials
-    if (els.igBtn) els.igBtn.href = STORE.instagram || "#";
-    if (els.ttBtn) els.ttBtn.href = STORE.tiktok || "#";
-
-    // botón del carrito se actualiza en renderCart con el pedido real
-    if (els.waOrderBtn) els.waOrderBtn.href = link;
+    // botón del pedido (se actualiza con el mensaje real en renderCart)
+    if (els.waOrderBtn) els.waOrderBtn.href = waLink("Hola! Quiero hacer un pedido.");
   }
 
-  // ============ FILTROS ============
+  // Filters / sort
   function buildCategorySelect() {
     const cats = ["Todas", ...Array.from(new Set(PRODUCTS.map(p => p.category))).sort()];
+    if (!els.categorySelect) return;
     els.categorySelect.innerHTML = cats.map(c => `<option value="${c}">${c}</option>`).join("");
   }
 
   function applyFilters() {
-    const q = (els.searchInput.value || "").trim().toLowerCase();
-    const cat = els.categorySelect.value;
+    const q = (els.searchInput?.value || "").trim().toLowerCase();
+    const cat = els.categorySelect?.value || "Todas";
+
     let out = PRODUCTS.filter(p => {
       const matchQ = !q || `${p.name} ${p.category}`.toLowerCase().includes(q);
-      const matchCat = !cat || cat === "Todas" || p.category === cat;
+      const matchCat = cat === "Todas" || p.category === cat;
       return matchQ && matchCat;
     });
 
-    const sort = els.sortSelect.value;
-    if (sort === "priceAsc") out.sort((a, b) => (a.price || 0) - (b.price || 0));
-    if (sort === "priceDesc") out.sort((a, b) => (b.price || 0) - (a.price || 0));
-    if (sort === "nameAsc") out.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
-    if (sort === "featured") out.sort((a, b) => (b.badge === "Top") - (a.badge === "Top"));
+    const sort = els.sortSelect?.value || "featured";
+    if (sort === "priceAsc") out.sort((a,b) => (a.price||0)-(b.price||0));
+    if (sort === "priceDesc") out.sort((a,b) => (b.price||0)-(a.price||0));
+    if (sort === "nameAsc") out.sort((a,b) => (a.name||"").localeCompare(b.name||""));
+    if (sort === "featured") out.sort((a,b) => (b.featured===true)-(a.featured===true));
 
     return out;
   }
 
-  // ============ PRODUCTOS (2 en 2 en móvil) ============
+  // Product Card
   function productCardHTML(p) {
-    const badge = p.badge ? `<div class="badge">${p.badge}</div>` : "";
-    const img = p.image || "assets/logo.png";
+    const badge = p.tag ? `<div class="badge">${p.tag}</div>` : "";
+    const plus = `<div class="plus" aria-hidden="true">+</div>`;
+    const media = p.media || "";
+
+    const mediaHTML = isVideo(media)
+      ? `<video src="${media}" muted playsinline loop></video>`
+      : `<img src="${media}" alt="${p.name}" loading="lazy"
+            onerror="this.onerror=null; this.src='assets/logo.png'; this.style.objectFit='contain'; this.style.padding='18px';" />`;
+
     return `
       <article class="card">
         <div class="media">
           ${badge}
-          <img src="${img}" alt="${p.name}" loading="lazy"
-               onerror="this.onerror=null; this.src='assets/logo.png'; this.style.objectFit='contain'; this.style.padding='18px';" />
-          <button class="hit" data-add="${p.id}" title="Agregar" type="button">
-            <span class="plus">+</span>
+          ${mediaHTML}
+          <button class="hit" data-add="${p.id}" title="Agregar" style="all:unset;cursor:pointer;position:absolute;inset:0">
+            ${plus}
           </button>
         </div>
         <div class="card__body">
           <div class="title">${p.name}</div>
           <div class="meta">${p.category}</div>
           <div class="price">${money(p.price || 0)}</div>
-          <div class="sizes">Tallas: ${(p.sizes || []).join(", ")}</div>
+          <div class="sizes">Tallas: ${(p.sizes||[]).join(", ")}</div>
           <div class="actions">
             <button class="btn btn--ghost" data-view="${p.id}" type="button">Ver</button>
             <button class="btn btn--gold" data-add="${p.id}" type="button">Agregar</button>
@@ -151,44 +161,48 @@ import { STORE, PRODUCTS } from "./products.js";
 
   function renderProducts() {
     const filtered = applyFilters();
-    els.resultsCount.textContent = `${filtered.length} productos`;
-    els.productsGrid.innerHTML = filtered.map(productCardHTML).join("");
+    if (els.resultsCount) els.resultsCount.textContent = `${filtered.length} productos`;
+    if (els.productsGrid) els.productsGrid.innerHTML = filtered.map(productCardHTML).join("");
+
+    requestAnimationFrame(() => {
+      els.productsGrid?.querySelectorAll("video").forEach(v => v.play().catch(() => {}));
+    });
   }
 
-  // ============ CARRITO ============
   function renderCart() {
+    if (!els.cartCount || !els.cartTotal || !els.cartItems || !els.waOrderBtn) return;
+
     els.cartCount.textContent = String(cartCount());
     els.cartTotal.textContent = money(cartTotal());
 
-    const number = STORE.whatsappSales2 || STORE.whatsappSales1;
-    const base = `https://wa.me/${number}`;
-
     const entries = Object.entries(cart);
-
     if (entries.length === 0) {
       els.cartItems.innerHTML = `<div class="muted">Tu carrito está vacío.</div>`;
-      els.waOrderBtn.href = `${base}?text=${encodeURIComponent("Hola Flow Urban, quiero hacer un pedido 😄")}`;
+      els.waOrderBtn.href = waLink("Hola! Quiero hacer un pedido, pero mi carrito está vacío 😅");
       return;
     }
 
-    let msgLines = [];
+    const lines = [];
     let msg = `Hola! Quiero hacer este pedido en Flow Urban:\n\n`;
 
     els.cartItems.innerHTML = entries.map(([id, qty]) => {
       const p = PRODUCTS.find(x => x.id === id);
       if (!p) return "";
 
-      msgLines.push(`• ${p.name} x${qty} — ${money((p.price || 0) * qty)}`);
+      const line = `• ${p.name} (${(p.sizes||[]).join("/")}) x${qty} — ${money((p.price||0)*qty)}`;
+      lines.push(line);
+
+      const imgSrc = (p.media && !isVideo(p.media)) ? p.media : "assets/logo.png";
 
       return `
         <div class="ci">
           <div class="ci__img">
-            <img src="${p.image || "assets/logo.png"}" alt="${p.name}"
-                 onerror="this.onerror=null; this.src='assets/logo.png'; this.style.objectFit='contain'; this.style.padding='10px';" />
+            <img src="${imgSrc}" alt="${p.name}"
+              onerror="this.onerror=null; this.src='assets/logo.png'; this.style.objectFit='contain'; this.style.padding='10px';" />
           </div>
-          <div class="ci__info">
+          <div>
             <div class="ci__name">${p.name}</div>
-            <div class="ci__sub">${p.category} • ${money(p.price || 0)}</div>
+            <div class="ci__sub">${p.category} • ${money(p.price||0)}</div>
             <div class="ci__row">
               <div class="qty">
                 <button type="button" data-dec="${id}">−</button>
@@ -202,10 +216,11 @@ import { STORE, PRODUCTS } from "./products.js";
       `;
     }).join("");
 
-    msg += msgLines.join("\n");
+    msg += lines.join("\n");
     msg += `\n\nTotal: ${money(cartTotal())}\n\n¿Me confirmas disponibilidad y envío?`;
 
-    els.waOrderBtn.href = `${base}?text=${encodeURIComponent(msg)}`;
+    // ✅ SIEMPRE AL NÚMERO NUEVO
+    els.waOrderBtn.href = waLink(msg);
   }
 
   function addToCart(id) {
@@ -234,73 +249,81 @@ import { STORE, PRODUCTS } from "./products.js";
   function viewProduct(id) {
     const p = PRODUCTS.find(x => x.id === id);
     if (!p) return;
-    alert(`${p.name}\n${p.category}\n${money(p.price || 0)}\nTallas: ${(p.sizes || []).join(", ")}`);
+    alert(`${p.name}\n${p.category}\n${money(p.price||0)}\nTallas: ${(p.sizes||[]).join(", ")}`);
   }
 
-  // ============ LOADER rápido ============
+  // Loader fast (max 1500ms)
   function fastLoader() {
-    let pct = 15;
+    const start = Date.now();
+    let pct = 20;
     const tick = setInterval(() => {
-      pct = Math.min(92, pct + 10);
-      els.barFill.style.width = pct + "%";
+      pct = Math.min(95, pct + 10);
+      if (els.barFill) els.barFill.style.width = pct + "%";
     }, 120);
 
     const preload = (src) => new Promise((res) => {
+      if (!src) return res();
       const img = new Image();
       img.onload = () => res();
       img.onerror = () => res();
       img.src = src;
     });
 
-    const critical = ["assets/logo.png", "assets/loader.png", "assets/hero.jpg"];
-    const timeout = new Promise((res) => setTimeout(res, 1200));
+    const critical = ["assets/logo.png","assets/loader.png","assets/hero.jpg"];
+    const timeout = new Promise((res) => setTimeout(res, 1500));
 
     Promise.race([Promise.all(critical.map(preload)), timeout]).then(() => {
       clearInterval(tick);
-      els.barFill.style.width = "100%";
+      if (els.barFill) els.barFill.style.width = "100%";
       setTimeout(() => {
-        els.loader.style.display = "none";
-        els.loader.setAttribute("aria-hidden", "true");
-      }, 120);
+        if (els.loader) {
+          els.loader.style.display = "none";
+          els.loader.setAttribute("aria-hidden","true");
+        }
+      }, Math.max(0, 250 - (Date.now() - start)));
     });
   }
 
   function wireUI() {
     setWaLinks();
 
-    // 100% cerrado al cargar (evita “carrito colgado”)
+    // ✅ asegurar que el drawer esté cerrado al cargar
     closeDrawer();
     renderCart();
 
     buildCategorySelect();
     renderProducts();
 
-    els.searchInput.addEventListener("input", renderProducts);
-    els.categorySelect.addEventListener("change", renderProducts);
-    els.sortSelect.addEventListener("change", renderProducts);
+    els.searchInput?.addEventListener("input", renderProducts);
+    els.categorySelect?.addEventListener("change", renderProducts);
+    els.sortSelect?.addEventListener("change", renderProducts);
 
-    els.clearBtn.addEventListener("click", () => {
-      els.searchInput.value = "";
-      els.categorySelect.value = "Todas";
-      els.sortSelect.value = "featured";
+    els.clearBtn?.addEventListener("click", () => {
+      if (els.searchInput) els.searchInput.value = "";
+      if (els.categorySelect) els.categorySelect.value = "Todas";
+      if (els.sortSelect) els.sortSelect.value = "featured";
       renderProducts();
     });
 
-    els.productsGrid.addEventListener("click", (e) => {
+    els.productsGrid?.addEventListener("click", (e) => {
       const addBtn = e.target.closest("[data-add]");
       const viewBtn = e.target.closest("[data-view]");
       if (addBtn) {
-        addToCart(addBtn.getAttribute("data-add"));
-        openDrawer(); // abre carrito al agregar
+        const id = addBtn.getAttribute("data-add");
+        addToCart(id);
+        openDrawer();
       }
-      if (viewBtn) viewProduct(viewBtn.getAttribute("data-view"));
+      if (viewBtn) {
+        const id = viewBtn.getAttribute("data-view");
+        viewProduct(id);
+      }
     });
 
-    els.openCartBtn.addEventListener("click", openDrawer);
-    els.closeCartBtn.addEventListener("click", closeDrawer);
-    els.backdrop.addEventListener("click", closeDrawer);
+    els.openCartBtn?.addEventListener("click", openDrawer);
+    els.closeCartBtn?.addEventListener("click", closeDrawer);
+    els.backdrop?.addEventListener("click", closeDrawer);
 
-    els.cartItems.addEventListener("click", (e) => {
+    els.cartItems?.addEventListener("click", (e) => {
       const dec = e.target.closest("[data-dec]");
       const inc = e.target.closest("[data-inc]");
       const del = e.target.closest("[data-del]");
