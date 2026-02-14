@@ -451,3 +451,14 @@ body{
   box-shadow: 0 18px 55px rgba(0,0,0,.45);
 }
 .waFab:hover{filter:brightness(1.05)}
+/* ✅ Carrito más transparente (tipo vidrio) */
+.drawer{
+  background: rgba(0,0,0,.35) !important;   /* antes estaba muy oscuro */
+  backdrop-filter: blur(8px);
+}
+
+.drawer-panel{
+  background: rgba(15,15,20,.55) !important; /* panel transparente */
+  backdrop-filter: blur(14px);
+  border-left: 1px solid rgba(255,255,255,.10);
+}
