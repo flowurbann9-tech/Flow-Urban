@@ -475,3 +475,52 @@ body.drawerOpen .drawer{
   #clearBtn{grid-column:auto}
   .grid{grid-template-columns:repeat(4,minmax(0,1fr))}
        }
+/* ===== FLOATING WHATSAPP (PRO) ===== */
+.floatWa{
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  background: rgba(20, 20, 24, 0.92); /* plomo oscuro */
+  border: 2px solid rgba(200, 170, 90, 0.95); /* dorado */
+  box-shadow: 0 14px 30px rgba(0,0,0,.45);
+  display: grid;
+  place-items: center;
+  z-index: 9999;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+  backdrop-filter: blur(8px);
+}
+
+.floatWa:hover{
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 18px 40px rgba(0,0,0,.55);
+  background: rgba(25, 25, 30, 0.95);
+}
+
+.floatWa:active{
+  transform: scale(0.98);
+}
+
+.floatWa .waIcon{
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  border-radius: 999px; /* por si tu PNG no es perfecto */
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,.35));
+}
+
+/* En pantallas pequeñas un poquito más chico */
+@media (max-width: 480px){
+  .floatWa{
+    width: 58px;
+    height: 58px;
+    right: 14px;
+    bottom: 14px;
+  }
+  .floatWa .waIcon{
+    width: 40px;
+    height: 40px;
+  }
+
