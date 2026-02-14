@@ -370,5 +370,8 @@ const WA_TEXT = "Hola Flow Urban, quiero hacer un pedido.";
 
 const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WA_TEXT)}`;
 
-const floatWa = document.getElementById("floatWa");
-if (floatWa) floatWa.href = waLink;
+// poner el link a todos los botones de WhatsApp
+["topWa", "waHeader", "waContact", "floatWa", "waOrderBtn"].forEach((id) => {
+  const el = document.getElementById(id);
+  if (el) el.href = waLink;
+});
