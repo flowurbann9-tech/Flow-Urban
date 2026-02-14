@@ -603,3 +603,7 @@ body.theme-women{
 .hero__img{
   box-shadow: 0 18px 40px rgba(0,0,0,.45);
   }
+body.theme-women{
+  background: radial-gradient(900px 500px at 50% -120px, rgba(164,107,255,.10), transparent 60%),
+              #ffffff !important;
+}
