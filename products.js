@@ -1,64 +1,48 @@
-export const STORE = {
-  name: "Flow Urban",
-  slogan: "Authentic store",
+// Edita este archivo para agregar productos.
+// ✅ Para foto: usa image: "assets/tu-foto.jpg" o una URL https://...
+// ✅ Para video: usa video: "assets/tu-video.mp4" (opcional)
+// ✅ Para tallas: sizes: ["S","M","L","XL"]
+// ✅ Para badges: badges: ["Nuevo"] o ["Top"]
 
-  // ECUADOR: 593 + tu número SIN el 0, sin +, sin espacios
-  whatsappSales1: "593987771119",
-  whatsappSales2: "593962722395",
-
-  instagram: "https://instagram.com/",
-  tiktok: "https://tiktok.com/@",
-
-  currency: "USD",
-};
-
-// IMPORTANTE:
-// mediaType: "image" o "video"
-// media: ruta del archivo (ej: "assets/products/miFoto.jpg" o "assets/videos/miVideo.mp4")
-// Si no tienes media todavía, déjalo vacío "" y saldrá un cuadro placeholder (para “insertar foto”).
-export const PRODUCTS = [
+window.PRODUCTS = [
   {
-    id: "FU-001",
+    id: "p1",
     name: "Camiseta Oversize 'Neon Flow'",
     category: "Camisetas",
     price: 19.99,
-    badge: "Nuevo",
     sizes: ["S", "M", "L", "XL"],
-    desc: "Corte oversize, suave y pesada. Vibra street con flow.",
-    mediaType: "image",
-    media: "", // <-- pon tu foto aquí
+    image: "", // <- pon aquí tu foto (si está vacío, sale el cuadro blanco FOTO)
+    badges: ["Nuevo"],
+    tags: ["oversize", "neon", "streetwear"],
   },
   {
-    id: "FU-002",
+    id: "p2",
     name: "Hoodie 'Midnight Urban'",
     category: "Hoodies",
     price: 39.99,
-    badge: "Top",
     sizes: ["S", "M", "L", "XL"],
-    desc: "Hoodie premium. Ideal para noches frías y looks duros.",
-    mediaType: "video",
-    media: "", // <-- o un video .mp4
+    image: "",
+    badges: ["Top"],
+    tags: ["hoodie", "negro", "basic"],
   },
   {
-    id: "FU-003",
-    name: "Jogger 'Street Fit'",
+    id: "p3",
+    name: "Pantalón Cargo 'Night Runner'",
     category: "Pantalones",
-    price: 29.99,
-    badge: "",
+    price: 34.99,
     sizes: ["S", "M", "L", "XL"],
-    desc: "Jogger cómodo, fit street, combina con todo.",
-    mediaType: "image",
-    media: "",
+    image: "",
+    badges: [],
+    tags: ["cargo", "negro"],
   },
   {
-    id: "FU-004",
-    name: "Gorra 'Logo Classic'",
-    category: "Accesorios",
-    price: 14.99,
-    badge: "",
-    sizes: ["U"],
-    desc: "Básico premium, logo al frente.",
-    mediaType: "image",
-    media: "",
+    id: "p4",
+    name: "Chaqueta 'Gold Outline'",
+    category: "Jackets",
+    price: 59.99,
+    sizes: ["S", "M", "L", "XL"],
+    image: "",
+    badges: ["Nuevo"],
+    tags: ["jacket", "premium"],
   },
 ];
