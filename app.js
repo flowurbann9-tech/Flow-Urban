@@ -1,7 +1,6 @@
 (() => {
-  // WhatsApp (según tu README)
-  const WA_VENTAS_1 = "593987771119";
-  const WA_VENTAS_2 = "593962722395";
+  // ✅ WhatsApp único (SIN +)
+  const WA_NUMBER = "593962722395";
 
   const els = {
     topWa: document.getElementById("topWa"),
@@ -33,16 +32,14 @@
   };
 
   const money = (n) => {
-    // Formato $19,99 (es-EC)
     try {
       return new Intl.NumberFormat("es-EC", { style: "currency", currency: "USD" }).format(n);
     } catch {
-      return `$${n.toFixed(2)}`.replace(".", ",");
+      return `$${Number(n || 0).toFixed(2)}`.replace(".", ",");
     }
   };
 
   const isVideo = (url) => /\.(mp4|webm|ogg)$/i.test(url || "");
-
   const getProducts = () => (window.PRODUCTS || []).slice();
 
   // Cart in localStorage
@@ -64,7 +61,7 @@
 
   function cartTotal() {
     const products = getProducts();
-    const map = new Map(products.map(p => [p.id, p]));
+    const map = new Map(products.map((p) => [p.id, p]));
     let total = 0;
     for (const [id, qty] of Object.entries(cart)) {
       const p = map.get(id);
@@ -74,57 +71,58 @@
     return total;
   }
 
-  // Drawer controls (FIX: NO abrir al cargar)
+  // Drawer controls (✅ NO abrir al cargar)
   function openDrawer() {
     document.body.classList.add("drawerOpen");
-    els.cartDrawer.setAttribute("aria-hidden", "false");
-    els.backdrop.setAttribute("aria-hidden", "false");
+    if (els.cartDrawer) els.cartDrawer.setAttribute("aria-hidden", "false");
+    if (els.backdrop) els.backdrop.setAttribute("aria-hidden", "false");
   }
   function closeDrawer() {
     document.body.classList.remove("drawerOpen");
-    els.cartDrawer.setAttribute("aria-hidden", "true");
-    els.backdrop.setAttribute("aria-hidden", "true");
+    if (els.cartDrawer) els.cartDrawer.setAttribute("aria-hidden", "true");
+    if (els.backdrop) els.backdrop.setAttribute("aria-hidden", "true");
   }
 
+  // ✅ Todos los WhatsApp al MISMO número
   function setWaLinks() {
-    const base1 = `https://wa.me/${WA_VENTAS_1}`;
-    const base2 = `https://wa.me/${WA_VENTAS_2}`;
+    const text = "Hola Flow Urban, quiero hacer un pedido.";
+    const link = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`;
 
-    // WhatsApp de arriba y flotante -> ventas 1
-    els.topWa.href = base1;
-    els.waHeader.href = base1;
-    els.waContact.href = base1;
-    els.floatWa.href = base1;
+    if (els.topWa) els.topWa.href = link;
+    if (els.waHeader) els.waHeader.href = link;
+    if (els.waContact) els.waContact.href = link;
+    if (els.floatWa) els.floatWa.href = link;
 
-    // Socials (pon tus links reales si quieres)
-    els.igBtn.href = "#";
-    els.ttBtn.href = "#";
+    // redes (pon tus links reales si quieres)
+    if (els.igBtn) els.igBtn.href = "#";
+    if (els.ttBtn) els.ttBtn.href = "#";
 
-    // Pedido del carrito -> ventas 2 (con texto dinámico en renderCart)
-    els.waOrderBtn.href = base2;
+    // el botón del carrito se setea con pedido en renderCart, pero dejamos link por defecto
+    if (els.waOrderBtn) els.waOrderBtn.href = link;
   }
 
   // Filters / sort
   function buildCategorySelect(products) {
-    const cats = ["Todas", ...Array.from(new Set(products.map(p => p.category))).sort()];
-    els.categorySelect.innerHTML = cats.map(c => `<option value="${c}">${c}</option>`).join("");
+    if (!els.categorySelect) return;
+    const cats = ["Todas", ...Array.from(new Set(products.map((p) => p.category))).sort()];
+    els.categorySelect.innerHTML = cats.map((c) => `<option value="${c}">${c}</option>`).join("");
   }
 
   function applyFilters(products) {
-    const q = (els.searchInput.value || "").trim().toLowerCase();
-    const cat = els.categorySelect.value;
+    const q = (els.searchInput?.value || "").trim().toLowerCase();
+    const cat = els.categorySelect?.value || "Todas";
 
-    let out = products.filter(p => {
+    let out = products.filter((p) => {
       const matchQ = !q || `${p.name} ${p.category}`.toLowerCase().includes(q);
-      const matchCat = !cat || cat === "Todas" || p.category === cat;
+      const matchCat = cat === "Todas" || p.category === cat;
       return matchQ && matchCat;
     });
 
-    const sort = els.sortSelect.value;
-    if (sort === "priceAsc") out.sort((a,b) => (a.price||0)-(b.price||0));
-    if (sort === "priceDesc") out.sort((a,b) => (b.price||0)-(a.price||0));
-    if (sort === "nameAsc") out.sort((a,b) => (a.name||"").localeCompare(b.name||""));
-    if (sort === "featured") out.sort((a,b) => (b.featured===true)-(a.featured===true));
+    const sort = els.sortSelect?.value || "featured";
+    if (sort === "priceAsc") out.sort((a, b) => (a.price || 0) - (b.price || 0));
+    if (sort === "priceDesc") out.sort((a, b) => (b.price || 0) - (a.price || 0));
+    if (sort === "nameAsc") out.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+    if (sort === "featured") out.sort((a, b) => (b.featured === true) - (a.featured === true));
 
     return out;
   }
@@ -134,7 +132,6 @@
     const badge = p.tag ? `<div class="badge">${p.tag}</div>` : "";
     const plus = `<div class="plus" aria-hidden="true">+</div>`;
 
-    // Media: si no existe o falla -> placeholder blanco con logo
     const media = p.media || "";
     const mediaHTML = isVideo(media)
       ? `<video src="${media}" muted playsinline loop></video>`
@@ -154,7 +151,7 @@
           <div class="title">${p.name}</div>
           <div class="meta">${p.category}</div>
           <div class="price">${money(p.price || 0)}</div>
-          <div class="sizes">Tallas: ${(p.sizes||[]).join(", ")}</div>
+          <div class="sizes">Tallas: ${(p.sizes || []).join(", ")}</div>
           <div class="actions">
             <button class="btn btn--ghost" data-view="${p.id}" type="button">Ver</button>
             <button class="btn btn--gold" data-add="${p.id}" type="button">Agregar</button>
@@ -167,68 +164,74 @@
   function renderProducts() {
     const products = getProducts();
     const filtered = applyFilters(products);
-    els.resultsCount.textContent = `${filtered.length} productos`;
-    els.productsGrid.innerHTML = filtered.map(productCardHTML).join("");
 
-    // auto-play videos when visible (optional light)
+    if (els.resultsCount) els.resultsCount.textContent = `${filtered.length} productos`;
+    if (els.productsGrid) els.productsGrid.innerHTML = filtered.map(productCardHTML).join("");
+
     requestAnimationFrame(() => {
-      els.productsGrid.querySelectorAll("video").forEach(v => {
-        v.play().catch(() => {});
-      });
+      els.productsGrid?.querySelectorAll("video").forEach((v) => v.play().catch(() => {}));
     });
   }
 
-  // Cart render
+  // Cart render (✅ manda pedido + total al mismo número)
   function renderCart() {
     const products = getProducts();
-    const map = new Map(products.map(p => [p.id, p]));
+    const map = new Map(products.map((p) => [p.id, p]));
     const entries = Object.entries(cart);
 
-    els.cartCount.textContent = String(cartCount());
-    els.cartTotal.textContent = money(cartTotal());
+    if (els.cartCount) els.cartCount.textContent = String(cartCount());
+    if (els.cartTotal) els.cartTotal.textContent = money(cartTotal());
+
+    if (!els.cartItems || !els.waOrderBtn) return;
+
+    const base = `https://wa.me/${WA_NUMBER}`;
 
     if (entries.length === 0) {
       els.cartItems.innerHTML = `<div class="muted">Tu carrito está vacío.</div>`;
-      els.waOrderBtn.href = `https://wa.me/${WA_VENTAS_2}?text=${encodeURIComponent("Hola! Quiero hacer un pedido, pero mi carrito está vacío 😅")}`;
+      els.waOrderBtn.href = `${base}?text=${encodeURIComponent("Hola Flow Urban! Quiero hacer un pedido 😄")}`;
       return;
     }
 
     const lines = [];
     let msg = `Hola! Quiero hacer este pedido en Flow Urban:%0A%0A`;
 
-    els.cartItems.innerHTML = entries.map(([id, qty]) => {
-      const p = map.get(id);
-      if (!p) return "";
-      const line = `• ${p.name} (${(p.sizes||[]).join("/")}) x${qty} — ${money((p.price||0)*qty)}`;
-      lines.push(line);
+    els.cartItems.innerHTML = entries
+      .map(([id, qty]) => {
+        const p = map.get(id);
+        if (!p) return "";
 
-      const imgSrc = (p.media && !isVideo(p.media)) ? p.media : "assets/logo.png";
+        const line = `• ${p.name} (${(p.sizes || []).join("/")}) x${qty} — ${money((p.price || 0) * qty)}`;
+        lines.push(line);
 
-      return `
-        <div class="ci">
-          <div class="ci__img">
-            <img src="${imgSrc}" alt="${p.name}" onerror="this.onerror=null; this.src='assets/logo.png'; this.style.objectFit='contain'; this.style.padding='10px';" />
-          </div>
-          <div>
-            <div class="ci__name">${p.name}</div>
-            <div class="ci__sub">${p.category} • ${money(p.price||0)}</div>
-            <div class="ci__row">
-              <div class="qty">
-                <button type="button" data-dec="${id}">−</button>
-                <strong>${qty}</strong>
-                <button type="button" data-inc="${id}">+</button>
+        const imgSrc = p.media && !isVideo(p.media) ? p.media : "assets/logo.png";
+
+        return `
+          <div class="ci">
+            <div class="ci__img">
+              <img src="${imgSrc}" alt="${p.name}"
+                onerror="this.onerror=null; this.src='assets/logo.png'; this.style.objectFit='contain'; this.style.padding='10px';" />
+            </div>
+            <div>
+              <div class="ci__name">${p.name}</div>
+              <div class="ci__sub">${p.category} • ${money(p.price || 0)}</div>
+              <div class="ci__row">
+                <div class="qty">
+                  <button type="button" data-dec="${id}">−</button>
+                  <strong>${qty}</strong>
+                  <button type="button" data-inc="${id}">+</button>
+                </div>
+                <button class="iconBtn trash" type="button" data-del="${id}" title="Quitar">🗑</button>
               </div>
-              <button class="iconBtn trash" type="button" data-del="${id}" title="Quitar">🗑</button>
             </div>
           </div>
-        </div>
-      `;
-    }).join("");
+        `;
+      })
+      .join("");
 
     msg += lines.join("%0A");
     msg += `%0A%0ATotal: ${encodeURIComponent(money(cartTotal()))}%0A%0A¿Me confirmas disponibilidad y envío?`;
 
-    els.waOrderBtn.href = `https://wa.me/${WA_VENTAS_2}?text=${msg}`;
+    els.waOrderBtn.href = `${base}?text=${msg}`;
   }
 
   // Actions
@@ -237,7 +240,6 @@
     saveCart(cart);
     renderCart();
   }
-
   function decCart(id) {
     if (!cart[id]) return;
     cart[id] -= 1;
@@ -245,14 +247,12 @@
     saveCart(cart);
     renderCart();
   }
-
   function incCart(id) {
     if (!cart[id]) cart[id] = 0;
     cart[id] += 1;
     saveCart(cart);
     renderCart();
   }
-
   function delCart(id) {
     delete cart[id];
     saveCart(cart);
@@ -261,76 +261,71 @@
 
   // Simple modal "Ver"
   function viewProduct(id) {
-    const p = getProducts().find(x => x.id === id);
+    const p = getProducts().find((x) => x.id === id);
     if (!p) return;
-    alert(`${p.name}\n${p.category}\n${money(p.price||0)}\nTallas: ${(p.sizes||[]).join(", ")}`);
+    alert(`${p.name}\n${p.category}\n${money(p.price || 0)}\nTallas: ${(p.sizes || []).join(", ")}`);
   }
 
   // Loader fast (max 1500ms)
   function fastLoader() {
-    const start = Date.now();
+    if (!els.loader || !els.barFill) return;
+
     let pct = 20;
     const tick = setInterval(() => {
       pct = Math.min(95, pct + 10);
       els.barFill.style.width = pct + "%";
     }, 120);
 
-    const preload = (src) => new Promise((res) => {
-      if (!src) return res();
-      const img = new Image();
-      img.onload = () => res();
-      img.onerror = () => res();
-      img.src = src;
-    });
+    const preload = (src) =>
+      new Promise((res) => {
+        if (!src) return res();
+        const img = new Image();
+        img.onload = () => res();
+        img.onerror = () => res();
+        img.src = src;
+      });
 
-    const critical = [
-      "assets/logo.png",
-      "assets/loader.png",
-      "assets/hero.jpg",
-    ];
-
+    const critical = ["assets/logo.png", "assets/loader.png", "assets/hero.jpg"];
     const timeout = new Promise((res) => setTimeout(res, 1500));
+
     Promise.race([Promise.all(critical.map(preload)), timeout]).then(() => {
       clearInterval(tick);
       els.barFill.style.width = "100%";
       setTimeout(() => {
         els.loader.style.display = "none";
-        els.loader.setAttribute("aria-hidden","true");
-      }, Math.max(0, 250 - (Date.now() - start)));
+        els.loader.setAttribute("aria-hidden", "true");
+      }, 200);
     });
   }
 
   function wireUI() {
     setWaLinks();
 
-    // IMPORTANTÍSIMO: asegurar que el drawer esté cerrado al cargar
+    // ✅ asegurar que el drawer esté cerrado al cargar
     closeDrawer();
     renderCart();
 
-    // Products UI
     const products = getProducts();
     buildCategorySelect(products);
     renderProducts();
 
-    els.searchInput.addEventListener("input", renderProducts);
-    els.categorySelect.addEventListener("change", renderProducts);
-    els.sortSelect.addEventListener("change", renderProducts);
+    els.searchInput?.addEventListener("input", renderProducts);
+    els.categorySelect?.addEventListener("change", renderProducts);
+    els.sortSelect?.addEventListener("change", renderProducts);
 
-    els.clearBtn.addEventListener("click", () => {
-      els.searchInput.value = "";
-      els.categorySelect.value = "Todas";
-      els.sortSelect.value = "featured";
+    els.clearBtn?.addEventListener("click", () => {
+      if (els.searchInput) els.searchInput.value = "";
+      if (els.categorySelect) els.categorySelect.value = "Todas";
+      if (els.sortSelect) els.sortSelect.value = "featured";
       renderProducts();
     });
 
-    // Delegation clicks on products
-    els.productsGrid.addEventListener("click", (e) => {
+    els.productsGrid?.addEventListener("click", (e) => {
       const addBtn = e.target.closest("[data-add]");
       const viewBtn = e.target.closest("[data-view]");
       if (addBtn) {
         const id = addBtn.getAttribute("data-add");
         addToCart(id);
-        // opcional: abrir carrito al agregar
         openDrawer();
       }
       if (viewBtn) {
@@ -339,13 +334,11 @@
       }
     });
 
-    // Drawer controls
-    els.openCartBtn.addEventListener("click", () => openDrawer());
-    els.closeCartBtn.addEventListener("click", () => closeDrawer());
-    els.backdrop.addEventListener("click", () => closeDrawer());
+    els.openCartBtn?.addEventListener("click", () => openDrawer());
+    els.closeCartBtn?.addEventListener("click", () => closeDrawer());
+    els.backdrop?.addEventListener("click", () => closeDrawer());
 
-    // Cart actions (delegation)
-    els.cartItems.addEventListener("click", (e) => {
+    els.cartItems?.addEventListener("click", (e) => {
       const dec = e.target.closest("[data-dec]");
       const inc = e.target.closest("[data-inc]");
       const del = e.target.closest("[data-del]");
@@ -354,7 +347,6 @@
       if (del) delCart(del.getAttribute("data-del"));
     });
 
-    // ESC to close
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") closeDrawer();
     });
@@ -365,13 +357,3 @@
     fastLoader();
   });
 })();
-const WHATSAPP_NUMBER = "593962722395"; // SIN +
-const WA_TEXT = "Hola Flow Urban, quiero hacer un pedido.";
-
-const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WA_TEXT)}`;
-
-// poner el link a todos los botones de WhatsApp
-["topWa", "waHeader", "waContact", "floatWa", "waOrderBtn"].forEach((id) => {
-  const el = document.getElementById(id);
-  if (el) el.href = waLink;
-});
