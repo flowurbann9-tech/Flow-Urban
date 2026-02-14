@@ -1,184 +1,180 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#0b0b0f" />
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Flow Urban | Authentic store</title>
-  <meta name="description" content="Flow Urban - Tienda urbana. Catálogo, carrito y pedidos por WhatsApp." />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="styles.css" />
 </head>
-
 <body>
 
   <!-- LOADER -->
-  <div id="preloader" class="preloader" aria-label="Cargando">
-    <div class="pre-wrap">
-      <img src="assets/loader.png" alt="Flow Urban" class="pre-logo" />
-      <div class="pre-text">Cargando Flow Urban…</div>
-      <div class="pre-bar"><span></span></div>
+  <div id="loaderOverlay" class="loader-overlay" aria-hidden="false">
+    <div class="loader-card">
+      <img class="loader-img" src="assets/loader.png" alt="Flow Urban cargando" />
+      <div class="loader-text">Cargando Flow Urban...</div>
+      <div class="loader-bar">
+        <div class="loader-bar-fill" id="loaderBarFill"></div>
+      </div>
     </div>
   </div>
 
-  <!-- TOP BAR -->
-  <div class="topbar">
-    <div class="topbar__inner">
+  <!-- TOP PROMO BAR -->
+  <div class="promo">
+    <div class="promo-row">
       <span>🚚 Envíos a todo el país</span>
       <span class="dot">•</span>
-      <a class="topbar__link" href="https://wa.me/593987771119" target="_blank" rel="noopener">📲 WhatsApp</a>
-      <span class="dot">•</span>
+      <a id="promoWhatsApp" class="promo-pill" href="#" target="_blank" rel="noopener">📲 WhatsApp</a>
+    </div>
+    <div class="promo-row promo-row2">
       <span>🔥 Nuevos drops cada semana</span>
     </div>
   </div>
 
   <!-- HEADER -->
-  <header class="header" id="inicio">
-    <a class="brand" href="#inicio" aria-label="Ir a inicio">
-      <img class="brand__logo" src="assets/logo.png" alt="Flow Urban" />
-      <div class="brand__text">
-        <div class="brand__name">FLOW URBAN</div>
-        <div class="brand__tag">Authentic store</div>
+  <header class="header">
+    <div class="header-inner">
+      <div class="brand">
+        <img class="brand-logo" src="assets/logo.png" alt="Flow Urban" />
+        <div class="brand-text">
+          <div class="brand-title">FLOW URBAN</div>
+          <div class="brand-sub">Authentic store</div>
+        </div>
       </div>
-    </a>
 
-    <div class="header__actions">
-      <a class="btn btn--outline" href="https://wa.me/593987771119" target="_blank" rel="noopener">WHATSAPP</a>
+      <div class="header-actions">
+        <a id="headerWhatsApp" class="btn-outline" href="#" target="_blank" rel="noopener">WHATSAPP</a>
 
-      <button id="cartBtn" class="cartbtn" aria-label="Abrir carrito">
-        <span class="cartbtn__icon">🛒</span>
-        <span id="cartBadge" class="cartbtn__badge">0</span>
-      </button>
+        <button id="cartBtn" class="cart-btn" type="button">
+          <span class="cart-ico">🛒</span>
+          <span id="cartCount" class="cart-count">0</span>
+        </button>
+      </div>
     </div>
+
+    <nav class="nav">
+      <a href="#inicio">INICIO</a>
+      <a href="#catalogo">CATÁLOGO</a>
+      <a href="#contacto">CONTACTO</a>
+    </nav>
   </header>
 
-  <!-- NAV -->
-  <nav class="nav" aria-label="Navegación principal">
-    <a href="#inicio">INICIO</a>
-    <a href="#catalogo">CATÁLOGO</a>
-    <a href="#contacto">CONTACTO</a>
-  </nav>
-
   <!-- HERO -->
-  <section class="hero" aria-label="Banner principal">
-    <div class="hero__overlay"></div>
-    <div class="hero__content">
-      <h1 class="hero__title">URBAN NIGHTS</h1>
-      <p class="hero__sub">Streetwear auténtico. Oversize, básicos y drops con flow.</p>
+  <main id="inicio">
+    <section class="hero">
+      <div class="hero-bg" style="background-image:url('assets/hero.jpg')"></div>
+      <div class="hero-overlay"></div>
 
-      <div class="hero__cta">
-        <a class="btn btn--gold" href="#catalogo">SHOP NOW</a>
-        <a class="btn btn--outline" href="#catalogo">LOOKBOOK</a>
+      <div class="hero-content">
+        <h1>URBAN NIGHTS</h1>
+        <p>Streetwear auténtico. Oversize, básicos y drops con flow.</p>
+        <div class="hero-cta">
+          <a class="btn-gold" href="#catalogo">SHOP NOW</a>
+          <a class="btn-ghost" href="#catalogo">LOOKBOOK</a>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- CATALOGO -->
-  <main class="main" id="catalogo">
-    <section class="section">
-      <h2 class="section__title">NEW DROPS</h2>
-      <p class="section__sub">Busca tu estilo, elige talla y arma tu carrito.</p>
+    <!-- CATALOGO -->
+    <section id="catalogo" class="section">
+      <div class="section-title">
+        <h2>NEW DROPS</h2>
+        <p>Busca tu estilo, elige talla y arma tu carrito.</p>
+      </div>
 
       <div class="filters">
-        <div class="filters__row">
-          <label class="field">
-            <span>Buscar</span>
-            <input id="searchInput" type="text" placeholder="Ej: hoodie, oversize, negro" />
-          </label>
-
-          <label class="field">
-            <span>Categoría</span>
-            <select id="categorySelect"></select>
-          </label>
+        <div class="filter">
+          <label>Buscar</label>
+          <input id="searchInput" type="text" placeholder="Ej: hoodie, oversize, negro" />
         </div>
 
-        <div class="filters__row">
-          <label class="field">
-            <span>Orden</span>
-            <select id="sortSelect">
-              <option value="featured">Destacados</option>
-              <option value="priceAsc">Precio: menor a mayor</option>
-              <option value="priceDesc">Precio: mayor a menor</option>
-              <option value="nameAsc">Nombre: A → Z</option>
-            </select>
-          </label>
-
-          <button id="clearBtn" class="btn btn--dark">Limpiar</button>
+        <div class="filter">
+          <label>Categoría</label>
+          <select id="categorySelect"></select>
         </div>
 
-        <div class="count">
-          <span id="countEl">0 productos</span>
+        <div class="filter">
+          <label>Orden</label>
+          <select id="sortSelect">
+            <option value="featured">Destacados</option>
+            <option value="priceAsc">Precio: menor → mayor</option>
+            <option value="priceDesc">Precio: mayor → menor</option>
+            <option value="nameAsc">Nombre: A → Z</option>
+          </select>
         </div>
+
+        <button id="clearBtn" class="btn-black" type="button">Limpiar</button>
       </div>
 
-      <div id="productsGrid" class="grid" aria-live="polite"></div>
+      <div class="count-row">
+        <span id="countText">0 productos</span>
+      </div>
+
+      <div id="grid" class="grid"></div>
     </section>
 
     <!-- CONTACTO -->
-    <section class="section" id="contacto">
-      <h2 class="section__title">CONTACTO</h2>
-      <p class="section__sub">¿Dudas? Escríbenos. Respondemos rápido.</p>
+    <section id="contacto" class="section">
+      <div class="section-title">
+        <h2>Contacto</h2>
+        <p>¿Dudas? Escríbenos. Te respondemos rápido.</p>
+      </div>
 
-      <div class="contactBox">
-        <div class="contactBox__title">WhatsApp Ventas</div>
-        <div class="contactBox__text">
-          Ventas 1: 593987771119 <br>
-          Ventas 2: 593962722395
+      <div class="contact-card">
+        <h3>WhatsApp Ventas</h3>
+        <p id="waNumbers">Ventas 1 | Ventas 2</p>
+
+        <div class="contact-actions">
+          <a id="wa1Btn" class="btn-black" href="#" target="_blank" rel="noopener">WhatsApp Ventas 1</a>
+          <a id="wa2Btn" class="btn-black" href="#" target="_blank" rel="noopener">WhatsApp Ventas 2</a>
         </div>
 
-        <div class="contactBox__actions">
-          <a class="btn btn--dark" href="https://wa.me/593987771119" target="_blank" rel="noopener">WhatsApp Ventas 1</a>
-          <a class="btn btn--dark" href="https://wa.me/593962722395" target="_blank" rel="noopener">WhatsApp Ventas 2</a>
+        <div class="socials">
+          <div class="social-title">Redes</div>
+          <div class="social-actions">
+            <a id="igBtn" class="btn-light" href="#" target="_blank" rel="noopener">Instagram</a>
+            <a id="ttBtn" class="btn-light" href="#" target="_blank" rel="noopener">TikTok</a>
+          </div>
         </div>
       </div>
-    </section>
 
-    <footer class="footer">
-      Hecho con 💥 para streetwear.
-    </footer>
+      <footer class="footer">
+        Hecho con 💥 para streetwear.
+      </footer>
+    </section>
   </main>
 
-  <!-- WHATSAPP FLOTANTE -->
-  <a class="wa-float" href="https://wa.me/593987771119" target="_blank" rel="noopener" aria-label="WhatsApp">
-    WhatsApp
-  </a>
-
   <!-- CART DRAWER -->
-  <div id="cartDrawer" class="drawer" aria-hidden="true">
-    <div class="drawer__panel" role="dialog" aria-label="Carrito">
-      <div class="drawer__head">
-        <div class="drawer__title">Carrito</div>
-        <button id="cartClose" class="drawer__close" aria-label="Cerrar">✕</button>
+  <div id="cartOverlay" class="cart-overlay" aria-hidden="true"></div>
+
+  <aside id="cartDrawer" class="cart-drawer" aria-hidden="true">
+    <div class="cart-head">
+      <div class="cart-title">Carrito</div>
+      <button id="closeCart" class="icon-btn" type="button">✕</button>
+    </div>
+
+    <div id="cartItems" class="cart-items"></div>
+
+    <div class="cart-foot">
+      <div class="cart-total">
+        <span>Total</span>
+        <strong id="cartTotal">$0.00</strong>
       </div>
 
-      <div id="cartItems" class="drawer__items"></div>
+      <button id="checkoutBtn" class="btn-gold w100" type="button">
+        Pedir por WhatsApp
+      </button>
 
-      <div class="drawer__foot">
-        <div class="drawer__row">
-          <span>Subtotal</span>
-          <strong id="cartSubtotal">$0.00</strong>
-        </div>
-
-        <div class="drawer__buttons">
-          <button id="clearCartBtn" class="btn btn--outline btn--full">Vaciar</button>
-          <button id="checkoutBtn" class="btn btn--gold btn--full">Pedir por WhatsApp</button>
-        </div>
+      <div class="cart-note">
+        Te abrimos WhatsApp con el resumen del pedido.
       </div>
     </div>
-    <div class="drawer__backdrop" aria-label="Fondo"></div>
-  </div>
+  </aside>
 
-  <!-- TOAST -->
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <!-- FLOATING WHATSAPP -->
+  <a id="floatingWhatsApp" class="wa-float" href="#" target="_blank" rel="noopener">WhatsApp</a>
 
-  <!-- IMPORTANTE: ESTE ORDEN -->
-  <script src="products.js"></script>
-  <script src="app.js"></script>
-
+  <!-- SCRIPTS -->
+  <script type="module" src="app.js"></script>
 </body>
-</html>
+        </html>
