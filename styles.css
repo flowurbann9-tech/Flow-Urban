@@ -249,12 +249,18 @@ input,select{
 /* FLOAT WA */
 .floatWa{
   position:fixed;right:16px;bottom:18px;z-index:60;
-  width:56px;height:56px;border-radius:999px;
+  width:58px;height:58px;border-radius:999px;
   display:flex;align-items:center;justify-content:center;
-  background:#20c05c;color:#08110a;font-size:22px;
-  border:1px solid rgba(255,255,255,.20);
-  box-shadow:0 12px 30px rgba(0,0,0,.35);
+
+  background:rgba(20,20,26,.92);      /* plomo oscuro */
+  color:#ffffff;                      /* blanco */
+  font-size:22px;
+
+  border:2px solid rgba(201,176,106,.85); /* dorado */
+  box-shadow:0 14px 34px rgba(0,0,0,.45);
 }
+
+.floatWa:active{transform:translateY(1px)}
 
 /* DRAWER */
 .backdrop{
