@@ -1,58 +1,46 @@
 export const STORE = {
-  name: "Flow Urban",
-  slogan: "Authentic store",
-
-  // ECUADOR: 593 + tu número SIN el 0, sin +, sin espacios
-  // Dejamos TODO al mismo número para que no te mande al anterior
-  whatsappSales1: "593962722395",
-  whatsappSales2: "593962722395",
-
-  instagram: "https://instagram.com/",
-  tiktok: "https://tiktok.com/@",
-
-  shippingFlat: 0,
-  currency: "USD",
+  brand: "Flow Urban",
+  whatsappNumber: "593962722395", // ✅ TU NÚMERO NUEVO (SIN +)
 };
 
 export const PRODUCTS = [
   {
-    id: "FU-001",
+    id: "p1",
     name: "Camiseta Oversize 'Neon Flow'",
     category: "Camisetas",
     price: 19.99,
-    badge: "Nuevo",
     sizes: ["S", "M", "L", "XL"],
-    desc: "Corte oversize, suave y pesada. Vibra street con flow.",
-    image: "assets/products/prod1.jpg",
+    featured: true,
+    tag: "Nuevo",
+    media: "assets/logo.png",
   },
   {
-    id: "FU-002",
+    id: "p2",
     name: "Hoodie 'Midnight Urban'",
     category: "Hoodies",
     price: 39.99,
-    badge: "Top",
     sizes: ["S", "M", "L", "XL"],
-    desc: "Hoodie premium. Ideal para noches frías y looks duros.",
-    image: "assets/products/prod2.jpg",
+    featured: true,
+    tag: "Top",
+    media: "assets/logo.png",
   },
   {
-    id: "FU-003",
+    id: "p3",
     name: "Pantalón Cargo 'Night Runner'",
     category: "Pantalones",
     price: 34.99,
-    badge: "Nuevo",
     sizes: ["S", "M", "L", "XL"],
-    desc: "Cargo cómodo y duro. Perfecto para daily wear.",
-    image: "assets/products/prod3.jpg",
+    tag: "Nuevo",
+    media: "assets/logo.png",
   },
   {
-    id: "FU-004",
+    id: "p4",
     name: "Chaqueta 'Gold Outline'",
     category: "Jackets",
     price: 59.99,
-    badge: "",
     sizes: ["S", "M", "L", "XL"],
-    desc: "Chaqueta premium con detalles dorados.",
-    image: "assets/products/prod4.jpg",
+    featured: false,
+    tag: "Nuevo",
+    media: "assets/logo.png",
   },
 ];
