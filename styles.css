@@ -379,3 +379,26 @@ body.drawerOpen .drawer{transform:translateX(0)}
   #clearBtn{grid-column:auto}
   .hero__kicker{font-size:56px}
   }
+.floatWa{
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #2f2f2f;         /* plomo */
+  border: 2px solid #c9a44a;    /* dorado */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  box-shadow: 0 10px 22px rgba(0,0,0,.35);
+}
+
+.waIcon{
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
