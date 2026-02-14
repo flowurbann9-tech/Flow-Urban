@@ -2,136 +2,138 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0b0b0f" />
+
   <title>Flow Urban | Authentic store</title>
-  <link rel="stylesheet" href="./styles.css" />
+  <meta name="description" content="Flow Urban - Tienda urbana. Catálogo, carrito y pedidos por WhatsApp." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
 
-  <!-- TOP BAR (la franja negra de arriba como Barreto) -->
+  <!-- LOADER -->
+  <div id="preloader" class="preloader" aria-label="Cargando">
+    <div class="pre-wrap">
+      <img src="assets/loader.png" alt="Flow Urban" class="pre-logo" />
+      <div class="pre-text">Cargando Flow Urban…</div>
+      <div class="pre-bar"><span></span></div>
+    </div>
+  </div>
+
+  <!-- TOP BAR -->
   <div class="topbar">
-    <div class="topbar-row">
+    <div class="topbar__inner">
       <span>🚚 Envíos a todo el país</span>
       <span class="dot">•</span>
-      <a class="topbar-link" href="https://wa.me/593987771119" target="_blank" rel="noopener">📲 WhatsApp</a>
-    </div>
-    <div class="topbar-row topbar-row2">
-      🔥 Nuevos drops cada semana
+      <a class="topbar__link" href="https://wa.me/593987771119" target="_blank" rel="noopener">📲 WhatsApp</a>
+      <span class="dot">•</span>
+      <span>🔥 Nuevos drops cada semana</span>
     </div>
   </div>
 
   <!-- HEADER -->
-  <header class="header">
-    <div class="header-inner">
-      <div class="brand">
-        <img class="brand-logo" src="./assets/logo.png" alt="Flow Urban" />
-        <div class="brand-text">
-          <div class="brand-name">FLOW URBAN</div>
-          <div class="brand-sub">Authentic store</div>
-        </div>
+  <header class="header" id="inicio">
+    <a class="brand" href="#inicio" aria-label="Ir a inicio">
+      <img class="brand__logo" src="assets/logo.png" alt="Flow Urban" />
+      <div class="brand__text">
+        <div class="brand__name">FLOW URBAN</div>
+        <div class="brand__tag">Authentic store</div>
       </div>
+    </a>
 
-      <div class="header-actions">
-        <a class="btn btn-outline" href="https://wa.me/593987771119" target="_blank" rel="noopener">
-          WHATSAPP
-        </a>
+    <div class="header__actions">
+      <a class="btn btn--outline" href="https://wa.me/593987771119" target="_blank" rel="noopener">WHATSAPP</a>
 
-        <button id="cartBtn" class="cart-btn" type="button" aria-label="Abrir carrito">
-          <span class="cart-ico">🛒</span>
-          <span id="cartCount" class="cart-count">0</span>
-        </button>
-      </div>
+      <button id="cartBtn" class="cartbtn" aria-label="Abrir carrito">
+        <span class="cartbtn__icon">🛒</span>
+        <span id="cartBadge" class="cartbtn__badge">0</span>
+      </button>
     </div>
-
-    <nav class="nav">
-      <a href="#inicio">INICIO</a>
-      <a href="#catalogo">CATÁLOGO</a>
-      <a href="#contacto">CONTACTO</a>
-    </nav>
   </header>
 
-  <!-- HERO (estilo barreto) -->
-  <main>
-    <section id="inicio" class="hero">
-      <div class="hero-bg" aria-hidden="true"></div>
-      <div class="hero-overlay" aria-hidden="true"></div>
+  <!-- NAV -->
+  <nav class="nav" aria-label="Navegación principal">
+    <a href="#inicio">INICIO</a>
+    <a href="#catalogo">CATÁLOGO</a>
+    <a href="#contacto">CONTACTO</a>
+  </nav>
 
-      <div class="hero-content">
-        <div class="hero-title">URBAN NIGHTS</div>
-        <div class="hero-sub">
-          Streetwear auténtico. Oversize, básicos y drops con flow.
-        </div>
+  <!-- HERO -->
+  <section class="hero" aria-label="Banner principal">
+    <div class="hero__overlay"></div>
+    <div class="hero__content">
+      <h1 class="hero__title">URBAN NIGHTS</h1>
+      <p class="hero__sub">Streetwear auténtico. Oversize, básicos y drops con flow.</p>
 
-        <div class="hero-cta">
-          <a class="btn btn-gold" href="#catalogo">SHOP NOW</a>
-          <a class="btn btn-outline-light" href="#catalogo">LOOKBOOK</a>
-        </div>
+      <div class="hero__cta">
+        <a class="btn btn--gold" href="#catalogo">SHOP NOW</a>
+        <a class="btn btn--outline" href="#catalogo">LOOKBOOK</a>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- CATÁLOGO -->
-    <section id="catalogo" class="section">
-      <h2 class="section-title">NEW DROPS</h2>
-      <p class="section-sub">Busca tu estilo, elige talla y arma tu carrito.</p>
+  <!-- CATALOGO -->
+  <main class="main" id="catalogo">
+    <section class="section">
+      <h2 class="section__title">NEW DROPS</h2>
+      <p class="section__sub">Busca tu estilo, elige talla y arma tu carrito.</p>
 
-      <div class="filters-card">
-        <div class="filters-grid">
-          <div class="field">
-            <label>Buscar</label>
+      <div class="filters">
+        <div class="filters__row">
+          <label class="field">
+            <span>Buscar</span>
             <input id="searchInput" type="text" placeholder="Ej: hoodie, oversize, negro" />
-          </div>
+          </label>
 
-          <div class="field">
-            <label>Categoría</label>
+          <label class="field">
+            <span>Categoría</span>
             <select id="categorySelect"></select>
-          </div>
+          </label>
+        </div>
 
-          <div class="field">
-            <label>Orden</label>
+        <div class="filters__row">
+          <label class="field">
+            <span>Orden</span>
             <select id="sortSelect">
               <option value="featured">Destacados</option>
               <option value="priceAsc">Precio: menor a mayor</option>
               <option value="priceDesc">Precio: mayor a menor</option>
-              <option value="nameAsc">Nombre: A-Z</option>
-              <option value="nameDesc">Nombre: Z-A</option>
+              <option value="nameAsc">Nombre: A → Z</option>
             </select>
-          </div>
+          </label>
 
-          <button id="clearBtn" class="btn btn-dark" type="button">Limpiar</button>
+          <button id="clearBtn" class="btn btn--dark">Limpiar</button>
         </div>
 
-        <div class="count-row">
-          <span id="productCount">0 productos</span>
+        <div class="count">
+          <span id="countEl">0 productos</span>
         </div>
       </div>
 
-      <div id="productsGrid" class="grid"></div>
+      <div id="productsGrid" class="grid" aria-live="polite"></div>
     </section>
 
     <!-- CONTACTO -->
-    <section id="contacto" class="section">
-      <h2 class="section-title">Contacto</h2>
-      <p class="section-sub">¿Dudas? Escríbenos. Te respondemos rápido.</p>
+    <section class="section" id="contacto">
+      <h2 class="section__title">CONTACTO</h2>
+      <p class="section__sub">¿Dudas? Escríbenos. Respondemos rápido.</p>
 
-      <div class="contact-card">
-        <h3>WhatsApp Ventas</h3>
-        <p class="contact-text">
-          Ventas 1: 593987771119 | Ventas 2: 593962722395
-        </p>
-
-        <div class="contact-actions">
-          <a id="waLink1" class="btn btn-dark" target="_blank" rel="noopener">WhatsApp Ventas 1</a>
-          <a id="waLink2" class="btn btn-dark" target="_blank" rel="noopener">WhatsApp Ventas 2</a>
+      <div class="contactBox">
+        <div class="contactBox__title">WhatsApp Ventas</div>
+        <div class="contactBox__text">
+          Ventas 1: 593987771119 <br>
+          Ventas 2: 593962722395
         </div>
 
-        <div class="socials">
-          <h3>Redes</h3>
-          <p class="contact-text">Pon tus links en <b>products.js</b> para Instagram/TikTok.</p>
-          <div class="social-actions">
-            <a id="igLink" class="btn btn-soft" target="_blank" rel="noopener">Instagram</a>
-            <a id="ttLink" class="btn btn-soft" target="_blank" rel="noopener">TikTok</a>
-          </div>
+        <div class="contactBox__actions">
+          <a class="btn btn--dark" href="https://wa.me/593987771119" target="_blank" rel="noopener">WhatsApp Ventas 1</a>
+          <a class="btn btn--dark" href="https://wa.me/593962722395" target="_blank" rel="noopener">WhatsApp Ventas 2</a>
         </div>
       </div>
     </section>
@@ -141,64 +143,42 @@
     </footer>
   </main>
 
+  <!-- WHATSAPP FLOTANTE -->
+  <a class="wa-float" href="https://wa.me/593987771119" target="_blank" rel="noopener" aria-label="WhatsApp">
+    WhatsApp
+  </a>
+
   <!-- CART DRAWER -->
-  <aside id="cartDrawer" class="cart-drawer" aria-hidden="true">
-    <div class="cart-head">
-      <div class="cart-title">Carrito</div>
-      <button id="closeCart" class="icon-btn" type="button" aria-label="Cerrar">✕</button>
-    </div>
-
-    <div id="cartItems" class="cart-items"></div>
-
-    <div class="cart-foot">
-      <div class="cart-total">
-        <span>Total</span>
-        <strong id="cartTotal">$0</strong>
+  <div id="cartDrawer" class="drawer" aria-hidden="true">
+    <div class="drawer__panel" role="dialog" aria-label="Carrito">
+      <div class="drawer__head">
+        <div class="drawer__title">Carrito</div>
+        <button id="cartClose" class="drawer__close" aria-label="Cerrar">✕</button>
       </div>
-      <button id="checkoutBtn" class="btn btn-gold wide" type="button">
-        Pedir por WhatsApp
-      </button>
-    </div>
-  </aside>
 
-  <!-- PRODUCT MODAL -->
-  <div id="productModal" class="modal" aria-hidden="true">
-    <div class="modal-card">
-      <div class="modal-head">
-        <h3 id="modalTitle" class="modal-title"></h3>
-        <button id="modalClose" class="icon-btn" type="button" aria-label="Cerrar">✕</button>
+      <div id="cartItems" class="drawer__items"></div>
+
+      <div class="drawer__foot">
+        <div class="drawer__row">
+          <span>Subtotal</span>
+          <strong id="cartSubtotal">$0.00</strong>
+        </div>
+
+        <div class="drawer__buttons">
+          <button id="clearCartBtn" class="btn btn--outline btn--full">Vaciar</button>
+          <button id="checkoutBtn" class="btn btn--gold btn--full">Pedir por WhatsApp</button>
+        </div>
       </div>
-      <div id="modalBody" class="modal-body"></div>
     </div>
+    <div class="drawer__backdrop" aria-label="Fondo"></div>
   </div>
 
   <!-- TOAST -->
-  <div id="toast" class="toast" aria-hidden="true">
-    <span id="toastText"></span>
-  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-  <!-- LOADER (tu imagen + barra pequeña) -->
-  <div id="loaderOverlay" class="loader">
-    <div class="loader-card">
-      <img class="loader-img" src="./assets/loader.png" alt="Cargando Flow Urban" />
-      <div class="loader-text">Cargando Flow Urban...</div>
-      <div class="loader-bar">
-        <div class="loader-bar-fill"></div>
-      </div>
-    </div>
-  </div>
+  <!-- IMPORTANTE: ESTE ORDEN -->
+  <script src="products.js"></script>
+  <script src="app.js"></script>
 
-  <!-- SCRIPTS -->
-  <script src="./products.js"></script>
-  <script src="./app.js"></script>
-
-  <!-- Ocultar loader al cargar -->
-  <script>
-    window.addEventListener("load", () => {
-      const overlay = document.getElementById("loaderOverlay");
-      if (overlay) overlay.classList.add("hide");
-      setTimeout(() => overlay && overlay.remove(), 350);
-    });
-  </script>
 </body>
 </html>
