@@ -342,3 +342,22 @@ import { STORE, PRODUCTS } from "./products.js";
     fastLoader();
   });
 })();
+// ===== MUJERES / HOMBRES THEME SWITCH =====
+(() => {
+  const btnWomen = document.getElementById("btnWomen");
+  const btnMen = document.getElementById("btnMen");
+  if (!btnWomen || !btnMen) return;
+
+  const setTheme = (theme) => {
+    document.body.classList.toggle("theme-women", theme === "women");
+    btnWomen.classList.toggle("genderBtn--active", theme === "women");
+    btnMen.classList.toggle("genderBtn--active", theme === "men");
+    localStorage.setItem("flowurban_theme", theme);
+  };
+
+  const saved = localStorage.getItem("flowurban_theme") || "men";
+  setTheme(saved);
+
+  btnWomen.addEventListener("click", () => setTheme("women"));
+  btnMen.addEventListener("click", () => setTheme("men"));
+})();
