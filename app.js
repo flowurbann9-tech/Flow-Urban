@@ -365,3 +365,10 @@
     fastLoader();
   });
 })();
+const WHATSAPP_NUMBER = "593962722395"; // SIN +
+const WA_TEXT = "Hola Flow Urban, quiero hacer un pedido.";
+
+const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WA_TEXT)}`;
+
+const floatWa = document.getElementById("floatWa");
+if (floatWa) floatWa.href = waLink;
