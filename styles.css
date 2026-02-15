@@ -473,42 +473,123 @@ body.drawerOpen .drawer{ transform:translateX(0); }
 /* =========================
    LOADER
 ========================= */
+/* =========================
+   LOADER (SPLASH UNISEX PRO)
+========================= */
 .loader{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.85);
+  z-index:120;
   display:flex;
   align-items:center;
   justify-content:center;
-  z-index:120;
+
+  /* fondo unisex: negro premium + glow dorado suave */
+  background:
+    radial-gradient(1000px 520px at 50% 15%, rgba(200,167,74,.26), transparent 60%),
+    radial-gradient(900px 520px at 15% 85%, rgba(255,255,255,.08), transparent 62%),
+    radial-gradient(900px 520px at 85% 85%, rgba(200,167,74,.12), transparent 65%),
+    linear-gradient(180deg, #07070b 0%, #0b0b0f 55%, #07070b 100%);
 }
+
+/* card tipo vidrio premium */
 .loader__card{
-  width:min(360px, 92vw);
-  border-radius:26px;
-  border:1px solid var(--line);
-  background:rgba(10,10,14,.92);
-  padding:18px;
+  width:min(420px, 92vw);
+  border-radius:28px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  padding:22px 18px;
   text-align:center;
-  box-shadow:var(--shadow);
+  position:relative;
+  overflow:hidden;
+  box-shadow: 0 30px 80px rgba(0,0,0,.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transform: translateZ(0);
 }
-.loader__img{ width:100%; border-radius:18px; display:block; }
+
+/* glow dorado elegante detrás */
+.loader__card::before{
+  content:"";
+  position:absolute;
+  inset:-45%;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(200,167,74,.32), transparent 58%),
+    radial-gradient(circle at 40% 55%, rgba(255,255,255,.12), transparent 60%),
+    radial-gradient(circle at 60% 65%, rgba(200,167,74,.16), transparent 62%);
+  filter: blur(18px);
+  opacity:.95;
+  animation: glowMove 5.2s ease-in-out infinite;
+}
+
+/* textura finita (brillitos) */
+.loader__card::after{
+  content:"";
+  position:absolute;
+  inset:-20%;
+  background:
+    radial-gradient(rgba(255,255,255,.18) 1px, transparent 2px);
+  background-size: 24px 24px;
+  opacity:.18;
+  animation: sparkles 8s linear infinite;
+}
+
+@keyframes glowMove{
+  0%   { transform: translate(-1.2%, -1.2%) scale(1); }
+  50%  { transform: translate(1.2%, 1.0%) scale(1.02); }
+  100% { transform: translate(-1.2%, -1.2%) scale(1); }
+}
+@keyframes sparkles{
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(44px); }
+}
+
+/* logo grande con “pop” */
+.loader__img{
+  width:min(320px, 86vw);
+  border-radius:22px;
+  display:block;
+  margin:0 auto;
+  position:relative;
+  z-index:2;
+  animation: logoPop 1.15s ease-out both;
+  filter: drop-shadow(0 18px 40px rgba(0,0,0,.55));
+}
+
+@keyframes logoPop{
+  0%   { transform: translateY(10px) scale(.95); opacity:0; }
+  60%  { transform: translateY(-4px) scale(1.02); opacity:1; }
+  100% { transform: translateY(0) scale(1); opacity:1; }
+}
+
+/* texto blanco fino */
 .loader__txt{
-  margin:14px 0 10px;
+  margin:16px 0 12px;
   font-weight:1000;
   font-size:18px;
+  color:#fff;
+  position:relative;
+  z-index:2;
+  letter-spacing:.2px;
+  text-shadow: 0 10px 30px rgba(0,0,0,.55);
 }
+
+/* barra pro (dorado + blanco) */
 .loader__bar{
   height:10px;
   border-radius:999px;
   overflow:hidden;
-  background:rgba(255,255,255,.12);
+  background: rgba(255,255,255,.12);
+  position:relative;
+  z-index:2;
 }
+
 .loader__barFill{
   height:100%;
   width:0%;
-  background:linear-gradient(90deg, var(--accent), #fff);
-}
-
+  border-radius:999px;
+  background: linear-gradient(90deg, rgba(200,167,74,1), rgba(255,255,255,.95));
+  }
 /* =========================
    DESKTOP
 ========================= */
