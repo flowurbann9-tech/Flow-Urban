@@ -254,12 +254,44 @@ import { STORE, PRODUCTS } from "./products.js";
 
   // Loader fast (max 1500ms)
   function fastLoader() {
-    const start = Date.now();
-    let pct = 20;
-    const tick = setInterval(() => {
-      pct = Math.min(95, pct + 10);
-      if (els.barFill) els.barFill.style.width = pct + "%";
-    }, 120);
+  if (!els.loader || !els.barFill) return;
+
+  const start = performance.now();
+  const preload = (src) =>
+    new Promise((resolve) => {
+      const img = new Image();
+      img.onload = resolve;
+      img.onerror = resolve;
+      img.src = src;
+    });
+
+  // ✅ usamos el logo (porque loader.png te está fallando)
+  const critical = ["assets/logo.png", "assets/hero.jpg"];
+
+  // por si hay internet lento: no se queda pegado
+  const timeout = new Promise((res) => setTimeout(res, 1200));
+
+  let pct = 0;
+  const tick = setInterval(() => {
+    pct = Math.min(95, pct + 7);
+    els.barFill.style.width = pct + "%";
+  }, 80);
+
+  Promise.race([Promise.all(critical.map(preload)), timeout]).then(() => {
+    clearInterval(tick);
+    els.barFill.style.width = "100%";
+
+    // ✅ para que NO se vaya de una (mínimo 1.1s visible)
+    const MIN_SHOW_MS = 1100;
+    const elapsed = performance.now() - start;
+    const delay = Math.max(320, MIN_SHOW_MS - elapsed);
+
+    setTimeout(() => {
+      els.loader.style.display = "none";
+      els.loader.setAttribute("aria-hidden", "true");
+    }, delay);
+  });
+  }
 
     const preload = (src) => new Promise((res) => {
       if (!src) return res();
