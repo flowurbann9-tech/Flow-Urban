@@ -798,3 +798,26 @@ body:not(.theme-women) .btn--gold{
   color:#fff !important;
   box-shadow: 0 10px 26px rgba(0,0,0,.18) !important;
          }
+/* ===== FIX CONTACTO + BOTÓN WA (solo HOMBRE) ===== */
+body:not(.theme-women) #contacto .h2{
+  color:#fff !important;
+}
+
+body:not(.theme-women) #contacto .muted{
+  color: rgba(255,255,255,.78) !important;
+}
+
+/* Botón “Hablar por WhatsApp” (waContact) más visible */
+body:not(.theme-women) #waContact{
+  background: linear-gradient(180deg, #c8a74a, #a9892f) !important;
+  color: #111 !important;
+  border: 0 !important;
+  box-shadow: 0 10px 24px rgba(200,167,74,.22) !important;
+}
+
+/* Si quieres que también el “Pedir por WhatsApp” del carrito se vea igual */
+body:not(.theme-women) #waOrderBtn{
+  background: linear-gradient(180deg, #c8a74a, #a9892f) !important;
+  color: #111 !important;
+  border: 0 !important;
+}
