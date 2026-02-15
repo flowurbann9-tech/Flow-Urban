@@ -571,3 +571,103 @@ body.theme-women .totalRow{
   border-top: 1px solid rgba(20,10,40,.10);
   padding-top: 10px;
 }
+/* ===========================
+   FIX FINAL MUJER + CARRITO MUJER (PEGAR AL FINAL)
+   =========================== */
+
+/* ✅ MUJER: fondo CLARO elegante (ya no negro) */
+body.theme-women{
+  background:
+    radial-gradient(900px 520px at 12% 0%, rgba(168, 85, 247, .18), transparent 60%),
+    radial-gradient(900px 520px at 92% 10%, rgba(236, 72, 153, .14), transparent 65%),
+    linear-gradient(180deg, #fbf7ff 0%, #f3ecff 55%, #f6f2ff 100%) !important;
+  color:#17131f !important;
+}
+
+/* ✅ Barra arriba (ticker/header/nav) moradita pro */
+body.theme-women .ticker{
+  background: rgba(126, 72, 200, .22) !important;
+  border-bottom: 1px solid rgba(126,72,200,.20) !important;
+  backdrop-filter: blur(10px);
+}
+body.theme-women .header{
+  background: linear-gradient(180deg, rgba(126,72,200,.22), rgba(255,255,255,.10)) !important;
+  border-bottom: 1px solid rgba(126,72,200,.18) !important;
+}
+body.theme-women .nav{
+  background: rgba(126,72,200,.14) !important;
+  border-bottom: 1px solid rgba(126,72,200,.16) !important;
+}
+body.theme-women .ticker__inner,
+body.theme-women .nav a,
+body.theme-women .brand__name,
+body.theme-women .brand__sub{
+  color:#17131f !important;
+}
+
+/* ✅ Botones MUJER/HOMBRE: que se lean y se note el activo */
+body.theme-women .genderBtn{
+  background: rgba(255,255,255,.70) !important;
+  color:#17131f !important;
+  border: 1px solid rgba(126,72,200,.25) !important;
+}
+body.theme-women #btnWomen.genderBtn--active{
+  background: linear-gradient(180deg, rgba(168,85,247,.22), rgba(236,72,153,.16)) !important;
+  border-color: rgba(168,85,247,.55) !important;
+  box-shadow: 0 12px 26px rgba(168,85,247,.18) !important;
+}
+
+/* ✅ HERO: que “URBAN NIGHTS” se vea BLANCO siempre */
+.hero__kicker{ color:#fff !important; }
+.hero__desc{ color:#fff !important; }
+
+/* ===========================
+   ✅ CARRITO MUJER PRO (rosado sutil + transparente bonito)
+   =========================== */
+
+body.theme-women .backdrop{
+  background: rgba(20,10,30,.35) !important;
+}
+
+body.theme-women .drawer{
+  background:
+    radial-gradient(900px 520px at 15% 0%, rgba(168,85,247,.14), transparent 60%),
+    radial-gradient(900px 520px at 90% 10%, rgba(236,72,153,.12), transparent 65%),
+    rgba(255,255,255,.88) !important;
+  border-left: 1px solid rgba(168,85,247,.20) !important;
+  box-shadow: 0 24px 70px rgba(20,10,40,.18) !important;
+  backdrop-filter: blur(16px);
+}
+
+/* textos */
+body.theme-women .drawer__title,
+body.theme-women .drawer strong,
+body.theme-women .drawer__body,
+body.theme-women .drawer__bottom{
+  color:#17131f !important;
+}
+body.theme-women .drawer .muted,
+body.theme-women .drawer .small{
+  color: rgba(23,19,31,.70) !important;
+}
+
+/* items del carrito más "premium" */
+body.theme-women .ci{
+  background: rgba(255,255,255,.78) !important;
+  border: 1px solid rgba(20,10,40,.10) !important;
+  box-shadow: 0 10px 26px rgba(20,10,40,.08);
+}
+
+/* botoncitos +/- y X */
+body.theme-women .qty button,
+body.theme-women .iconBtn{
+  background: rgba(168,85,247,.12) !important;
+  border: 1px solid rgba(168,85,247,.22) !important;
+  color:#17131f !important;
+}
+
+/* total más elegante */
+body.theme-women .totalRow{
+  border-top: 1px solid rgba(20,10,40,.10);
+  padding-top: 10px;
+    }
