@@ -602,3 +602,49 @@ body.theme-women .hero__desc{
   color: rgba(0,0,0,.65);
   text-shadow: 0 10px 28px rgba(0,0,0,.18);
 }
+/* =========================
+   AJUSTES MUJER: barra superior morada + URBAN NIGHTS blanco
+   Pegar AL FINAL de styles.css
+========================= */
+
+body.theme-women{
+  /* morado elegante juvenil */
+  --womenBar1: #1a1027; /* morado oscuro */
+  --womenBar2: #120a1f; /* más oscuro */
+  --womenLine: rgba(164,107,255,.22);
+}
+
+/* Barra superior (ticker + header + nav) en morado */
+body.theme-women .ticker,
+body.theme-women .header,
+body.theme-women .nav{
+  background: linear-gradient(180deg, var(--womenBar1), var(--womenBar2)) !important;
+  border-bottom: 1px solid var(--womenLine) !important;
+}
+
+/* links y textos arriba en blanco */
+body.theme-women .ticker__inner,
+body.theme-women .nav a,
+body.theme-women .brand__name,
+body.theme-women .brand__sub{
+  color: #ffffff !important;
+}
+
+/* Pill de WhatsApp arriba más pro */
+body.theme-women .pill-link{
+  background: rgba(255,255,255,.10) !important;
+  border: 1px solid rgba(255,255,255,.22) !important;
+  color:#fff !important;
+}
+
+/* URBAN NIGHTS blanco (y con sombra para que resalte) */
+body.theme-women .hero__kicker{
+  color: #ffffff !important;
+  text-shadow: 0 14px 34px rgba(0,0,0,.55) !important;
+}
+
+/* descripción también en blanco suave */
+body.theme-women .hero__desc{
+  color: rgba(255,255,255,.90) !important;
+  text-shadow: 0 12px 28px rgba(0,0,0,.45) !important;
+}
