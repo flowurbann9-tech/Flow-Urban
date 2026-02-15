@@ -650,3 +650,56 @@ body.theme-women .iconBtn{
   border: 1px solid rgba(168,85,247,.22) !important;
   color:#17131f !important;
 }
+/* =========================
+   HOMBRE: TARJETAS BLANCAS (FIX FINAL)
+   Pegar al FINAL de styles.css
+========================= */
+
+/* Cards blancas */
+body:not(.theme-women) .card{
+  background:#ffffff !important;
+  border:1px solid rgba(0,0,0,.10) !important;
+  box-shadow: 0 14px 34px rgba(0,0,0,.12) !important;
+}
+
+/* Textos dentro de la card (que se vean) */
+body:not(.theme-women) .card .title{
+  color:#111 !important;
+}
+
+body:not(.theme-women) .card .meta,
+body:not(.theme-women) .card .sizes{
+  color:#666 !important;
+}
+
+/* Precio negro bien visible */
+body:not(.theme-women) .card .price{
+  color:#111 !important;
+  font-weight:1000 !important;
+}
+
+/* Badge (Nuevo/Top) en negro pro */
+body:not(.theme-women) .badge{
+  background: rgba(0,0,0,.86) !important;
+  color:#fff !important;
+  border:0 !important;
+}
+
+/* Botón + (cuadrito) igual pro */
+body:not(.theme-women) .plus{
+  background: rgba(255,255,255,.95) !important;
+  color:#111 !important;
+}
+
+/* Botones dentro de la card */
+body:not(.theme-women) .card .btn--ghost{
+  background:#fff !important;
+  color:#111 !important;
+  border:1px solid rgba(0,0,0,.14) !important;
+}
+
+body:not(.theme-women) .card .btn--gold{
+  background: linear-gradient(180deg, #c8a74a, #a9892f) !important;
+  color:#111 !important;
+  border:0 !important;
+}
