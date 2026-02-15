@@ -566,3 +566,86 @@ body.theme-women .genderBtn--active{
   box-shadow: 0 0 0 3px rgba(164,107,255,.18);
 }
 ```0
+/* =========================
+   THEME MUJER (LILA SUAVE + TODO LEGIBLE)
+   PÉGALO AL FINAL DE styles.css
+========================= */
+
+body.theme-women{
+  /* Fondo femenino sutil (bonito y elegante) */
+  background:
+    radial-gradient(900px 500px at 20% 0%, rgba(168, 85, 247, .18), transparent 55%),
+    radial-gradient(900px 500px at 85% 20%, rgba(236, 72, 153, .12), transparent 60%),
+    linear-gradient(180deg, #fbf8ff 0%, #f3ecff 45%, #f7f5fb 100%) !important;
+
+  color:#14131a;
+}
+
+/* Barra superior / header / nav con contraste */
+body.theme-women .ticker,
+body.theme-women .header,
+body.theme-women .nav{
+  background: rgba(20, 14, 28, .70) !important;
+  border-bottom: 1px solid rgba(0,0,0,.08) !important;
+  backdrop-filter: blur(10px);
+}
+
+/* Textos del header/nav en blanco (para que se lean) */
+body.theme-women .ticker__inner,
+body.theme-women .nav a,
+body.theme-women .brand__name,
+body.theme-women .brand__sub{
+  color:#ffffff !important;
+}
+
+/* HERO: que el texto SIEMPRE se vea (blanco con sombra) */
+body.theme-women .hero__kicker,
+body.theme-women .hero__desc{
+  color:#ffffff !important;
+  text-shadow: 0 10px 26px rgba(0,0,0,.70) !important;
+}
+
+/* BOTÓN DORADO pasa a LILA en MUJER */
+body.theme-women .btn--gold{
+  background: linear-gradient(180deg, #a855f7, #7c3aed) !important;
+  color:#fff !important;
+  box-shadow: 0 12px 26px rgba(124, 58, 237, .28) !important;
+}
+
+/* Botones ghost (se ven bonitos sobre fondo claro) */
+body.theme-women .btn--ghost{
+  background: rgba(255,255,255,.55) !important;
+  color:#17141f !important;
+  border: 1px solid rgba(0,0,0,.12) !important;
+}
+
+/* Títulos y textos del catálogo en negro elegante */
+body.theme-women .h2{
+  color:#14131a !important;
+}
+body.theme-women .muted,
+body.theme-women .count,
+body.theme-women label{
+  color:#2a2235 !important;
+}
+
+/* Tarjetas y filtros con look claro */
+body.theme-women .filters,
+body.theme-women .card{
+  background: rgba(255,255,255,.72) !important;
+  border: 1px solid rgba(0,0,0,.10) !important;
+}
+body.theme-women .price{
+  color:#14131a !important;
+}
+
+/* Switch MUJER/HOMBRE: MUJER activo lila */
+body.theme-women .genderBtn--active{
+  border-color: rgba(168, 85, 247, .95) !important;
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, .18) !important;
+}
+
+/* WhatsApp flotante: borde lila cuando está en MUJER */
+body.theme-women .floatWa{
+  border-color: rgba(168, 85, 247, .95) !important;
+}
