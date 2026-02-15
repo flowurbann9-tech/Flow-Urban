@@ -671,3 +671,35 @@ body.theme-women .totalRow{
   border-top: 1px solid rgba(20,10,40,.10);
   padding-top: 10px;
     }
+/* ===== MUJER: BOTONES + CONTRASTE (Pegar al FINAL) ===== */
+body.theme-women{
+  --accent: #8b5cf6;   /* morado bonito (más fuerte) */
+  --accent2:#ec4899;   /* rosado */
+}
+
+/* Botón principal (SHOP NOW / dorado) -> morado/rosado PRO */
+body.theme-women .btn--gold{
+  background: linear-gradient(135deg, var(--accent), var(--accent2)) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255,255,255,.22) !important;
+  box-shadow: 0 14px 30px rgba(139,92,246,.26), 0 10px 22px rgba(236,72,153,.18) !important;
+}
+
+/* Botón secundario (LOOKBOOK / ghost) -> más visible */
+body.theme-women .btn--ghost{
+  background: rgba(255,255,255,.78) !important;
+  color: #2b1840 !important;
+  border: 1px solid rgba(139,92,246,.28) !important;
+  box-shadow: 0 10px 22px rgba(0,0,0,.10) !important;
+}
+
+/* Hover bonito (si hay mouse en PC) */
+@media (hover:hover){
+  body.theme-women .btn--gold:hover{
+    filter: brightness(1.05);
+    transform: translateY(-1px);
+  }
+  body.theme-women .btn--ghost:hover{
+    background: rgba(255,255,255,.90) !important;
+  }
+}
