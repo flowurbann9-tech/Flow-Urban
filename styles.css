@@ -630,3 +630,29 @@ body.theme-women .field select{
 body.theme-women .section{
   background: transparent;
 }
+/* =========================
+   TEMA MUJER (sutil + letras visibles)
+   Pegar al FINAL de styles.css
+========================= */
+
+body.theme-women{
+  /* Solo cambia el fondo (como pediste) */
+  background:
+    radial-gradient(900px 500px at 20% 0%, rgba(168, 85, 247, .16), transparent 55%),
+    radial-gradient(900px 500px at 85% 20%, rgba(236, 72, 153, .10), transparent 60%),
+    linear-gradient(180deg, #120a14 0%, #0b0b0f 55%, #0b0b0f 100%);
+}
+
+/* Para que TODO se lea bien (sin “perder” letras) */
+body.theme-women .ticker,
+body.theme-women .header,
+body.theme-women .nav{
+  background: rgba(10,10,14,.78);
+  backdrop-filter: blur(10px);
+}
+
+/* Botón activo MUJER (si ya tienes los botones) */
+.themeBtn.isActive{
+  border-color: rgba(168,85,247,.9) !important;
+  box-shadow: 0 0 0 3px rgba(168,85,247,.18);
+}
