@@ -703,9 +703,10 @@ body.theme-women .btn--ghost{
     background: rgba(255,255,255,.90) !important;
   }
 }
-/* ===== MUJER: PRECIO MAGENTA PRO ===== */
 body.theme-women .price{
-  color: #d81b60 !important;   /* magenta elegante */
-  font-weight: 1000;
+  color:#ff5db1 !important;
+  font-weight:1000;
+  text-shadow: 0 10px 22px rgba(255,93,177,.18);
 }
+```0
 
