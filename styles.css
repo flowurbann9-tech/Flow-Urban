@@ -207,9 +207,10 @@ body{
   font-weight:1000;
   letter-spacing:1px;
   text-shadow:0 12px 30px rgba(0,0,0,.65);
+  color:#fff !important; /* ✅ siempre visible */
 }
 .hero__desc{
-  color:#f3f3f6;
+  color:#fff !important; /* ✅ siempre visible */
   max-width:520px;
   font-size:18px;
   line-height:1.35;
@@ -352,7 +353,7 @@ body{
 }
 .floatWa:active{ transform: scale(0.98); }
 
-/* LOGO MÁS GRANDE (esto es lo que pediste) */
+/* ✅ Logo grande y que se vea completo */
 .floatWa .waIcon{
   width: 58px;
   height: 58px;
@@ -361,18 +362,16 @@ body{
   filter: drop-shadow(0 6px 10px rgba(0,0,0,.35));
 }
 
-/* mini pulse suave */
-@keyframes waPulse {
-  0%   { transform: translateY(0) scale(1); }
-  50%  { transform: translateY(-2px) scale(1.04); }
-  100% { transform: translateY(0) scale(1); }
+/* pulse suave */
+@keyframes waPulse{
+  0%{ transform: translateY(0) scale(1); }
+  50%{ transform: translateY(-2px) scale(1.04); }
+  100%{ transform: translateY(0) scale(1); }
 }
-.floatWa{
-  animation: waPulse 1.1s ease-in-out 2s infinite;
-}
+.floatWa{ animation: waPulse 1.1s ease-in-out 2s infinite; }
 .floatWa:hover{ animation: none; }
 
-/* En pantallas pequeñas un poquito menor */
+/* mobile */
 @media (max-width: 480px){
   .floatWa{ width:60px; height:60px; }
   .floatWa .waIcon{ width:54px; height:54px; }
@@ -521,62 +520,39 @@ body.drawerOpen .drawer{ transform:translateX(0); }
   #clearBtn{grid-column:auto}
   .grid{grid-template-columns:repeat(4,minmax(0,1fr))}
 }
-/* ===== CARRITO MUJER (CLARO + transparente + rosado sutil) ===== */
-body.theme-women .backdrop{
-  background: rgba(20,10,30,.28) !important; /* oscurece suave detrás */
+
+/* =========================================================
+   ✅ HOMBRE: SOLO HACER VISIBLE NEW DROPS + texto + cards + contacto
+   (NO cambia tu estilo, solo fuerza lectura)
+========================================================= */
+body:not(.theme-women) #catalogo .h2{ color:#fff !important; }
+body:not(.theme-women) #catalogo .muted,
+body:not(.theme-women) #catalogo .count{ color: rgba(255,255,255,.78) !important; }
+
+body:not(.theme-women) .card .title,
+body:not(.theme-women) .card .meta,
+body:not(.theme-women) .card .sizes,
+body:not(.theme-women) .card .price{ color:#fff !important; }
+
+body:not(.theme-women) #contacto .h2{ color:#fff !important; }
+body:not(.theme-women) #contacto .muted{ color: rgba(255,255,255,.78) !important; }
+
+/* botón WA visible en contacto */
+body:not(.theme-women) #waContact,
+body:not(.theme-women) #waOrderBtn{
+  background: linear-gradient(180deg, #c8a74a, #a9892f) !important;
+  color:#111 !important;
+  border:0 !important;
+  box-shadow: 0 10px 24px rgba(200,167,74,.22) !important;
 }
 
-body.theme-women .drawer{
-  /* panel claro con rosado/lila sutil */
-  background:
-    radial-gradient(900px 520px at 20% 0%, rgba(139,92,246,.14), transparent 60%),
-    radial-gradient(900px 520px at 90% 10%, rgba(255,93,177,.12), transparent 65%),
-    rgba(255,255,255,.82) !important;
-  border-left: 1px solid rgba(139,92,246,.18) !important;
-  box-shadow: 0 24px 60px rgba(20,10,40,.22) !important;
-  backdrop-filter: blur(14px);
-}
-
-/* Textos oscuros, bien legibles */
-body.theme-women .drawer__title,
-body.theme-women .drawer__body,
-body.theme-women .drawer__bottom,
-body.theme-women .drawer strong{
-  color:#17131f !important;
-}
-body.theme-women .drawer .muted,
-body.theme-women .drawer .small{
-  color: rgba(23,19,31,.70) !important;
-}
-
-/* Items del carrito estilo “card” claro */
-body.theme-women .ci{
-  background: rgba(255,255,255,.72) !important;
-  border: 1px solid rgba(20,10,40,.10) !important;
-  box-shadow: 0 10px 26px rgba(20,10,40,.10);
-}
-
-/* Botones +/- y X con rosado/lila */
-body.theme-women .qty button,
-body.theme-women .iconBtn{
-  background: rgba(139,92,246,.10) !important;
-  border: 1px solid rgba(139,92,246,.22) !important;
-  color:#1a1322 !important;
-}
-
-/* Botón “Pedir por WhatsApp” ya queda con gradiente morado/rosé por .btn--gold */
-
-/* Total más pro */
-body.theme-women .totalRow{
-  border-top: 1px solid rgba(20,10,40,.10);
-  padding-top: 10px;
-}
-/* ===========================
-   FIX FINAL MUJER + CARRITO MUJER (PEGAR AL FINAL)
-   =========================== */
-
-/* ✅ MUJER: fondo CLARO elegante (ya no negro) */
+/* =========================================================
+   ✅ MUJER: princesa clara + header morado + carrito rosado pro
+========================================================= */
 body.theme-women{
+  --accent:#8b5cf6;
+  --accent2:#ec4899;
+
   background:
     radial-gradient(900px 520px at 12% 0%, rgba(168, 85, 247, .18), transparent 60%),
     radial-gradient(900px 520px at 92% 10%, rgba(236, 72, 153, .14), transparent 65%),
@@ -584,11 +560,10 @@ body.theme-women{
   color:#17131f !important;
 }
 
-/* ✅ Barra arriba (ticker/header/nav) moradita pro */
+/* arriba moradito pro */
 body.theme-women .ticker{
   background: rgba(126, 72, 200, .22) !important;
   border-bottom: 1px solid rgba(126,72,200,.20) !important;
-  backdrop-filter: blur(10px);
 }
 body.theme-women .header{
   background: linear-gradient(180deg, rgba(126,72,200,.22), rgba(255,255,255,.10)) !important;
@@ -598,6 +573,8 @@ body.theme-women .nav{
   background: rgba(126,72,200,.14) !important;
   border-bottom: 1px solid rgba(126,72,200,.16) !important;
 }
+
+/* textos arriba legibles */
 body.theme-women .ticker__inner,
 body.theme-women .nav a,
 body.theme-women .brand__name,
@@ -605,7 +582,7 @@ body.theme-women .brand__sub{
   color:#17131f !important;
 }
 
-/* ✅ Botones MUJER/HOMBRE: que se lean y se note el activo */
+/* botones mujer/hombre legibles */
 body.theme-women .genderBtn{
   background: rgba(255,255,255,.70) !important;
   color:#17131f !important;
@@ -617,17 +594,29 @@ body.theme-women #btnWomen.genderBtn--active{
   box-shadow: 0 12px 26px rgba(168,85,247,.18) !important;
 }
 
-/* ✅ HERO: que “URBAN NIGHTS” se vea BLANCO siempre */
-.hero__kicker{ color:#fff !important; }
-.hero__desc{ color:#fff !important; }
-
-/* ===========================
-   ✅ CARRITO MUJER PRO (rosado sutil + transparente bonito)
-   =========================== */
-
-body.theme-women .backdrop{
-  background: rgba(20,10,30,.35) !important;
+/* botones pro en mujer */
+body.theme-women .btn--gold{
+  background: linear-gradient(135deg, var(--accent), var(--accent2)) !important;
+  color:#fff !important;
+  border: 1px solid rgba(255,255,255,.22) !important;
+  box-shadow: 0 14px 30px rgba(139,92,246,.26), 0 10px 22px rgba(236,72,153,.18) !important;
 }
+body.theme-women .btn--ghost{
+  background: rgba(255,255,255,.78) !important;
+  color: #2b1840 !important;
+  border: 1px solid rgba(139,92,246,.28) !important;
+  box-shadow: 0 10px 22px rgba(0,0,0,.10) !important;
+}
+
+/* precio glossy */
+body.theme-women .price{
+  color:#ff5db1 !important;
+  font-weight:1000;
+  text-shadow: 0 10px 22px rgba(255,93,177,.18);
+}
+
+/* carrito mujer claro rosado */
+body.theme-women .backdrop{ background: rgba(20,10,30,.35) !important; }
 
 body.theme-women .drawer{
   background:
@@ -639,208 +628,25 @@ body.theme-women .drawer{
   backdrop-filter: blur(16px);
 }
 
-/* textos */
+/* textos carrito legibles */
 body.theme-women .drawer__title,
 body.theme-women .drawer strong,
 body.theme-women .drawer__body,
-body.theme-women .drawer__bottom{
-  color:#17131f !important;
-}
+body.theme-women .drawer__bottom{ color:#17131f !important; }
 body.theme-women .drawer .muted,
-body.theme-women .drawer .small{
-  color: rgba(23,19,31,.70) !important;
-}
+body.theme-women .drawer .small{ color: rgba(23,19,31,.70) !important; }
 
-/* items del carrito más "premium" */
+/* items carrito */
 body.theme-women .ci{
   background: rgba(255,255,255,.78) !important;
   border: 1px solid rgba(20,10,40,.10) !important;
   box-shadow: 0 10px 26px rgba(20,10,40,.08);
 }
 
-/* botoncitos +/- y X */
+/* botoncitos */
 body.theme-women .qty button,
 body.theme-women .iconBtn{
   background: rgba(168,85,247,.12) !important;
   border: 1px solid rgba(168,85,247,.22) !important;
   color:#17131f !important;
-}
-
-/* total más elegante */
-body.theme-women .totalRow{
-  border-top: 1px solid rgba(20,10,40,.10);
-  padding-top: 10px;
-    }
-/* ===== MUJER: BOTONES + CONTRASTE (Pegar al FINAL) ===== */
-body.theme-women{
-  --accent: #8b5cf6;   /* morado bonito (más fuerte) */
-  --accent2:#ec4899;   /* rosado */
-}
-
-/* Botón principal (SHOP NOW / dorado) -> morado/rosado PRO */
-body.theme-women .btn--gold{
-  background: linear-gradient(135deg, var(--accent), var(--accent2)) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(255,255,255,.22) !important;
-  box-shadow: 0 14px 30px rgba(139,92,246,.26), 0 10px 22px rgba(236,72,153,.18) !important;
-}
-
-/* Botón secundario (LOOKBOOK / ghost) -> más visible */
-body.theme-women .btn--ghost{
-  background: rgba(255,255,255,.78) !important;
-  color: #2b1840 !important;
-  border: 1px solid rgba(139,92,246,.28) !important;
-  box-shadow: 0 10px 22px rgba(0,0,0,.10) !important;
-}
-
-/* Hover bonito (si hay mouse en PC) */
-@media (hover:hover){
-  body.theme-women .btn--gold:hover{
-    filter: brightness(1.05);
-    transform: translateY(-1px);
-  }
-  body.theme-women .btn--ghost:hover{
-    background: rgba(255,255,255,.90) !important;
-  }
-}
-body.theme-women .price{
-  color:#ff5db1 !important;
-  font-weight:1000;
-  text-shadow: 0 10px 22px rgba(255,93,177,.18);
-}
-```0
-
-/* =========================
-   TEMA HOMBRE (estilo tienda pro / blanco como la foto)
-   Pegar al FINAL de styles.css
-========================= */
-
-/* HOMBRE = todo claro (si NO está en theme-women) */
-body:not(.theme-women){
-  background:#f4f4f6 !important;
-  color:#111 !important;
-}
-
-/* Mantener header/ticker/nav negros (como la foto) */
-body:not(.theme-women) .ticker,
-body:not(.theme-women) .header,
-body:not(.theme-women) .nav{
-  background: rgba(0,0,0,.92) !important;
-  border-bottom: 1px solid rgba(255,255,255,.10) !important;
-}
-
-body:not(.theme-women) .brand__sub{ color: rgba(255,255,255,.70) !important; }
-body:not(.theme-women) .nav a{ color:#fff !important; }
-
-/* Título grande negro */
-body:not(.theme-women) .h2{
-  color:#111 !important;
-  font-size:44px;
-  font-weight:1000;
-  letter-spacing:-.5px;
-}
-
-/* Texto gris */
-body:not(.theme-women) .muted,
-body:not(.theme-women) .count{
-  color:#5a5a66 !important;
-}
-
-/* Filtros tipo e-commerce */
-body:not(.theme-women) .filters{
-  background:#fff !important;
-  border:1px solid rgba(0,0,0,.10) !important;
-  box-shadow: 0 10px 28px rgba(0,0,0,.08);
-}
-body:not(.theme-women) .field label{ color:#111 !important; }
-body:not(.theme-women) .field input,
-body:not(.theme-women) .field select{
-  background:#f6f6f8 !important;
-  border:1px solid rgba(0,0,0,.14) !important;
-  color:#111 !important;
-}
-
-/* Tarjetas blancas con borde suave (como la foto) */
-body:not(.theme-women) .card{
-  background:#fff !important;
-  border:1px solid rgba(0,0,0,.10) !important;
-  box-shadow: 0 14px 34px rgba(0,0,0,.10);
-  border-radius:22px;
-}
-body:not(.theme-women) .media{
-  background:#fff !important;
-}
-body:not(.theme-women) .badge{
-  background: rgba(0,0,0,.85) !important;
-  border: none !important;
-}
-
-/* Textos del producto */
-body:not(.theme-women) .title{ color:#111 !important; }
-body:not(.theme-women) .meta,
-body:not(.theme-women) .sizes{ color:#6a6a78 !important; }
-
-/* Precio negro bien marcado (como la foto) */
-body:not(.theme-women) .price{
-  color:#111 !important;
-  font-size:22px;
-  font-weight:1000;
-}
-
-/* Botones en blanco/negro y dorado (pro) */
-body:not(.theme-women) .btn--ghost{
-  background:#fff !important;
-  color:#111 !important;
-  border:1px solid rgba(0,0,0,.14) !important;
-}
-body:not(.theme-women) .btn--gold{
-  background: linear-gradient(180deg, #111, #000) !important;
-  color:#fff !important;
-  box-shadow: 0 10px 26px rgba(0,0,0,.18) !important;
-         }
-/* ===== FIX CONTACTO + BOTÓN WA (solo HOMBRE) ===== */
-body:not(.theme-women) #contacto .h2{
-  color:#fff !important;
-}
-
-body:not(.theme-women) #contacto .muted{
-  color: rgba(255,255,255,.78) !important;
-}
-
-/* Botón “Hablar por WhatsApp” (waContact) más visible */
-body:not(.theme-women) #waContact{
-  background: linear-gradient(180deg, #c8a74a, #a9892f) !important;
-  color: #111 !important;
-  border: 0 !important;
-  box-shadow: 0 10px 24px rgba(200,167,74,.22) !important;
-}
-
-/* Si quieres que también el “Pedir por WhatsApp” del carrito se vea igual */
-body:not(.theme-women) #waOrderBtn{
-  background: linear-gradient(180deg, #c8a74a, #a9892f) !important;
-  color: #111 !important;
-  border: 0 !important;
-}
-/* ===== FIX CONTACTO + BOTÓN WA (solo HOMBRE) ===== */
-body:not(.theme-women) #contacto .h2{
-  color:#fff !important;
-}
-
-body:not(.theme-women) #contacto .muted{
-  color: rgba(255,255,255,.78) !important;
-}
-
-/* Botón “Hablar por WhatsApp” (waContact) más visible */
-body:not(.theme-women) #waContact{
-  background: linear-gradient(180deg, #c8a74a, #a9892f) !important;
-  color: #111 !important;
-  border: 0 !important;
-  box-shadow: 0 10px 24px rgba(200,167,74,.22) !important;
-}
-
-/* Si quieres que también el “Pedir por WhatsApp” del carrito se vea igual */
-body:not(.theme-women) #waOrderBtn{
-  background: linear-gradient(180deg, #c8a74a, #a9892f) !important;
-  color: #111 !important;
-  border: 0 !important;
 }
