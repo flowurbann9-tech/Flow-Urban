@@ -785,12 +785,15 @@ body:not(.theme-women) .card .btn--gold{
   border:0 !important;
 }
 /* ✅ Loader logo bien pro */
+/* ✅ Loader: mostrar la IMAGEN loader.png grande y bonita */
 .loader__img{
-  width: 180px !important;
-  height: 180px !important;
-  object-fit: contain !important;
+  width: 100% !important;
+  max-width: 340px;
+  height: auto !important;
+  object-fit: cover !important;
   background: transparent !important;
-  border-radius: 18px;
+  border-radius: 22px;
   margin: 0 auto;
   display:block;
+  filter: drop-shadow(0 18px 40px rgba(0,0,0,.55));
 }
