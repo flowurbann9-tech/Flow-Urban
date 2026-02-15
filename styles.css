@@ -784,3 +784,13 @@ body:not(.theme-women) .card .btn--gold{
   color:#111 !important;
   border:0 !important;
 }
+/* ✅ Loader logo bien pro */
+.loader__img{
+  width: 180px !important;
+  height: 180px !important;
+  object-fit: contain !important;
+  background: transparent !important;
+  border-radius: 18px;
+  margin: 0 auto;
+  display:block;
+}
