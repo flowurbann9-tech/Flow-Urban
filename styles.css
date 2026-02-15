@@ -4,14 +4,16 @@
   --panel2:#15151c;
   --text:#f4f4f6;
   --muted:#b7b7c2;
+
   --gold:#c8a74a;
   --gold2:#a9892f;
+
   --line:rgba(200,167,74,.35);
   --shadow:0 18px 40px rgba(0,0,0,.45);
   --radius:18px;
 
-  /* acento (por defecto = dorado) */
-  --accent:#c8a74a;
+  /* accent (por defecto hombre/dorado) */
+  --accent: #c8a74a;
   --accent2:#a9892f;
 }
 
@@ -24,13 +26,20 @@ body{
   color:var(--text);
 }
 
-/* TOP TICKER */
+/* =========================
+   TOP TICKER
+========================= */
 .ticker{
   position:sticky; top:0;
   z-index:50;
   background:rgba(0,0,0,.75);
   border-bottom:1px solid rgba(255,255,255,.06);
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  /* FIX “líneas” al hacer scroll */
+  transform: translateZ(0);
+  will-change: transform;
 }
 .ticker__inner{
   display:flex; gap:12px;
@@ -49,7 +58,9 @@ body{
   background:rgba(255,255,255,.06);
 }
 
-/* HEADER */
+/* =========================
+   HEADER
+========================= */
 .header{
   display:flex;
   justify-content:space-between;
@@ -57,6 +68,10 @@ body{
   padding:14px 14px;
   background:linear-gradient(180deg, rgba(0,0,0,.65), rgba(0,0,0,.25));
   border-bottom:1px solid rgba(255,255,255,.06);
+
+  /* FIX “líneas” */
+  transform: translateZ(0);
+  will-change: transform;
 }
 .header__left{display:flex; gap:12px; align-items:center}
 .brand__logo{
@@ -68,12 +83,18 @@ body{
 .brand__sub{color:var(--muted); font-size:13px; margin-top:2px}
 .header__right{display:flex; gap:10px; align-items:center}
 
-/* NAV */
+/* =========================
+   NAV
+========================= */
 .nav{
   display:flex; gap:22px;
   padding:12px 14px;
   background:rgba(0,0,0,.35);
   border-bottom:1px solid rgba(255,255,255,.06);
+
+  /* FIX “líneas” */
+  transform: translateZ(0);
+  will-change: transform;
 }
 .nav a{
   color:#fff;
@@ -84,9 +105,11 @@ body{
 }
 .nav a:hover{opacity:1}
 
-/* SWITCH MUJER/HOMBRE */
+/* =========================
+   SWITCH MUJER / HOMBRE
+========================= */
 .genderSwitch{
-  padding:10px 14px 0;
+  padding:12px 14px 0;
   display:flex;
   gap:10px;
   align-items:center;
@@ -102,11 +125,13 @@ body{
   cursor:pointer;
 }
 .genderBtn--active{
-  border-color: rgba(255,255,255,.25);
-  box-shadow: 0 10px 22px rgba(0,0,0,.18);
+  border-color: rgba(200,167,74,.95);
+  box-shadow: 0 10px 22px rgba(200,167,74,.18);
 }
 
-/* BUTTONS */
+/* =========================
+   BUTTONS
+========================= */
 .btn{
   appearance:none;
   border:0;
@@ -123,9 +148,9 @@ body{
   user-select:none;
 }
 .btn--gold{
-  background:linear-gradient(180deg, var(--gold), var(--gold2));
+  background:linear-gradient(180deg, var(--accent), var(--accent2));
   color:#111;
-  box-shadow:0 10px 24px rgba(200,167,74,.22);
+  box-shadow:0 10px 24px rgba(0,0,0,.25);
 }
 .btn--ghost{
   background:rgba(255,255,255,.06);
@@ -157,11 +182,10 @@ body{
   border:1px solid var(--line);
 }
 
-/* HERO */
-.hero{
-  position:relative;
-  padding:14px;
-}
+/* =========================
+   HERO
+========================= */
+.hero{ position:relative; padding:14px; }
 .hero__img{
   width:100%;
   height:360px;
@@ -191,16 +215,12 @@ body{
   line-height:1.35;
   text-shadow:0 12px 30px rgba(0,0,0,.65);
 }
-.hero__actions{
-  display:flex;
-  gap:12px;
-  margin-top:14px;
-}
+.hero__actions{ display:flex; gap:12px; margin-top:14px; }
 
-/* SECTIONS */
-.section{
-  padding:18px 14px 34px;
-}
+/* =========================
+   SECTIONS
+========================= */
+.section{ padding:18px 14px 34px; }
 .section--dark{
   background:rgba(255,255,255,.03);
   border-top:1px solid rgba(255,255,255,.06);
@@ -213,7 +233,9 @@ body{
 .muted{color:var(--muted)}
 .count{margin:14px 2px; color:var(--muted)}
 
-/* FILTERS */
+/* =========================
+   FILTERS
+========================= */
 .filters{
   background:rgba(255,255,255,.06);
   border:1px solid rgba(255,255,255,.10);
@@ -236,7 +258,9 @@ body{
 }
 #clearBtn{grid-column:1 / -1}
 
-/* PRODUCTS GRID (2 en 2) */
+/* =========================
+   PRODUCTS GRID (2 en 2)
+========================= */
 .grid{
   margin-top:16px;
   display:grid;
@@ -258,15 +282,10 @@ body{
   align-items:center;
   justify-content:center;
 }
-.media img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
+.media img{ width:100%; height:100%; object-fit:cover; }
 .badge{
   position:absolute;
-  top:10px;
-  left:10px;
+  top:10px; left:10px;
   background:rgba(0,0,0,.65);
   border:1px solid rgba(255,255,255,.18);
   color:#fff;
@@ -275,19 +294,11 @@ body{
   font-weight:900;
   font-size:12px;
 }
-.hit{
-  position:absolute;
-  inset:0;
-  background:transparent;
-  border:0;
-  cursor:pointer;
-}
+.hit{ position:absolute; inset:0; background:transparent; border:0; cursor:pointer; }
 .plus{
   position:absolute;
-  right:12px;
-  bottom:12px;
-  width:44px;
-  height:44px;
+  right:12px; bottom:12px;
+  width:44px; height:44px;
   border-radius:12px;
   display:flex;
   align-items:center;
@@ -297,7 +308,7 @@ body{
   color:#111;
   box-shadow:0 10px 22px rgba(0,0,0,.25);
 }
-.card__body{padding:12px}
+.card__body{ padding:12px; }
 .title{font-weight:1000; line-height:1.1}
 .meta{color:var(--muted); font-weight:800; font-size:13px; margin-top:4px}
 .price{margin-top:8px; font-weight:1000; color:#fff}
@@ -309,14 +320,67 @@ body{
   margin-top:12px;
 }
 
-/* CONTACT */
-.contactBtns{
-  display:flex;
-  gap:10px;
-  margin:12px 0 14px;
+/* =========================
+   CONTACT
+========================= */
+.contactBtns{ display:flex; gap:10px; margin:12px 0 14px; }
+
+/* =========================
+   FLOATING WHATSAPP (REDONDO PRO + LOGO GRANDE)
+========================= */
+.floatWa{
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  background: rgba(20, 20, 24, 0.92);
+  border: 2px solid var(--accent);
+  box-shadow: 0 14px 30px rgba(0,0,0,.45);
+  display: grid;
+  place-items: center;
+  z-index: 9999;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.floatWa:hover{
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 18px 40px rgba(0,0,0,.55);
+  background: rgba(25, 25, 30, 0.95);
+}
+.floatWa:active{ transform: scale(0.98); }
+
+/* LOGO MÁS GRANDE (esto es lo que pediste) */
+.floatWa .waIcon{
+  width: 58px;
+  height: 58px;
+  object-fit: cover;
+  border-radius: 999px;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,.35));
 }
 
-/* CART DRAWER */
+/* mini pulse suave */
+@keyframes waPulse {
+  0%   { transform: translateY(0) scale(1); }
+  50%  { transform: translateY(-2px) scale(1.04); }
+  100% { transform: translateY(0) scale(1); }
+}
+.floatWa{
+  animation: waPulse 1.1s ease-in-out 2s infinite;
+}
+.floatWa:hover{ animation: none; }
+
+/* En pantallas pequeñas un poquito menor */
+@media (max-width: 480px){
+  .floatWa{ width:60px; height:60px; }
+  .floatWa .waIcon{ width:54px; height:54px; }
+}
+
+/* =========================
+   CART DRAWER
+========================= */
 .backdrop{
   position:fixed;
   inset:0;
@@ -339,13 +403,8 @@ body{
   display:flex;
   flex-direction:column;
 }
-body.drawerOpen .backdrop{
-  opacity:1;
-  pointer-events:auto;
-}
-body.drawerOpen .drawer{
-  transform:translateX(0);
-}
+body.drawerOpen .backdrop{ opacity:1; pointer-events:auto; }
+body.drawerOpen .drawer{ transform:translateX(0); }
 
 .drawer__top{
   display:flex;
@@ -363,15 +422,8 @@ body.drawerOpen .drawer{
   padding:10px 12px;
   cursor:pointer;
 }
-.drawer__body{
-  padding:16px;
-  overflow:auto;
-  flex:1;
-}
-.drawer__bottom{
-  padding:16px;
-  border-top:1px solid rgba(255,255,255,.08);
-}
+.drawer__body{ padding:16px; overflow:auto; flex:1; }
+.drawer__bottom{ padding:16px; border-top:1px solid rgba(255,255,255,.08); }
 .totalRow{
   display:flex;
   justify-content:space-between;
@@ -407,11 +459,7 @@ body.drawerOpen .drawer{
   justify-content:space-between;
   margin-top:10px;
 }
-.qty{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
+.qty{ display:flex; align-items:center; gap:10px; }
 .qty button{
   width:34px;height:34px;
   border-radius:12px;
@@ -423,7 +471,9 @@ body.drawerOpen .drawer{
 }
 .trash{padding:10px 12px}
 
-/* LOADER */
+/* =========================
+   LOADER
+========================= */
 .loader{
   position:fixed;
   inset:0;
@@ -442,11 +492,7 @@ body.drawerOpen .drawer{
   text-align:center;
   box-shadow:var(--shadow);
 }
-.loader__img{
-  width:100%;
-  border-radius:18px;
-  display:block;
-}
+.loader__img{ width:100%; border-radius:18px; display:block; }
 .loader__txt{
   margin:14px 0 10px;
   font-weight:1000;
@@ -461,10 +507,12 @@ body.drawerOpen .drawer{
 .loader__barFill{
   height:100%;
   width:0%;
-  background:linear-gradient(90deg, var(--gold), #fff);
+  background:linear-gradient(90deg, var(--accent), #fff);
 }
 
-/* DESKTOP */
+/* =========================
+   DESKTOP
+========================= */
 @media (min-width: 900px){
   .hero__img{height:440px}
   .hero__kicker{font-size:72px}
@@ -474,95 +522,83 @@ body.drawerOpen .drawer{
   .grid{grid-template-columns:repeat(4,minmax(0,1fr))}
 }
 
-/* =========================
-   WHATSAPP FLOAT FINAL
-========================= */
-@keyframes waPulse{
-  0%{ transform:translateY(0) scale(1); box-shadow:0 14px 30px rgba(0,0,0,.45); }
-  50%{ transform:translateY(-2px) scale(1.04); box-shadow:0 18px 42px rgba(0,0,0,.55); }
-  100%{ transform:translateY(0) scale(1); box-shadow:0 14px 30px rgba(0,0,0,.45); }
-}
-
-.floatWa{
-  position:fixed;
-  right:18px;
-  bottom:18px;
-  width:68px;
-  height:68px;
-  border-radius:999px;
-  background:rgba(20,20,24,.92);
-  border:2px solid var(--accent);
-  display:grid;
-  place-items:center;
-  z-index:9999;
-  backdrop-filter: blur(10px);
-  transition: transform .18s ease, box-shadow .18s ease;
-  animation: waPulse 1.1s ease-in-out 2s infinite;
-}
-
-.floatWa:hover{
-  animation:none;
-  transform: translateY(-3px) scale(1.03);
-  box-shadow:0 18px 40px rgba(0,0,0,.55);
-}
-
-.floatWa:active{ transform: scale(.98); }
-
-.floatWa .waIcon{
-  width:60px;
-  height:60px;
-  object-fit:contain;
-  border-radius:999px;
-  filter: drop-shadow(0 6px 10px rgba(0,0,0,.35));
-}
-
-@media (max-width: 480px){
-  .floatWa{ width:64px; height:64px; right:14px; bottom:14px; }
-  .floatWa .waIcon{ width:56px; height:56px; }
-}
-
-/* =========================
-   THEME MUJER (LILA SUAVE)
-   Solo cambia fondo + acento
-========================= */
+/* =========================================================
+   TEMA MUJER (FONDO FEMENINO SUTIL + TEXTOS VISIBLES + FIX LÍNEAS)
+   Se activa con: body.theme-women
+========================================================= */
 body.theme-women{
-  --accent:#a46bff;
+  --accent: #a46bff;
   --accent2:#7b3cff;
 
+  /* Fondo sutil femenino */
   background:
-    radial-gradient(900px 500px at 20% 0%, rgba(190,150,255,.20), transparent 55%),
-    radial-gradient(900px 500px at 80% 10%, rgba(225,200,255,.18), transparent 60%),
-    #f3f1f7 !important;
-
+    radial-gradient(900px 500px at 20% 0%, rgba(168, 85, 247, .16), transparent 55%),
+    radial-gradient(900px 500px at 85% 20%, rgba(236, 72, 153, .10), transparent 60%),
+    #f3f1f7;
   color:#121217;
 }
 
-/* que se lea todo */
-body.theme-women .h2,
-body.theme-women .muted,
-body.theme-women .count,
-body.theme-women label{
-  color:#1a1a1f !important;
-}
-
-/* barras superiores oscuras (bonitas y legibles) */
+/* Mantener barra superior/menus OSCUROS para que NO aparezcan líneas blancas */
 body.theme-women .ticker,
 body.theme-women .header,
 body.theme-women .nav{
-  background: rgba(0,0,0,.72);
-  color:#fff;
-  backdrop-filter: blur(10px);
+  background: rgba(20,20,26,.96) !important;
+  border-bottom: 1px solid rgba(255,255,255,.08) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+
+  /* FIX extra de seams */
+  transform: translateZ(0);
 }
 
-/* botón principal en morado SOLO en mujeres */
-body.theme-women .btn--gold{
-  background: linear-gradient(180deg, var(--accent), var(--accent2)) !important;
-  box-shadow:0 10px 24px rgba(0,0,0,.25) !important;
+/* Textos generales en blanco donde toca */
+body.theme-women .ticker__inner,
+body.theme-women .nav a,
+body.theme-women .brand__name,
+body.theme-women .brand__sub{
+  color:#f4f4f6 !important;
 }
 
-/* activo del switch en mujeres */
+/* Botones MUJER / HOMBRE ahora sí se ven */
+body.theme-women .genderBtn{
+  background: rgba(255,255,255,.70);
+  color:#1a1a1f;
+  border:1px solid rgba(164,107,255,.35);
+}
 body.theme-women .genderBtn--active{
-  border-color: rgba(164,107,255,.85);
+  background: rgba(164,107,255,.20);
+  border-color: rgba(164,107,255,.95);
   box-shadow: 0 0 0 3px rgba(164,107,255,.18);
+  color:#121217;
 }
-```0
+
+/* Títulos y textos del catálogo en modo mujer */
+body.theme-women .h2,
+body.theme-women .muted,
+body.theme-women .count,
+body.theme-women .field label{
+  color:#1a1a1f !important;
+}
+
+/* Cartas del catálogo un poquito más claras en modo mujer */
+body.theme-women .card{
+  background: rgba(255,255,255,.75);
+  border: 1px solid rgba(0,0,0,.06);
+}
+body.theme-women .meta,
+body.theme-women .sizes{
+  color: rgba(20,20,26,.72) !important;
+}
+body.theme-women .price{
+  color:#121217;
+}
+
+/* Mantener el hero legible */
+body.theme-women .hero__kicker{
+  color: rgba(0,0,0,.70);
+  text-shadow: 0 10px 28px rgba(0,0,0,.22);
+}
+body.theme-women .hero__desc{
+  color: rgba(0,0,0,.65);
+  text-shadow: 0 10px 28px rgba(0,0,0,.18);
+}
