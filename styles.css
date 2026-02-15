@@ -566,17 +566,3 @@ body.theme-women .genderBtn--active{
   box-shadow: 0 0 0 3px rgba(164,107,255,.18);
 }
 ```0
-/* FIX: líneas blancas entrecortadas al scrollear en MUJER */
-body.theme-women .ticker,
-body.theme-women .header,
-body.theme-women .nav{
-  background: #1a1422 !important;   /* sólido, sin transparencias */
-  border-bottom: 0 !important;     /* quita la línea */
-  backdrop-filter: none !important; /* quita blur (causa el bug) */
-  -webkit-backdrop-filter: none !important;
-}
-
-/* Opcional: separador limpio (no cortado) */
-body.theme-women .nav{
-  box-shadow: 0 1px 0 rgba(255,255,255,.10) !important;
-}
