@@ -2,7 +2,8 @@ import { STORE, PRODUCTS } from "./products.js";
 
 (() => {
   const WA_NUMBER = STORE?.whatsappNumber || "593962722395";
-  const WA_TEXT_DEFAULT = "Hola Flow Urban 👋🔥 Quiero hacer un pedido 🛍️ ¿Me ayudas, por favor?";
+  const WA_TEXT_DEFAULT =
+    "Hola Flow Urban 👋🔥 Quiero hacer un pedido 🛍️ ¿Me ayudas, por favor?";
 
   const els = {
     topWa: document.getElementById("topWa"),
@@ -39,7 +40,10 @@ import { STORE, PRODUCTS } from "./products.js";
 
   const money = (n) => {
     try {
-      return new Intl.NumberFormat("es-EC", { style: "currency", currency: "USD" }).format(n);
+      return new Intl.NumberFormat("es-EC", {
+        style: "currency",
+        currency: "USD",
+      }).format(n);
     } catch {
       return `$${Number(n || 0).toFixed(2)}`.replace(".", ",");
     }
@@ -47,7 +51,9 @@ import { STORE, PRODUCTS } from "./products.js";
 
   const isVideo = (url) => /\.(mp4|webm|ogg)$/i.test(url || "");
 
-  // Cart in localStorage
+  // =========================
+  // CART (localStorage)
+  // =========================
   const CART_KEY = "flowurban_cart_v1";
   const loadCart = () => {
     try {
@@ -65,14 +71,16 @@ import { STORE, PRODUCTS } from "./products.js";
   const cartTotal = () => {
     let total = 0;
     for (const [id, qty] of Object.entries(cart)) {
-      const p = PRODUCTS.find(x => x.id === id);
+      const p = PRODUCTS.find((x) => x.id === id);
       if (!p) continue;
       total += (p.price || 0) * qty;
     }
     return total;
   };
 
-  // Drawer controls
+  // =========================
+  // DRAWER
+  // =========================
   function openDrawer() {
     document.body.classList.add("drawerOpen");
     els.cartDrawer?.setAttribute("aria-hidden", "false");
@@ -84,7 +92,9 @@ import { STORE, PRODUCTS } from "./products.js";
     els.backdrop?.setAttribute("aria-hidden", "true");
   }
 
-  // ✅ PONE EL NÚMERO EN TODOS LOS BOTONES (ARRIBA / HEADER / CONTACTO / FLOTANTE)
+  // =========================
+  // WHATSAPP LINKS
+  // =========================
   function setWaLinks() {
     if (els.topWa) els.topWa.href = waLink();
     if (els.waHeader) els.waHeader.href = waLink();
@@ -95,37 +105,40 @@ import { STORE, PRODUCTS } from "./products.js";
     if (els.igBtn) els.igBtn.href = "#";
     if (els.ttBtn) els.ttBtn.href = "#";
 
-    // botón del pedido (se actualiza con el mensaje real en renderCart)
     if (els.waOrderBtn) els.waOrderBtn.href = waLink("Hola! Quiero hacer un pedido.");
   }
 
-  // Filters / sort
+  // =========================
+  // FILTERS
+  // =========================
   function buildCategorySelect() {
-    const cats = ["Todas", ...Array.from(new Set(PRODUCTS.map(p => p.category))).sort()];
+    const cats = ["Todas", ...Array.from(new Set(PRODUCTS.map((p) => p.category))).sort()];
     if (!els.categorySelect) return;
-    els.categorySelect.innerHTML = cats.map(c => `<option value="${c}">${c}</option>`).join("");
+    els.categorySelect.innerHTML = cats.map((c) => `<option value="${c}">${c}</option>`).join("");
   }
 
   function applyFilters() {
     const q = (els.searchInput?.value || "").trim().toLowerCase();
     const cat = els.categorySelect?.value || "Todas";
 
-    let out = PRODUCTS.filter(p => {
+    let out = PRODUCTS.filter((p) => {
       const matchQ = !q || `${p.name} ${p.category}`.toLowerCase().includes(q);
       const matchCat = cat === "Todas" || p.category === cat;
       return matchQ && matchCat;
     });
 
     const sort = els.sortSelect?.value || "featured";
-    if (sort === "priceAsc") out.sort((a,b) => (a.price||0)-(b.price||0));
-    if (sort === "priceDesc") out.sort((a,b) => (b.price||0)-(a.price||0));
-    if (sort === "nameAsc") out.sort((a,b) => (a.name||"").localeCompare(b.name||""));
-    if (sort === "featured") out.sort((a,b) => (b.featured===true)-(a.featured===true));
+    if (sort === "priceAsc") out.sort((a, b) => (a.price || 0) - (b.price || 0));
+    if (sort === "priceDesc") out.sort((a, b) => (b.price || 0) - (a.price || 0));
+    if (sort === "nameAsc") out.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+    if (sort === "featured") out.sort((a, b) => (b.featured === true) - (a.featured === true));
 
     return out;
   }
 
-  // Product Card
+  // =========================
+  // PRODUCT CARD
+  // =========================
   function productCardHTML(p) {
     const badge = p.tag ? `<div class="badge">${p.tag}</div>` : "";
     const plus = `<div class="plus" aria-hidden="true">+</div>`;
@@ -141,7 +154,8 @@ import { STORE, PRODUCTS } from "./products.js";
         <div class="media">
           ${badge}
           ${mediaHTML}
-          <button class="hit" data-add="${p.id}" title="Agregar" style="all:unset;cursor:pointer;position:absolute;inset:0">
+          <button class="hit" data-add="${p.id}" title="Agregar"
+            style="all:unset;cursor:pointer;position:absolute;inset:0">
             ${plus}
           </button>
         </div>
@@ -149,7 +163,7 @@ import { STORE, PRODUCTS } from "./products.js";
           <div class="title">${p.name}</div>
           <div class="meta">${p.category}</div>
           <div class="price">${money(p.price || 0)}</div>
-          <div class="sizes">Tallas: ${(p.sizes||[]).join(", ")}</div>
+          <div class="sizes">Tallas: ${(p.sizes || []).join(", ")}</div>
           <div class="actions">
             <button class="btn btn--ghost" data-view="${p.id}" type="button">Ver</button>
             <button class="btn btn--gold" data-add="${p.id}" type="button">Agregar</button>
@@ -165,10 +179,13 @@ import { STORE, PRODUCTS } from "./products.js";
     if (els.productsGrid) els.productsGrid.innerHTML = filtered.map(productCardHTML).join("");
 
     requestAnimationFrame(() => {
-      els.productsGrid?.querySelectorAll("video").forEach(v => v.play().catch(() => {}));
+      els.productsGrid?.querySelectorAll("video").forEach((v) => v.play().catch(() => {}));
     });
   }
 
+  // =========================
+  // CART RENDER
+  // =========================
   function renderCart() {
     if (!els.cartCount || !els.cartTotal || !els.cartItems || !els.waOrderBtn) return;
 
@@ -185,41 +202,44 @@ import { STORE, PRODUCTS } from "./products.js";
     const lines = [];
     let msg = `Hola! Quiero hacer este pedido en Flow Urban:\n\n`;
 
-    els.cartItems.innerHTML = entries.map(([id, qty]) => {
-      const p = PRODUCTS.find(x => x.id === id);
-      if (!p) return "";
+    els.cartItems.innerHTML = entries
+      .map(([id, qty]) => {
+        const p = PRODUCTS.find((x) => x.id === id);
+        if (!p) return "";
 
-      const line = `• ${p.name} (${(p.sizes||[]).join("/")}) x${qty} — ${money((p.price||0)*qty)}`;
-      lines.push(line);
+        const line = `• ${p.name} (${(p.sizes || []).join("/")}) x${qty} — ${money(
+          (p.price || 0) * qty
+        )}`;
+        lines.push(line);
 
-      const imgSrc = (p.media && !isVideo(p.media)) ? p.media : "assets/logo.png";
+        const imgSrc = p.media && !isVideo(p.media) ? p.media : "assets/logo.png";
 
-      return `
-        <div class="ci">
-          <div class="ci__img">
-            <img src="${imgSrc}" alt="${p.name}"
-              onerror="this.onerror=null; this.src='assets/logo.png'; this.style.objectFit='contain'; this.style.padding='10px';" />
-          </div>
-          <div>
-            <div class="ci__name">${p.name}</div>
-            <div class="ci__sub">${p.category} • ${money(p.price||0)}</div>
-            <div class="ci__row">
-              <div class="qty">
-                <button type="button" data-dec="${id}">−</button>
-                <strong>${qty}</strong>
-                <button type="button" data-inc="${id}">+</button>
+        return `
+          <div class="ci">
+            <div class="ci__img">
+              <img src="${imgSrc}" alt="${p.name}"
+                onerror="this.onerror=null; this.src='assets/logo.png'; this.style.objectFit='contain'; this.style.padding='10px';" />
+            </div>
+            <div>
+              <div class="ci__name">${p.name}</div>
+              <div class="ci__sub">${p.category} • ${money(p.price || 0)}</div>
+              <div class="ci__row">
+                <div class="qty">
+                  <button type="button" data-dec="${id}">−</button>
+                  <strong>${qty}</strong>
+                  <button type="button" data-inc="${id}">+</button>
+                </div>
+                <button class="iconBtn trash" type="button" data-del="${id}" title="Quitar">🗑</button>
               </div>
-              <button class="iconBtn trash" type="button" data-del="${id}" title="Quitar">🗑</button>
             </div>
           </div>
-        </div>
-      `;
-    }).join("");
+        `;
+      })
+      .join("");
 
     msg += lines.join("\n");
     msg += `\n\nTotal: ${money(cartTotal())}\n\n¿Me confirmas disponibilidad y envío?`;
 
-    // ✅ SIEMPRE AL NÚMERO NUEVO
     els.waOrderBtn.href = waLink(msg);
   }
 
@@ -247,79 +267,85 @@ import { STORE, PRODUCTS } from "./products.js";
   }
 
   function viewProduct(id) {
-    const p = PRODUCTS.find(x => x.id === id);
+    const p = PRODUCTS.find((x) => x.id === id);
     if (!p) return;
-    alert(`${p.name}\n${p.category}\n${money(p.price||0)}\nTallas: ${(p.sizes||[]).join(", ")}`);
+    alert(`${p.name}\n${p.category}\n${money(p.price || 0)}\nTallas: ${(p.sizes || []).join(", ")}`);
   }
 
-  // Loader fast (max 1500ms)
+  // =========================
+  // LOADER (USA loader.png, Y NUNCA SE QUEDA PEGADO)
+  // =========================
   function fastLoader() {
-  if (!els.loader || !els.barFill) return;
+    if (!els.loader) return;
 
-  const start = performance.now();
-  const preload = (src) =>
-    new Promise((resolve) => {
-      const img = new Image();
-      img.onload = resolve;
-      img.onerror = resolve;
-      img.src = src;
-    });
+    const bar = els.barFill;
+    let pct = 0;
 
-  // ✅ usamos el logo (porque loader.png te está fallando)
-  const critical = ["assets/logo.png", "assets/hero.jpg"];
+    const tick = setInterval(() => {
+      pct = Math.min(92, pct + 6);
+      if (bar) bar.style.width = pct + "%";
+    }, 80);
 
-  // por si hay internet lento: no se queda pegado
-  const timeout = new Promise((res) => setTimeout(res, 1200));
+    const preload = (src) =>
+      new Promise((resolve) => {
+        const img = new Image();
+        img.onload = resolve;
+        img.onerror = resolve;
+        img.src = src;
+      });
 
-  let pct = 0;
-  const tick = setInterval(() => {
-    pct = Math.min(95, pct + 7);
-    els.barFill.style.width = pct + "%";
-  }, 80);
+    // ✅ CRÍTICOS (incluye loader.png)
+    const critical = ["assets/loader.png", "assets/hero.jpg", "assets/logo.png"];
 
-  Promise.race([Promise.all(critical.map(preload)), timeout]).then(() => {
-    clearInterval(tick);
-    els.barFill.style.width = "100%";
-
-    // ✅ para que NO se vaya de una (mínimo 1.1s visible)
-    const MIN_SHOW_MS = 1100;
-    const elapsed = performance.now() - start;
-    const delay = Math.max(320, MIN_SHOW_MS - elapsed);
-
-    setTimeout(() => {
-      els.loader.style.display = "none";
-      els.loader.setAttribute("aria-hidden", "true");
-    }, delay);
-  });
-  }
-
-    const preload = (src) => new Promise((res) => {
-      if (!src) return res();
-      const img = new Image();
-      img.onload = () => res();
-      img.onerror = () => res();
-      img.src = src;
-    });
-
-    const critical = ["assets/logo.png","assets/loader.png","assets/hero.jpg"];
-    const timeout = new Promise((res) => setTimeout(res, 1500));
+    // ✅ Plan B para no quedarse pegado por internet lento
+    const timeout = new Promise((res) => setTimeout(res, 1600));
 
     Promise.race([Promise.all(critical.map(preload)), timeout]).then(() => {
       clearInterval(tick);
-      if (els.barFill) els.barFill.style.width = "100%";
+      if (bar) bar.style.width = "100%";
+
+      // mínimo visible para que no “parpadee”
       setTimeout(() => {
-        if (els.loader) {
-          els.loader.style.display = "none";
-          els.loader.setAttribute("aria-hidden","true");
-        }
-      }, Math.max(0, 250 - (Date.now() - start)));
+        els.loader.style.display = "none";
+        els.loader.setAttribute("aria-hidden", "true");
+      }, 350);
     });
+
+    // ✅ ULTRA SEGURO: aunque haya error, se apaga en 4.5s
+    setTimeout(() => {
+      if (!els.loader) return;
+      els.loader.style.display = "none";
+      els.loader.setAttribute("aria-hidden", "true");
+    }, 4500);
   }
 
+  // =========================
+  // THEME SWITCH (UNA SOLA VEZ)
+  // =========================
+  function initThemeSwitch() {
+    const btnWomen = document.getElementById("btnWomen");
+    const btnMen = document.getElementById("btnMen");
+    if (!btnWomen || !btnMen) return;
+
+    const applyTheme = (t) => {
+      document.body.classList.toggle("theme-women", t === "women");
+      btnWomen.classList.toggle("genderBtn--active", t === "women");
+      btnMen.classList.toggle("genderBtn--active", t === "men");
+      localStorage.setItem("flowurban_theme", t);
+    };
+
+    applyTheme(localStorage.getItem("flowurban_theme") || "men");
+
+    btnWomen.addEventListener("click", () => applyTheme("women"));
+    btnMen.addEventListener("click", () => applyTheme("men"));
+  }
+
+  // =========================
+  // UI WIRES
+  // =========================
   function wireUI() {
     setWaLinks();
 
-    // ✅ asegurar que el drawer esté cerrado al cargar
     closeDrawer();
     renderCart();
 
@@ -370,43 +396,8 @@ import { STORE, PRODUCTS } from "./products.js";
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    // ===== SWITCH MUJER / HOMBRE =====
-const btnWomen = document.getElementById("btnWomen");
-const btnMen = document.getElementById("btnMen");
-
-const applyTheme = (t) => {
-  document.body.classList.toggle("theme-women", t === "women");
-  if (btnWomen) btnWomen.classList.toggle("genderBtn--active", t === "women");
-  if (btnMen) btnMen.classList.toggle("genderBtn--active", t === "men");
-  localStorage.setItem("flowurban_theme", t);
-};
-
-// al abrir la web, recuerda la última opción
-applyTheme(localStorage.getItem("flowurban_theme") || "men");
-
-// clicks
-if (btnWomen) btnWomen.addEventListener("click", () => applyTheme("women"));
-if (btnMen) btnMen.addEventListener("click", () => applyTheme("men"));
+    initThemeSwitch();
     wireUI();
     fastLoader();
   });
-})();
-// ===== MUJERES / HOMBRES THEME SWITCH =====
-(() => {
-  const btnWomen = document.getElementById("btnWomen");
-  const btnMen = document.getElementById("btnMen");
-  if (!btnWomen || !btnMen) return;
-
-  const setTheme = (theme) => {
-    document.body.classList.toggle("theme-women", theme === "women");
-    btnWomen.classList.toggle("genderBtn--active", theme === "women");
-    btnMen.classList.toggle("genderBtn--active", theme === "men");
-    localStorage.setItem("flowurban_theme", theme);
-  };
-
-  const saved = localStorage.getItem("flowurban_theme") || "men";
-  setTheme(saved);
-
-  btnWomen.addEventListener("click", () => setTheme("women"));
-  btnMen.addEventListener("click", () => setTheme("men"));
 })();
