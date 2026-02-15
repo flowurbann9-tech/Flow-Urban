@@ -710,3 +710,91 @@ body.theme-women .price{
 }
 ```0
 
+/* =========================
+   TEMA HOMBRE (estilo tienda pro / blanco como la foto)
+   Pegar al FINAL de styles.css
+========================= */
+
+/* HOMBRE = todo claro (si NO está en theme-women) */
+body:not(.theme-women){
+  background:#f4f4f6 !important;
+  color:#111 !important;
+}
+
+/* Mantener header/ticker/nav negros (como la foto) */
+body:not(.theme-women) .ticker,
+body:not(.theme-women) .header,
+body:not(.theme-women) .nav{
+  background: rgba(0,0,0,.92) !important;
+  border-bottom: 1px solid rgba(255,255,255,.10) !important;
+}
+
+body:not(.theme-women) .brand__sub{ color: rgba(255,255,255,.70) !important; }
+body:not(.theme-women) .nav a{ color:#fff !important; }
+
+/* Título grande negro */
+body:not(.theme-women) .h2{
+  color:#111 !important;
+  font-size:44px;
+  font-weight:1000;
+  letter-spacing:-.5px;
+}
+
+/* Texto gris */
+body:not(.theme-women) .muted,
+body:not(.theme-women) .count{
+  color:#5a5a66 !important;
+}
+
+/* Filtros tipo e-commerce */
+body:not(.theme-women) .filters{
+  background:#fff !important;
+  border:1px solid rgba(0,0,0,.10) !important;
+  box-shadow: 0 10px 28px rgba(0,0,0,.08);
+}
+body:not(.theme-women) .field label{ color:#111 !important; }
+body:not(.theme-women) .field input,
+body:not(.theme-women) .field select{
+  background:#f6f6f8 !important;
+  border:1px solid rgba(0,0,0,.14) !important;
+  color:#111 !important;
+}
+
+/* Tarjetas blancas con borde suave (como la foto) */
+body:not(.theme-women) .card{
+  background:#fff !important;
+  border:1px solid rgba(0,0,0,.10) !important;
+  box-shadow: 0 14px 34px rgba(0,0,0,.10);
+  border-radius:22px;
+}
+body:not(.theme-women) .media{
+  background:#fff !important;
+}
+body:not(.theme-women) .badge{
+  background: rgba(0,0,0,.85) !important;
+  border: none !important;
+}
+
+/* Textos del producto */
+body:not(.theme-women) .title{ color:#111 !important; }
+body:not(.theme-women) .meta,
+body:not(.theme-women) .sizes{ color:#6a6a78 !important; }
+
+/* Precio negro bien marcado (como la foto) */
+body:not(.theme-women) .price{
+  color:#111 !important;
+  font-size:22px;
+  font-weight:1000;
+}
+
+/* Botones en blanco/negro y dorado (pro) */
+body:not(.theme-women) .btn--ghost{
+  background:#fff !important;
+  color:#111 !important;
+  border:1px solid rgba(0,0,0,.14) !important;
+}
+body:not(.theme-women) .btn--gold{
+  background: linear-gradient(180deg, #111, #000) !important;
+  color:#fff !important;
+  box-shadow: 0 10px 26px rgba(0,0,0,.18) !important;
+         }
