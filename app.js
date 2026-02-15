@@ -338,6 +338,23 @@ import { STORE, PRODUCTS } from "./products.js";
   }
 
   document.addEventListener("DOMContentLoaded", () => {
+    // ===== SWITCH MUJER / HOMBRE =====
+const btnWomen = document.getElementById("btnWomen");
+const btnMen = document.getElementById("btnMen");
+
+const applyTheme = (t) => {
+  document.body.classList.toggle("theme-women", t === "women");
+  if (btnWomen) btnWomen.classList.toggle("genderBtn--active", t === "women");
+  if (btnMen) btnMen.classList.toggle("genderBtn--active", t === "men");
+  localStorage.setItem("flowurban_theme", t);
+};
+
+// al abrir la web, recuerda la última opción
+applyTheme(localStorage.getItem("flowurban_theme") || "men");
+
+// clicks
+if (btnWomen) btnWomen.addEventListener("click", () => applyTheme("women"));
+if (btnMen) btnMen.addEventListener("click", () => applyTheme("men"));
     wireUI();
     fastLoader();
   });
