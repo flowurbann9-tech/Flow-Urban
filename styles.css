@@ -521,114 +521,53 @@ body.drawerOpen .drawer{ transform:translateX(0); }
   #clearBtn{grid-column:auto}
   .grid{grid-template-columns:repeat(4,minmax(0,1fr))}
 }
+/* ===== CARRITO MUJER (CLARO + transparente + rosado sutil) ===== */
+body.theme-women .backdrop{
+  background: rgba(20,10,30,.28) !important; /* oscurece suave detrás */
+}
 
-/* =========================================================
-   TEMA MUJER (FONDO FEMENINO SUTIL + TEXTOS VISIBLES + FIX LÍNEAS)
-   Se activa con: body.theme-women
-========================================================= */
-body.theme-women{
-  --accent: #a46bff;
-  --accent2:#7b3cff;
-
-  /* Fondo sutil femenino */
+body.theme-women .drawer{
+  /* panel claro con rosado/lila sutil */
   background:
-    radial-gradient(900px 500px at 20% 0%, rgba(168, 85, 247, .16), transparent 55%),
-    radial-gradient(900px 500px at 85% 20%, rgba(236, 72, 153, .10), transparent 60%),
-    #f3f1f7;
-  color:#121217;
+    radial-gradient(900px 520px at 20% 0%, rgba(139,92,246,.14), transparent 60%),
+    radial-gradient(900px 520px at 90% 10%, rgba(255,93,177,.12), transparent 65%),
+    rgba(255,255,255,.82) !important;
+  border-left: 1px solid rgba(139,92,246,.18) !important;
+  box-shadow: 0 24px 60px rgba(20,10,40,.22) !important;
+  backdrop-filter: blur(14px);
 }
 
-/* Mantener barra superior/menus OSCUROS para que NO aparezcan líneas blancas */
-body.theme-women .ticker,
-body.theme-women .header,
-body.theme-women .nav{
-  background: rgba(20,20,26,.96) !important;
-  border-bottom: 1px solid rgba(255,255,255,.08) !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-
-  /* FIX extra de seams */
-  transform: translateZ(0);
+/* Textos oscuros, bien legibles */
+body.theme-women .drawer__title,
+body.theme-women .drawer__body,
+body.theme-women .drawer__bottom,
+body.theme-women .drawer strong{
+  color:#17131f !important;
+}
+body.theme-women .drawer .muted,
+body.theme-women .drawer .small{
+  color: rgba(23,19,31,.70) !important;
 }
 
-/* Textos generales en blanco donde toca */
-body.theme-women .ticker__inner,
-body.theme-women .nav a,
-body.theme-women .brand__name,
-body.theme-women .brand__sub{
-  color:#f4f4f6 !important;
+/* Items del carrito estilo “card” claro */
+body.theme-women .ci{
+  background: rgba(255,255,255,.72) !important;
+  border: 1px solid rgba(20,10,40,.10) !important;
+  box-shadow: 0 10px 26px rgba(20,10,40,.10);
 }
 
-/* Botones MUJER / HOMBRE ahora sí se ven */
-body.theme-women .genderBtn{
-  background: rgba(255,255,255,.70);
-  color:#1a1a1f;
-  border:1px solid rgba(164,107,255,.35);
-}
-body.theme-women .genderBtn--active{
-  background: rgba(164,107,255,.20);
-  border-color: rgba(164,107,255,.95);
-  box-shadow: 0 0 0 3px rgba(164,107,255,.18);
-  color:#121217;
+/* Botones +/- y X con rosado/lila */
+body.theme-women .qty button,
+body.theme-women .iconBtn{
+  background: rgba(139,92,246,.10) !important;
+  border: 1px solid rgba(139,92,246,.22) !important;
+  color:#1a1322 !important;
 }
 
-/* Títulos y textos del catálogo en modo mujer */
-body.theme-women .h2,
-body.theme-women .muted,
-body.theme-women .count,
-body.theme-women .field label{
-  color:#1a1a1f !important;
-}
+/* Botón “Pedir por WhatsApp” ya queda con gradiente morado/rosé por .btn--gold */
 
-/* Cartas del catálogo un poquito más claras en modo mujer */
-body.theme-women .card{
-  background: rgba(255,255,255,.75);
-  border: 1px solid rgba(0,0,0,.06);
-}
-body.theme-women .meta,
-body.theme-women .sizes{
-  color: rgba(20,20,26,.72) !important;
-}
-body.theme-women .price{
-  color:#121217;
-}
-
-/* Mantener el hero legible */
-body.theme-women .hero__kicker{
-  color: rgba(0,0,0,.70);
-  text-shadow: 0 10px 28px rgba(0,0,0,.22);
-}
-body.theme-women .hero__desc{
-  color: rgba(0,0,0,.65);
-  text-shadow: 0 10px 28px rgba(0,0,0,.18);
-}
-/* ===== MUJER: morado princesa + rosado (BARRA SUPERIOR) ===== */
-body.theme-women{
-  --womenBar1: #7b2cff;   /* morado princesa */
-  --womenBar2: #ff4fb3;   /* rosado */
-  --womenBar3: #2a0a44;   /* base morado oscuro para profundidad */
-  --womenLine: rgba(255,255,255,.22);
-}
-
-/* ticker + header + nav morado/rosado */
-body.theme-women .ticker,
-body.theme-women .header,
-body.theme-women .nav{
-  background: linear-gradient(90deg, var(--womenBar1) 0%, var(--womenBar2) 55%, var(--womenBar3) 100%) !important;
-  border-bottom: 1px solid var(--womenLine) !important;
-}
-
-/* que todo arriba se vea blanco y fino */
-body.theme-women .ticker__inner,
-body.theme-women .nav a,
-body.theme-women .brand__name,
-body.theme-women .brand__sub{
-  color:#fff !important;
-}
-
-/* pill de WhatsApp arriba más elegante */
-body.theme-women .pill-link{
-  background: rgba(255,255,255,.14) !important;
-  border: 1px solid rgba(255,255,255,.28) !important;
-  color:#fff !important;
+/* Total más pro */
+body.theme-women .totalRow{
+  border-top: 1px solid rgba(20,10,40,.10);
+  padding-top: 10px;
 }
