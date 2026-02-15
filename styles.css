@@ -607,3 +607,26 @@ body.theme-women{
   background: radial-gradient(900px 500px at 50% -120px, rgba(164,107,255,.10), transparent 60%),
               #ffffff !important;
 }
+
+/* ===== THEME MUJER (lila suave) ===== */
+body.theme-women{
+  background: radial-gradient(900px 500px at 20% 0%, rgba(190, 150, 255, .20), transparent 55%),
+              radial-gradient(900px 500px at 80% 10%, rgba(225, 200, 255, .18), transparent 60%),
+              #f3f1f7;
+  color: #121217;
+}
+
+/* para que TODO se lea perfecto */
+body.theme-women .h2,
+body.theme-women .muted,
+body.theme-women .count,
+body.theme-women label,
+body.theme-women .field input,
+body.theme-women .field select{
+  color:#1a1a1f !important;
+}
+
+/* fondo transparente para que el degradado se vea fino */
+body.theme-women .section{
+  background: transparent;
+}
