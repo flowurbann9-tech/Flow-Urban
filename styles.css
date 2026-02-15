@@ -703,3 +703,17 @@ body.theme-women .btn--ghost{
     background: rgba(255,255,255,.90) !important;
   }
 }
+/* ===== MUJER: PRECIO visible (Pegar al FINAL) ===== */
+body.theme-women .price{
+  color: #3b1b5a !important;              /* morado oscuro elegante */
+  text-shadow: none !important;
+}
+
+body.theme-women .card{
+  border-color: rgba(139,92,246,.18) !important;
+}
+
+body.theme-women .card .meta,
+body.theme-women .card .sizes{
+  color: rgba(40,20,60,.72) !important;    /* texto suave pero legible */
+}
