@@ -1,11 +1,12 @@
 ,,,,,,,,
 ,id,name,category,price,sizes,tag,media,featured
-,FU-001,Camisetas Básicas,Camisetas,2.50,"S, M, L","Urban, Basic", ,No
-,FU-002,Chompas Urban,Abrigos,15.00,"M, L, XL","Urban, Streetwear", ,No
-,FU-003,Polos Flow,Camisetas,5.00,"S, M, L","Casual, Urban", ,No
-,FU-004,Busos Chompas,Abrigos,5.00,"M, L, XL","Urban, Hoodie", ,No
-,FU-005,Pantalones Street,Pantalones,7.00,"30, 32, 34","Streetwear, Urban", ,No
-,FU-006,Chompa de Algodón,Abrigos,20.00,"M, L","Algodón, Premium", ,Yes
-,FU-007,Camisetas Oversize,Camisetas,4.50,"M, L, XL","Oversize, Streetwear", ,Yes
+,FU-001,Camisetas Básicas,Camisetas,2.50,"S, M, L","Urban, Basic",assets/loader.png,No
+,FU-002,Chompas Urban,Abrigos,15.00,"M, L, XL","Urban, Streetwear",assets/loader.png,No
+,FU-003,Polos Flow,Camisetas,5.00,"S, M, L","Casual, Urban",assets/loader.png ,No
+,FU-004,Busos Chompas,Abrigos,5.00,"M, L, XL","Urban, Hoodie",assets/loader.png ,No
+,FU-005,Pantalones Street,Pantalones,7.00,"30, 32, 34","Streetwear, Urban",assets/loader.png ,No
+,FU-006,Chompa de Algodón,Abrigos,20.00,"M, L","Algodón, Premium",assets/loader.png ,Yes
+,FU-007,Camisetas Oversize,Camisetas,4.50,"M, L, XL","Oversize, Streetwear",assets/loader.png ,Yes
 
 ,FU-008,Pantalones Cargo,Pantalones,8.00,,,,
+
