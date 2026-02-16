@@ -33,6 +33,18 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
 
     loader: document.getElementById("loader"),
     barFill: document.getElementById("barFill"),
+
+    // ✅ MODAL
+    pModal: document.getElementById("pModal"),
+    pModalBack: document.getElementById("pModalBack"),
+    pModalClose: document.getElementById("pModalClose"),
+    pSliderTrack: document.getElementById("pSliderTrack"),
+    pSliderDots: document.getElementById("pSliderDots"),
+    pTitle: document.getElementById("pTitle"),
+    pMeta: document.getElementById("pMeta"),
+    pPrice: document.getElementById("pPrice"),
+    pSizes: document.getElementById("pSizes"),
+    pAddBtn: document.getElementById("pAddBtn"),
   };
 
   const waLink = (text = WA_TEXT_DEFAULT) =>
@@ -56,7 +68,6 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
   // =========================
   let PRODUCTS = Array.isArray(FALLBACK_PRODUCTS) ? [...FALLBACK_PRODUCTS] : [];
 
-  // CSV parser (soporta comillas y comas dentro)
   function parseCSV(text) {
     const rows = [];
     let row = [];
@@ -95,7 +106,6 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
       cell += ch;
     }
 
-    // última
     row.push(cell.trim());
     if (row.some((x) => x !== "")) rows.push(row);
 
@@ -106,22 +116,28 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
     const price = Number(String(p.price || "0").replace(",", "."));
     const featuredRaw = String(p.featured || "").trim().toLowerCase();
     const featured =
-      featuredRaw === "yes" ||
-      featuredRaw === "si" ||
-      featuredRaw === "true" ||
-      featuredRaw === "1";
+      featuredRaw === "yes" || featuredRaw === "si" || featuredRaw === "true" || featuredRaw === "1";
 
-    // sizes: acepta "S|M|L" o "S, M, L"
     const sizesStr = String(p.sizes || "").trim();
     const sizes = sizesStr.includes("|")
-      ? sizesStr
-          .split("|")
-          .map((s) => s.trim())
-          .filter(Boolean)
-      : sizesStr
-          .split(",")
-          .map((s) => s.trim())
-          .filter(Boolean);
+      ? sizesStr.split("|").map((s) => s.trim()).filter(Boolean)
+      : sizesStr.split(",").map((s) => s.trim()).filter(Boolean);
+
+    // ✅ 3 fotos por producto:
+    // Si en CSV pones: media = "a.jpg|b.jpg|c.jpg"
+    // o en products.js pones: media = ["a.jpg","b.jpg","c.jpg"]
+    let medias = [];
+    const rawMedia = p.media;
+
+    if (Array.isArray(rawMedia)) {
+      medias = rawMedia.filter(Boolean).map(String);
+    } else {
+      const m = String(rawMedia || "").trim();
+      if (m.includes("|")) medias = m.split("|").map((x) => x.trim()).filter(Boolean);
+      else if (m) medias = [m];
+    }
+
+    if (!medias.length) medias = ["assets/logo.png"];
 
     return {
       id: String(p.id || "").trim(),
@@ -130,15 +146,13 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
       price: Number.isFinite(price) ? price : 0,
       sizes,
       tag: String(p.tag || "").trim(),
-      media: String(p.media || "").trim(),
+      media: medias, // ✅ ahora siempre array
       featured,
     };
   }
 
   async function loadProductsFromCSV() {
-    // ✅ cache-bust para GitHub Pages
     const url = `data/productos.csv?v=${Date.now()}`;
-
     const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) throw new Error("No se pudo cargar productos.csv");
 
@@ -260,26 +274,24 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
   }
 
   // =========================
-  // PRODUCT CARD (✅ SOLO CAMBIO AQUÍ)
+  // PRODUCT CARD
   // =========================
   function productCardHTML(p) {
     const badge = p.tag ? `<div class="badge">${p.tag}</div>` : "";
     const plus = `<div class="plus" aria-hidden="true">+</div>`;
-    const media = p.media || "";
 
-    const mediaHTML = isVideo(media)
-      ? `<video src="${media}" muted playsinline loop></video>`
-      : `<img src="${media}" alt="${p.name}" loading="lazy"
+    const firstMedia = Array.isArray(p.media) ? (p.media[0] || "") : String(p.media || "");
+    const mediaHTML = isVideo(firstMedia)
+      ? `<video src="${firstMedia}" muted playsinline loop></video>`
+      : `<img src="${firstMedia}" alt="${p.name}" loading="lazy"
             onerror="this.onerror=null; this.src='assets/logo.png'; this.style.objectFit='contain'; this.style.padding='18px';" />`;
 
     return `
       <article class="card">
-        <!-- ✅ CLICK EN FOTO ABRE (data-open) -->
         <div class="media" data-open="${p.id}">
           ${badge}
           ${mediaHTML}
 
-          <!-- ✅ + SOLO EN ESQUINA (ya NO tapa toda la foto) -->
           <button class="hit" data-add="${p.id}" title="Agregar"
             style="all:unset;cursor:pointer;position:absolute;right:12px;bottom:12px;width:44px;height:44px;">
             ${plus}
@@ -339,7 +351,8 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
         )}`;
         lines.push(line);
 
-        const imgSrc = p.media && !isVideo(p.media) ? p.media : "assets/logo.png";
+        const firstMedia = Array.isArray(p.media) ? (p.media[0] || "") : "";
+        const imgSrc = firstMedia && !isVideo(firstMedia) ? firstMedia : "assets/logo.png";
 
         return `
           <div class="ci">
@@ -393,14 +406,102 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
     renderCart();
   }
 
+  // =========================
+  // ✅ MODAL + SLIDER
+  // =========================
+  let modalProductId = null;
+  let sliderIndex = 0;
+  let sliderCount = 0;
+
+  function openProductModal(p) {
+    if (!els.pModal) return;
+
+    modalProductId = p.id;
+    sliderIndex = 0;
+
+    els.pTitle.textContent = p.name || "";
+    els.pMeta.textContent = p.category || "";
+    els.pPrice.textContent = money(p.price || 0);
+    els.pSizes.textContent = `Tallas: ${(p.sizes || []).join(", ")}`;
+
+    const medias = Array.isArray(p.media) && p.media.length ? p.media : ["assets/logo.png"];
+    sliderCount = medias.length;
+
+    // track
+    els.pSliderTrack.innerHTML = medias
+      .map((src) => {
+        if (isVideo(src)) {
+          return `<div class="pslide"><video src="${src}" playsinline controls></video></div>`;
+        }
+        return `<div class="pslide"><img src="${src}" alt="${p.name}"
+          onerror="this.onerror=null; this.src='assets/logo.png'; this.style.objectFit='contain'; this.style.padding='18px';" /></div>`;
+      })
+      .join("");
+
+    // dots
+    els.pSliderDots.innerHTML = medias
+      .map((_, i) => `<div class="pdot ${i === 0 ? "pdot--on" : ""}"></div>`)
+      .join("");
+
+    setSlider(0);
+
+    document.body.classList.add("pmodalOpen");
+    els.pModal.setAttribute("aria-hidden", "false");
+  }
+
+  function closeProductModal() {
+    if (!els.pModal) return;
+    document.body.classList.remove("pmodalOpen");
+    els.pModal.setAttribute("aria-hidden", "true");
+    modalProductId = null;
+  }
+
+  function setSlider(i) {
+    if (!els.pSliderTrack) return;
+    sliderIndex = Math.max(0, Math.min(sliderCount - 1, i));
+    els.pSliderTrack.style.transform = `translateX(${-sliderIndex * 100}%)`;
+    const dots = els.pSliderDots?.querySelectorAll(".pdot") || [];
+    dots.forEach((d, idx) => d.classList.toggle("pdot--on", idx === sliderIndex));
+  }
+
   function viewProduct(id) {
     const p = PRODUCTS.find((x) => x.id === id);
     if (!p) return;
-    alert(`${p.name}\n${p.category}\n${money(p.price || 0)}\nTallas: ${(p.sizes || []).join(", ")}`);
+    openProductModal(p);
+  }
+
+  function wireSliderTouch() {
+    const slider = document.getElementById("pSlider");
+    if (!slider) return;
+
+    let startX = 0;
+    let dx = 0;
+    let dragging = false;
+
+    slider.addEventListener("touchstart", (e) => {
+      if (!sliderCount || sliderCount <= 1) return;
+      dragging = true;
+      startX = e.touches[0].clientX;
+      dx = 0;
+    }, { passive: true });
+
+    slider.addEventListener("touchmove", (e) => {
+      if (!dragging) return;
+      dx = e.touches[0].clientX - startX;
+    }, { passive: true });
+
+    slider.addEventListener("touchend", () => {
+      if (!dragging) return;
+      dragging = false;
+
+      if (Math.abs(dx) < 40) return;
+      if (dx < 0) setSlider(sliderIndex + 1);
+      else setSlider(sliderIndex - 1);
+    });
   }
 
   // =========================
-  // LOADER (no se pega)
+  // LOADER
   // =========================
   function fastLoader() {
     if (!els.loader) return;
@@ -485,7 +586,6 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
       renderProducts();
     });
 
-    // ✅ CLICK HANDLER (SOLO SE AGREGA SI TOCAS + O AGREGAR)
     els.productsGrid?.addEventListener("click", (e) => {
       const addBtn = e.target.closest("[data-add]");
       const viewBtn = e.target.closest("[data-view]");
@@ -504,7 +604,6 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
         return;
       }
 
-      // ✅ CLICK EN FOTO ABRE (ya no agrega)
       if (openArea) {
         const id = openArea.getAttribute("data-open");
         viewProduct(id);
@@ -524,22 +623,42 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
       if (del) delCart(del.getAttribute("data-del"));
     });
 
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closeDrawer();
+    // ✅ modal buttons
+    els.pModalBack?.addEventListener("click", closeProductModal);
+    els.pModalClose?.addEventListener("click", closeProductModal);
+
+    els.pAddBtn?.addEventListener("click", () => {
+      if (!modalProductId) return;
+      addToCart(modalProductId);
+      closeProductModal();
+      openDrawer();
     });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeDrawer();
+        closeProductModal();
+      }
+    });
+
+    wireSliderTouch();
   }
 
   document.addEventListener("DOMContentLoaded", async () => {
     initThemeSwitch();
 
-    // ✅ Primero intenta CSV
     try {
       const fromCSV = await loadProductsFromCSV();
       PRODUCTS = fromCSV;
       console.log("✅ Productos cargados desde CSV:", PRODUCTS.length);
     } catch (err) {
       console.warn("⚠️ No se pudo cargar CSV, usando products.js", err);
-      PRODUCTS = Array.isArray(FALLBACK_PRODUCTS) ? [...FALLBACK_PRODUCTS] : [];
+      PRODUCTS = Array.isArray(FALLBACK_PRODUCTS) ? FALLBACK_PRODUCTS.map(normalizeProduct) : [];
+    }
+
+    // si fallback venía ya en formato viejo, lo normalizamos
+    if (PRODUCTS.length && !Array.isArray(PRODUCTS[0].media)) {
+      PRODUCTS = PRODUCTS.map(normalizeProduct);
     }
 
     wireUI();
