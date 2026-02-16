@@ -52,54 +52,9 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
   const isVideo = (url) => /\.(mp4|webm|ogg)$/i.test(url || "");
 
   // =========================
-  // ✅ MULTI-FOTO: media puede venir como:
-  // "a.jpg"  o  "a.jpg|b.jpg|c.jpg"
-  // =========================
-  function mediaToList(media) {
-    const m = String(media || "").trim();
-    if (!m) return [];
-    if (m.includes("|")) return m.split("|").map((s) => s.trim()).filter(Boolean);
-    if (m.includes(";")) return m.split(";").map((s) => s.trim()).filter(Boolean);
-    return [m];
-  }
-
-  function normalizeProduct(p) {
-    const price = Number(String(p.price || "0").replace(",", "."));
-    const featuredRaw = String(p.featured || "").trim().toLowerCase();
-    const featured =
-      featuredRaw === "yes" ||
-      featuredRaw === "si" ||
-      featuredRaw === "true" ||
-      featuredRaw === "1";
-
-    // sizes: acepta "S|M|L" o "S, M, L"
-    const sizesStr = String(p.sizes || "").trim();
-    const sizes = sizesStr.includes("|")
-      ? sizesStr.split("|").map((s) => s.trim()).filter(Boolean)
-      : sizesStr.split(",").map((s) => s.trim()).filter(Boolean);
-
-    const media = String(p.media || "").trim();
-    const mediaList = mediaToList(media).slice(0, 3); // ✅ máximo 3 fotos
-
-    return {
-      id: String(p.id || "").trim(),
-      name: String(p.name || "").trim(),
-      category: String(p.category || "").trim(),
-      price: Number.isFinite(price) ? price : 0,
-      sizes,
-      tag: String(p.tag || "").trim(),
-      media,
-      mediaList,
-      featured,
-    };
-  }
-
-  // =========================
   // ✅ PRODUCTS (se cargan desde CSV)
   // =========================
-  let PRODUCTS = Array.isArray(FALLBACK_PRODUCTS)
-    ? FALLBACK_PRODUCTS.map(normalizeProduct)
-    : [];
+  let PRODUCTS = Array.isArray(FALLBACK_PRODUCTS) ? [...FALLBACK_PRODUCTS] : [];
 
   // CSV parser (soporta comillas y comas dentro)
   function parseCSV(text) {
@@ -140,13 +95,48 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
       cell += ch;
     }
 
+    // última
     row.push(cell.trim());
     if (row.some((x) => x !== "")) rows.push(row);
 
     return rows;
   }
 
+  function normalizeProduct(p) {
+    const price = Number(String(p.price || "0").replace(",", "."));
+    const featuredRaw = String(p.featured || "").trim().toLowerCase();
+    const featured =
+      featuredRaw === "yes" ||
+      featuredRaw === "si" ||
+      featuredRaw === "true" ||
+      featuredRaw === "1";
+
+    // sizes: acepta "S|M|L" o "S, M, L"
+    const sizesStr = String(p.sizes || "").trim();
+    const sizes = sizesStr.includes("|")
+      ? sizesStr
+          .split("|")
+          .map((s) => s.trim())
+          .filter(Boolean)
+      : sizesStr
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean);
+
+    return {
+      id: String(p.id || "").trim(),
+      name: String(p.name || "").trim(),
+      category: String(p.category || "").trim(),
+      price: Number.isFinite(price) ? price : 0,
+      sizes,
+      tag: String(p.tag || "").trim(),
+      media: String(p.media || "").trim(),
+      featured,
+    };
+  }
+
   async function loadProductsFromCSV() {
+    // ✅ cache-bust para GitHub Pages
     const url = `data/productos.csv?v=${Date.now()}`;
 
     const res = await fetch(url, { cache: "no-store" });
@@ -154,6 +144,7 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
 
     const text = await res.text();
     const rows = parseCSV(text);
+
     if (!rows.length) throw new Error("CSV vacío");
 
     const headers = rows[0].map((h) => h.trim().toLowerCase());
@@ -269,262 +260,33 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
   }
 
   // =========================
-  // ✅ MODAL SLIDER (NO toca tu HTML)
-  // =========================
-  let modalRoot = null;
-  let modalTrack = null;
-  let modalDots = null;
-  let modalTitle = null;
-  let modalMeta = null;
-  let modalPrice = null;
-  let modalSizes = null;
-  let modalAddBtn = null;
-
-  const modalState = { open: false, id: null, idx: 0, list: [] };
-
-  function ensureModal() {
-    if (modalRoot) return;
-
-    const style = document.createElement("style");
-    style.textContent = `
-      .fuModal{position:fixed;inset:0;z-index:10050;display:none}
-      .fuModal.isOpen{display:block}
-      .fuModal__bd{position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(8px)}
-      .fuModal__panel{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-        width:min(560px,92vw);max-height:86vh;overflow:hidden;border-radius:22px;
-        background:rgba(18,18,24,.96);border:1px solid rgba(255,255,255,.12);
-        box-shadow:0 26px 80px rgba(0,0,0,.55)}
-      body.theme-women .fuModal__panel{background:rgba(255,255,255,.90);border-color:rgba(168,85,247,.20)}
-      .fuModal__top{display:flex;align-items:center;justify-content:space-between;padding:14px;border-bottom:1px solid rgba(255,255,255,.08)}
-      body.theme-women .fuModal__top{border-bottom-color:rgba(20,10,40,.10)}
-      .fuModal__t{font-weight:1000;color:#fff}
-      body.theme-women .fuModal__t{color:#17131f}
-      .fuModal__x{cursor:pointer;border:0;background:rgba(255,255,255,.10);color:#fff;border-radius:12px;padding:10px 12px}
-      body.theme-women .fuModal__x{background:rgba(168,85,247,.12);color:#17131f;border:1px solid rgba(168,85,247,.22)}
-      .fuModal__media{position:relative;background:#0f0f14}
-      body.theme-women .fuModal__media{background:#fff}
-      .fuModal__viewport{width:100%;aspect-ratio:1/1;overflow:hidden;touch-action:pan-y}
-      .fuModal__track{display:flex;height:100%;transform:translateX(0);transition:transform .25s ease}
-      .fuModal__slide{min-width:100%;height:100%}
-      .fuModal__slide img{width:100%;height:100%;object-fit:cover}
-      .fuModal__navBtn{position:absolute;top:50%;transform:translateY(-50%);border:0;cursor:pointer;
-        width:44px;height:44px;border-radius:14px;background:rgba(0,0,0,.55);color:#fff;display:grid;place-items:center}
-      body.theme-women .fuModal__navBtn{background:rgba(168,85,247,.14);color:#17131f;border:1px solid rgba(168,85,247,.20)}
-      .fuModal__navBtn.prev{left:10px}
-      .fuModal__navBtn.next{right:10px}
-      .fuModal__dots{position:absolute;left:0;right:0;bottom:10px;display:flex;gap:6px;justify-content:center}
-      .fuDot{width:8px;height:8px;border-radius:999px;background:rgba(255,255,255,.35)}
-      body.theme-women .fuDot{background:rgba(23,19,31,.22)}
-      .fuDot.isOn{background:rgba(255,255,255,.92)}
-      body.theme-women .fuDot.isOn{background:rgba(168,85,247,.85)}
-      .fuModal__body{padding:14px}
-      .fuModal__meta{opacity:.8;font-weight:800;font-size:13px;margin-top:4px;color:#fff}
-      body.theme-women .fuModal__meta{color:#17131f}
-      .fuModal__price{margin-top:10px;font-weight:1000;color:#fff}
-      body.theme-women .fuModal__price{color:#ff5db1}
-      .fuModal__sizes{margin-top:8px;opacity:.85;font-size:13px;color:#fff}
-      body.theme-women .fuModal__sizes{color:#17131f}
-      .fuModal__actions{margin-top:14px;display:grid;grid-template-columns:1fr;gap:10px}
-    `;
-    document.head.appendChild(style);
-
-    modalRoot = document.createElement("div");
-    modalRoot.className = "fuModal";
-    modalRoot.innerHTML = `
-      <div class="fuModal__bd" data-close="1"></div>
-      <div class="fuModal__panel" role="dialog" aria-modal="true" aria-label="Producto">
-        <div class="fuModal__top">
-          <div class="fuModal__t" id="fuModalTitle">Producto</div>
-          <button class="fuModal__x" type="button" aria-label="Cerrar" data-close="1">✕</button>
-        </div>
-
-        <div class="fuModal__media">
-          <div class="fuModal__viewport" id="fuViewport">
-            <div class="fuModal__track" id="fuTrack"></div>
-          </div>
-          <button class="fuModal__navBtn prev" type="button" id="fuPrev" aria-label="Anterior">‹</button>
-          <button class="fuModal__navBtn next" type="button" id="fuNext" aria-label="Siguiente">›</button>
-          <div class="fuModal__dots" id="fuDots"></div>
-        </div>
-
-        <div class="fuModal__body">
-          <div class="fuModal__meta" id="fuMeta"></div>
-          <div class="fuModal__price" id="fuPrice"></div>
-          <div class="fuModal__sizes" id="fuSizes"></div>
-          <div class="fuModal__actions">
-            <button class="btn btn--gold btn--wide" type="button" id="fuAddBtn">Agregar al carrito</button>
-          </div>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(modalRoot);
-
-    modalTrack = modalRoot.querySelector("#fuTrack");
-    modalDots = modalRoot.querySelector("#fuDots");
-    modalTitle = modalRoot.querySelector("#fuModalTitle");
-    modalMeta = modalRoot.querySelector("#fuMeta");
-    modalPrice = modalRoot.querySelector("#fuPrice");
-    modalSizes = modalRoot.querySelector("#fuSizes");
-    modalAddBtn = modalRoot.querySelector("#fuAddBtn");
-
-    const prevBtn = modalRoot.querySelector("#fuPrev");
-    const nextBtn = modalRoot.querySelector("#fuNext");
-    const viewport = modalRoot.querySelector("#fuViewport");
-
-    modalRoot.addEventListener("click", (e) => {
-      if (e.target.closest('[data-close="1"]')) closeModal();
-    });
-
-    prevBtn.addEventListener("click", () => slideTo(modalState.idx - 1));
-    nextBtn.addEventListener("click", () => slideTo(modalState.idx + 1));
-
-    // Swipe
-    let startX = 0;
-    let lastX = 0;
-    let dragging = false;
-
-    const onDown = (x) => {
-      dragging = true;
-      startX = x;
-      lastX = x;
-      modalTrack.style.transition = "none";
-    };
-    const onMove = (x) => {
-      if (!dragging) return;
-      lastX = x;
-      const dx = x - startX;
-      const w = viewport.clientWidth || 1;
-      const base = -modalState.idx * w;
-      modalTrack.style.transform = `translateX(${base + dx}px)`;
-    };
-    const onUp = () => {
-      if (!dragging) return;
-      dragging = false;
-      modalTrack.style.transition = "transform .25s ease";
-      const dx = lastX - startX;
-      const w = viewport.clientWidth || 1;
-      if (Math.abs(dx) > w * 0.18) {
-        if (dx < 0) slideTo(modalState.idx + 1);
-        else slideTo(modalState.idx - 1);
-      } else {
-        slideTo(modalState.idx);
-      }
-    };
-
-    viewport.addEventListener("touchstart", (e) => onDown(e.touches[0].clientX), { passive: true });
-    viewport.addEventListener("touchmove", (e) => onMove(e.touches[0].clientX), { passive: true });
-    viewport.addEventListener("touchend", onUp);
-
-    viewport.addEventListener("mousedown", (e) => {
-      e.preventDefault();
-      onDown(e.clientX);
-    });
-    window.addEventListener("mousemove", (e) => onMove(e.clientX));
-    window.addEventListener("mouseup", onUp);
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && modalState.open) closeModal();
-    });
-  }
-
-  function slideTo(nextIdx) {
-    if (!modalState.list.length) return;
-    const max = modalState.list.length - 1;
-    const idx = Math.max(0, Math.min(max, nextIdx));
-    modalState.idx = idx;
-
-    const viewport = modalRoot.querySelector("#fuViewport");
-    const w = viewport.clientWidth || 1;
-    modalTrack.style.transform = `translateX(${-idx * w}px)`;
-
-    Array.from(modalDots.children).forEach((d, i) => {
-      d.classList.toggle("isOn", i === idx);
-    });
-  }
-
-  function openModal(id) {
-    ensureModal();
-
-    const p = PRODUCTS.find((x) => x.id === id);
-    if (!p) return;
-
-    const list = (p.mediaList && p.mediaList.length ? p.mediaList : mediaToList(p.media)).slice(0, 3);
-    const safeList = list.length ? list : ["assets/logo.png"];
-
-    modalState.open = true;
-    modalState.id = id;
-    modalState.idx = 0;
-    modalState.list = safeList;
-
-    modalTitle.textContent = p.name || "Producto";
-    modalMeta.textContent = p.category || "";
-    modalPrice.textContent = money(p.price || 0);
-    modalSizes.textContent = `Tallas: ${(p.sizes || []).join(", ")}`;
-
-    modalTrack.innerHTML = safeList
-      .map((src) => {
-        const s = String(src || "").trim() || "assets/logo.png";
-        return `<div class="fuModal__slide">
-          <img src="${s}" alt="${p.name}" loading="eager"
-            onerror="this.onerror=null; this.src='assets/logo.png'; this.style.objectFit='contain'; this.style.padding='18px';" />
-        </div>`;
-      })
-      .join("");
-
-    modalDots.innerHTML = safeList
-      .map((_, i) => `<span class="fuDot ${i === 0 ? "isOn" : ""}"></span>`)
-      .join("");
-
-    modalAddBtn.onclick = () => {
-      addToCart(id);
-      openDrawer();
-    };
-
-    modalRoot.classList.add("isOpen");
-    document.body.style.overflow = "hidden";
-    requestAnimationFrame(() => slideTo(0));
-  }
-
-  function closeModal() {
-    if (!modalRoot) return;
-    modalState.open = false;
-    modalState.id = null;
-    modalState.idx = 0;
-    modalState.list = [];
-    modalRoot.classList.remove("isOpen");
-    document.body.style.overflow = "";
-  }
-
-  // =========================
-  // PRODUCT CARD
+  // PRODUCT CARD (✅ SOLO CAMBIO AQUÍ)
   // =========================
   function productCardHTML(p) {
     const badge = p.tag ? `<div class="badge">${p.tag}</div>` : "";
     const plus = `<div class="plus" aria-hidden="true">+</div>`;
+    const media = p.media || "";
 
-    const list = (p.mediaList && p.mediaList.length ? p.mediaList : mediaToList(p.media));
-    const thumb = (list && list.length ? list[0] : p.media) || "assets/logo.png";
-
-    const mediaHTML = isVideo(thumb)
-      ? `<video src="${thumb}" muted playsinline loop></video>`
-      : `<img src="${thumb}" alt="${p.name}" loading="lazy"
+    const mediaHTML = isVideo(media)
+      ? `<video src="${media}" muted playsinline loop></video>`
+      : `<img src="${media}" alt="${p.name}" loading="lazy"
             onerror="this.onerror=null; this.src='assets/logo.png'; this.style.objectFit='contain'; this.style.padding='18px';" />`;
 
-    // ✅ la tarjeta abre modal (menos los botones)
     return `
-      <article class="card" data-open="${p.id}">
+      <article class="card">
+        <!-- ✅ CLICK EN FOTO ABRE (data-open) -->
         <div class="media" data-open="${p.id}">
           ${badge}
           ${mediaHTML}
 
-          <!-- ✅ ESTE botón agrega (no abre modal) -->
+          <!-- ✅ + SOLO EN ESQUINA (ya NO tapa toda la foto) -->
           <button class="hit" data-add="${p.id}" title="Agregar"
-            style="all:unset;cursor:pointer;position:absolute;right:0;bottom:0;left:0;top:0">
+            style="all:unset;cursor:pointer;position:absolute;right:12px;bottom:12px;width:44px;height:44px;">
             ${plus}
           </button>
         </div>
 
-        <div class="card__body" data-open="${p.id}">
+        <div class="card__body">
           <div class="title">${p.name}</div>
           <div class="meta">${p.category}</div>
           <div class="price">${money(p.price || 0)}</div>
@@ -577,8 +339,7 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
         )}`;
         lines.push(line);
 
-        const list = (p.mediaList && p.mediaList.length ? p.mediaList : mediaToList(p.media));
-        const imgSrc = list && list.length ? list[0] : "assets/logo.png";
+        const imgSrc = p.media && !isVideo(p.media) ? p.media : "assets/logo.png";
 
         return `
           <div class="ci">
@@ -632,9 +393,10 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
     renderCart();
   }
 
-  // ✅ "Ver" abre modal
   function viewProduct(id) {
-    openModal(id);
+    const p = PRODUCTS.find((x) => x.id === id);
+    if (!p) return;
+    alert(`${p.name}\n${p.category}\n${money(p.price || 0)}\nTallas: ${(p.sizes || []).join(", ")}`);
   }
 
   // =========================
@@ -703,18 +465,14 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
   // =========================
   // UI
   // =========================
-  function buildCategoryAndRender() {
-    buildCategorySelect();
-    renderProducts();
-  }
-
   function wireUI() {
     setWaLinks();
 
     closeDrawer();
     renderCart();
 
-    buildCategoryAndRender();
+    buildCategorySelect();
+    renderProducts();
 
     els.searchInput?.addEventListener("input", renderProducts);
     els.categorySelect?.addEventListener("change", renderProducts);
@@ -727,9 +485,12 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
       renderProducts();
     });
 
-    // ✅ Clicks: prioridad a "Agregar"
+    // ✅ CLICK HANDLER (SOLO SE AGREGA SI TOCAS + O AGREGAR)
     els.productsGrid?.addEventListener("click", (e) => {
       const addBtn = e.target.closest("[data-add]");
+      const viewBtn = e.target.closest("[data-view]");
+      const openArea = e.target.closest("[data-open]");
+
       if (addBtn) {
         const id = addBtn.getAttribute("data-add");
         addToCart(id);
@@ -737,17 +498,16 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
         return;
       }
 
-      const viewBtn = e.target.closest("[data-view]");
       if (viewBtn) {
         const id = viewBtn.getAttribute("data-view");
         viewProduct(id);
         return;
       }
 
-      const open = e.target.closest("[data-open]");
-      if (open) {
-        const id = open.getAttribute("data-open");
-        if (id) openModal(id);
+      // ✅ CLICK EN FOTO ABRE (ya no agrega)
+      if (openArea) {
+        const id = openArea.getAttribute("data-open");
+        viewProduct(id);
       }
     });
 
@@ -775,13 +535,11 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
     // ✅ Primero intenta CSV
     try {
       const fromCSV = await loadProductsFromCSV();
-      PRODUCTS = fromCSV.map(normalizeProduct);
+      PRODUCTS = fromCSV;
       console.log("✅ Productos cargados desde CSV:", PRODUCTS.length);
     } catch (err) {
       console.warn("⚠️ No se pudo cargar CSV, usando products.js", err);
-      PRODUCTS = Array.isArray(FALLBACK_PRODUCTS)
-        ? FALLBACK_PRODUCTS.map(normalizeProduct)
-        : [];
+      PRODUCTS = Array.isArray(FALLBACK_PRODUCTS) ? [...FALLBACK_PRODUCTS] : [];
     }
 
     wireUI();
