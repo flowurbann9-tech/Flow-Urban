@@ -7,6 +7,28 @@
   <meta name="theme-color" content="#0b0b0f" />
   <link rel="stylesheet" href="styles.css" />
 </head>
+  <!-- MODAL PRODUCTO (PRO) -->
+<div class="pmodal" id="pModal" aria-hidden="true">
+  <div class="pmodal__back" id="pModalBack"></div>
+
+  <div class="pmodal__card" role="dialog" aria-label="Producto">
+    <button class="pmodal__close" id="pModalClose" type="button">✕</button>
+
+    <div class="pslider" id="pSlider">
+      <div class="pslider__track" id="pSliderTrack"></div>
+      <div class="pslider__dots" id="pSliderDots"></div>
+    </div>
+
+    <div class="pmodal__body">
+      <div class="pmodal__title" id="pTitle"></div>
+      <div class="pmodal__meta" id="pMeta"></div>
+      <div class="pmodal__price" id="pPrice"></div>
+      <div class="pmodal__sizes" id="pSizes"></div>
+
+      <button class="btn btn--gold btn--wide" id="pAddBtn" type="button">Agregar al carrito</button>
+    </div>
+  </div>
+</div>
 
 <body>
   <!-- TOP TICKER -->
