@@ -823,3 +823,136 @@ body:not(.theme-women) .card .btn--gold{
     object-position: 50% 22% !important;
   }
 }
+/* =========================
+   PRODUCT MODAL + SLIDER
+========================= */
+.pmodal{
+  position:fixed;
+  inset:0;
+  z-index:10000;
+  display:none;
+}
+body.pmodalOpen .pmodal{ display:block; }
+
+.pmodal__back{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.pmodal__card{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:min(520px, 94vw);
+  background:rgba(16,16,22,.96);
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:22px;
+  overflow:hidden;
+  box-shadow: 0 24px 70px rgba(0,0,0,.55);
+}
+
+.pmodal__close{
+  position:absolute;
+  right:12px;
+  top:12px;
+  width:42px;height:42px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  font-weight:1000;
+  cursor:pointer;
+  z-index:5;
+}
+
+.pslider{
+  position:relative;
+  background:#0f0f14;
+  aspect-ratio: 1 / 1;
+  overflow:hidden;
+}
+.pslider__track{
+  display:flex;
+  height:100%;
+  width:100%;
+  transform:translateX(0);
+  transition:transform .25s ease;
+}
+.pslide{
+  min-width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#0f0f14;
+}
+.pslide img, .pslide video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.pslider__dots{
+  position:absolute;
+  left:0; right:0;
+  bottom:10px;
+  display:flex;
+  gap:8px;
+  justify-content:center;
+  z-index:4;
+}
+.pdot{
+  width:8px;height:8px;
+  border-radius:999px;
+  background:rgba(255,255,255,.35);
+  border:1px solid rgba(255,255,255,.18);
+}
+.pdot--on{
+  background:rgba(255,255,255,.92);
+}
+
+.pmodal__body{
+  padding:14px;
+}
+.pmodal__title{
+  font-weight:1000;
+  font-size:18px;
+}
+.pmodal__meta{
+  color:rgba(255,255,255,.75);
+  font-weight:800;
+  margin-top:4px;
+}
+.pmodal__price{
+  margin-top:8px;
+  font-weight:1000;
+  font-size:18px;
+}
+.pmodal__sizes{
+  color:rgba(255,255,255,.75);
+  font-weight:800;
+  margin-top:6px;
+}
+
+/* MUJER: modal claro */
+body.theme-women .pmodal__card{
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(168,85,247,.18);
+}
+body.theme-women .pmodal__close{
+  background: rgba(168,85,247,.12);
+  border: 1px solid rgba(168,85,247,.22);
+  color:#17131f;
+}
+body.theme-women .pmodal__meta,
+body.theme-women .pmodal__sizes{
+  color: rgba(23,19,31,.70);
+}
+body.theme-women .pmodal__title,
+body.theme-women .pmodal__price{
+  color:#17131f;
+}
