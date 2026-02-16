@@ -956,3 +956,20 @@ body.theme-women .pmodal__title,
 body.theme-women .pmodal__price{
   color:#17131f;
 }
+/* ✅ FIX: la X del modal en tema mujer se vea SIEMPRE */
+body.theme-women .modal__close,
+body.theme-women .closeModal,
+body.theme-women .closeBtn,
+body.theme-women #closeModal,
+body.theme-women .xBtn{
+  color: #fff !important;
+  opacity: 1 !important;
+  text-shadow: 0 6px 14px rgba(0,0,0,.35) !important;
+}
+
+/* por si la X es un SVG */
+body.theme-women .modal__close svg,
+body.theme-women .closeModal svg{
+  fill: #fff !important;
+  stroke: #fff !important;
+}
