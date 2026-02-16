@@ -925,3 +925,31 @@ body.theme-women .pmodal__close{
   background: rgba(0,0,0,.35) !important;
   border: 1px solid rgba(255,255,255,.22) !important;
   }
+/* =========================
+   ANTI-DESCARGA (disuadir)
+========================= */
+
+/* no seleccionar / no arrastrar imágenes */
+img{
+  -webkit-user-drag: none;
+  user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none; /* iOS: menú guardar imagen */
+}
+
+/* evita mantener presionado en varias capas */
+.media,
+.pslider,
+.pslide,
+.pmodal__card{
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* opcional: bloquea el “drag” visual */
+.media img,
+.pslide img{
+  pointer-events: none; /* OJO: solo si tu click lo hace el .hit encima */
+}
