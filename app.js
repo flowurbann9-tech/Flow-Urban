@@ -270,7 +270,6 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
   function splitMedia(mediaStr) {
     const raw = String(mediaStr || "").trim();
     if (!raw) return [];
-    // soporta "a.jpg|b.jpg|c.jpg" (con espacios)
     return raw
       .split("|")
       .map((s) => s.trim())
@@ -295,9 +294,6 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
       : `<img src="${media0}" alt="${p.name}" loading="lazy"
             onerror="this.onerror=null; this.src='assets/logo.png'; this.style.objectFit='contain'; this.style.padding='18px';" />`;
 
-    // ✅ IMPORTANTE:
-    // - la foto abre modal => data-open
-    // - el + agrega carrito => data-add
     return `
       <article class="card">
         <div class="media" data-open="${p.id}">
@@ -422,7 +418,7 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
   // =========================
   let modalProductId = null;
   let sliderIndex = 0;
-  let sliderItems = []; // lista de urls (img/video)
+  let sliderItems = [];
   let touchStartX = 0;
   let touchStartY = 0;
   let isSwiping = false;
@@ -437,7 +433,6 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
     const list = splitMedia(p.media);
     sliderItems = list.length ? list : [p.media || "assets/logo.png"];
 
-    // render slides
     if (els.pSliderTrack) {
       els.pSliderTrack.innerHTML = sliderItems
         .map((url) => {
@@ -460,32 +455,26 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
         .join("");
     }
 
-    // dots
     if (els.pSliderDots) {
       els.pSliderDots.innerHTML = sliderItems
         .map((_, i) => `<span class="pdot ${i === 0 ? "pdot--on" : ""}" data-dot="${i}"></span>`)
         .join("");
     }
 
-    // info
     if (els.pTitle) els.pTitle.textContent = p.name || "";
     if (els.pMeta) els.pMeta.textContent = p.category || "";
     if (els.pPrice) els.pPrice.textContent = money(p.price || 0);
     if (els.pSizes) els.pSizes.textContent = `Tallas: ${(p.sizes || []).join(", ")}`;
 
-    // show modal
     document.body.classList.add("pmodalOpen");
     els.pModal.setAttribute("aria-hidden", "false");
 
-    // posicion inicial
     updateSlider();
 
-    // play videos if any
     requestAnimationFrame(() => {
       els.pSliderTrack?.querySelectorAll("video").forEach((v) => v.play().catch(() => {}));
     });
 
-    // activar zoom sobre el slide actual
     attachZoomToCurrentSlide();
   }
 
@@ -511,8 +500,6 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
     const x = sliderIndex * 100;
     els.pSliderTrack.style.transform = `translateX(-${x}%)`;
     updateDots();
-
-    // reset zoom del slide actual
     attachZoomToCurrentSlide(true);
   }
 
@@ -529,12 +516,10 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
   }
 
   // =========================
-  // ✅ PINCH ZOOM + DOBLE TAP (MÓVIL) para el MODAL
+  // ✅ PINCH ZOOM + DOBLE TAP (MÓVIL)
   // =========================
   function makePinchZoom(container) {
     if (!container) return;
-
-    // evita duplicar listeners
     if (container.__pzBound) return;
     container.__pzBound = true;
 
@@ -592,7 +577,6 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
         const media = getMedia();
         if (!media) return;
 
-        // DOBLE TAP
         const now = Date.now();
         if (e.touches.length === 1) {
           if (now - lastTap < 260) {
@@ -682,21 +666,16 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
       }
     });
 
-    // reset externo
     container.addEventListener("zoomReset", reset);
   }
 
   function attachZoomToCurrentSlide(resetFirst = false) {
-    // el slide actual es el N dentro del track
     const slides = els.pSliderTrack?.querySelectorAll(".pslide");
     if (!slides || !slides.length) return;
     const current = slides[sliderIndex];
     if (!current) return;
 
-    // bind zoom
     makePinchZoom(current);
-
-    // reset si cambiamos de slide
     if (resetFirst) current.dispatchEvent(new Event("zoomReset"));
   }
 
@@ -722,7 +701,6 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
         const dx = e.touches[0].clientX - touchStartX;
         const dy = e.touches[0].clientY - touchStartY;
 
-        // si el movimiento es mas horizontal, bloquea scroll
         if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10) {
           e.preventDefault();
         }
@@ -742,7 +720,6 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
         const dx = touch.clientX - touchStartX;
         const dy = touch.clientY - touchStartY;
 
-        // swipe horizontal
         if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 45) {
           if (dx < 0) nextSlide();
           else prevSlide();
@@ -753,7 +730,7 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
   }
 
   // =========================
-  // LOADER (no se pega)
+  // LOADER
   // =========================
   function fastLoader() {
     if (!els.loader) return;
@@ -838,15 +815,11 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
       renderProducts();
     });
 
-    // ✅ Grid clicks:
-    // - click en foto => abre modal
-    // - click en + o botón agregar => agrega al carrito
     els.productsGrid?.addEventListener("click", (e) => {
       const addBtn = e.target.closest("[data-add]");
       const viewBtn = e.target.closest("[data-view]");
       const openArea = e.target.closest("[data-open]");
 
-      // ✅ Agregar (prioridad)
       if (addBtn) {
         e.preventDefault();
         e.stopPropagation();
@@ -856,14 +829,12 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
         return;
       }
 
-      // ✅ Ver (abre modal también)
       if (viewBtn) {
         const id = viewBtn.getAttribute("data-view");
         openProductModal(id);
         return;
       }
 
-      // ✅ Click en foto/area media => abre modal
       if (openArea) {
         const id = openArea.getAttribute("data-open");
         openProductModal(id);
@@ -890,11 +861,9 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
       }
     });
 
-    // ✅ Modal events
     els.pModalBack?.addEventListener("click", closeProductModal);
     els.pModalClose?.addEventListener("click", closeProductModal);
 
-    // dots click
     els.pSliderDots?.addEventListener("click", (e) => {
       const dot = e.target.closest("[data-dot]");
       if (!dot) return;
@@ -902,7 +871,6 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
       updateSlider();
     });
 
-    // add from modal
     els.pAddBtn?.addEventListener("click", () => {
       if (!modalProductId) return;
       addToCart(modalProductId);
@@ -910,14 +878,53 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
       openDrawer();
     });
 
-    // swipe
     bindSliderSwipe();
+
+    // ✅ Anti-descarga PRO: SOLO en grilla y carrito (NO modal)
+    bindAntiDownload();
+  }
+
+  // =========================
+  // ✅ ANTI-DESCARGA PRO (NO rompe swipe/zoom)
+  // =========================
+  function bindAntiDownload() {
+    // click derecho (solo imagen/video)
+    document.addEventListener("contextmenu", (e) => {
+      const t = e.target;
+      if (t && (t.tagName === "IMG" || t.tagName === "VIDEO")) e.preventDefault();
+    });
+
+    // dragstart
+    document.addEventListener("dragstart", (e) => {
+      const t = e.target;
+      if (t && (t.tagName === "IMG" || t.tagName === "VIDEO")) e.preventDefault();
+    });
+
+    // móvil: bloquear “mantener presionado” SOLO fuera del modal
+    document.addEventListener(
+      "touchstart",
+      (e) => {
+        const t = e.target;
+        if (!t) return;
+
+        // ❌ si está dentro del modal, no bloquees (para pinch/swipe)
+        if (t.closest("#pModal")) return;
+
+        // ✅ si está en grilla o carrito, bloquea guardar
+        if (
+          (t.tagName === "IMG" || t.tagName === "VIDEO") &&
+          (t.closest("#productsGrid") || t.closest("#cartDrawer"))
+        ) {
+          e.preventDefault();
+        }
+      },
+      { passive: false }
+    );
   }
 
   document.addEventListener("DOMContentLoaded", async () => {
     initThemeSwitch();
 
-    // ✅ Primero intenta CSV
     try {
       const fromCSV = await loadProductsFromCSV();
       PRODUCTS = fromCSV;
@@ -932,11 +939,11 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
   });
 })();
 /* =========================
-   ANTI-DESCARGA (disuadir)
+   ANTI-DESCARGA (disuadir) ✅ PRO + NO rompe modal
 ========================= */
 document.addEventListener("contextmenu", (e) => {
-  // bloquea click derecho solo sobre imágenes y videos
   const t = e.target;
+  // bloquea click derecho solo sobre imágenes y videos
   if (t && (t.tagName === "IMG" || t.tagName === "VIDEO")) {
     e.preventDefault();
   }
@@ -949,11 +956,25 @@ document.addEventListener("dragstart", (e) => {
   }
 });
 
-/* Bloquear “guardar imagen” en móviles (mantener presionado) */
-document.addEventListener("touchstart", (e) => {
-  const t = e.target;
-  if (t && (t.tagName === "IMG" || t.tagName === "VIDEO")) {
-    // si mantienes presionado, evita menú en varios navegadores
-    e.preventDefault();
-  }
-}, { passive: false });
+/* Bloquear “guardar imagen” en móviles (mantener presionado)
+   ✅ SOLO en catálogo + carrito (NO en modal para no matar swipe/zoom)
+*/
+document.addEventListener(
+  "touchstart",
+  (e) => {
+    const t = e.target;
+    if (!t) return;
+
+    // ✅ si está dentro del modal, NO bloquees (para pinch zoom y swipe)
+    if (t.closest("#pModal")) return;
+
+    // ✅ solo bloquear en el catálogo y el carrito
+    const inCatalog = t.closest("#productsGrid");
+    const inCart = t.closest("#cartDrawer");
+
+    if ((inCatalog || inCart) && (t.tagName === "IMG" || t.tagName === "VIDEO")) {
+      e.preventDefault();
+    }
+  },
+  { passive: false }
+);
