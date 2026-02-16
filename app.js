@@ -931,3 +931,29 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
     fastLoader();
   });
 })();
+/* =========================
+   ANTI-DESCARGA (disuadir)
+========================= */
+document.addEventListener("contextmenu", (e) => {
+  // bloquea click derecho solo sobre imágenes y videos
+  const t = e.target;
+  if (t && (t.tagName === "IMG" || t.tagName === "VIDEO")) {
+    e.preventDefault();
+  }
+});
+
+document.addEventListener("dragstart", (e) => {
+  const t = e.target;
+  if (t && (t.tagName === "IMG" || t.tagName === "VIDEO")) {
+    e.preventDefault();
+  }
+});
+
+/* Bloquear “guardar imagen” en móviles (mantener presionado) */
+document.addEventListener("touchstart", (e) => {
+  const t = e.target;
+  if (t && (t.tagName === "IMG" || t.tagName === "VIDEO")) {
+    // si mantienes presionado, evita menú en varios navegadores
+    e.preventDefault();
+  }
+}, { passive: false });
