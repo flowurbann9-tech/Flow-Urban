@@ -40,10 +40,7 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
 
   const money = (n) => {
     try {
-      return new Intl.NumberFormat("es-EC", {
-        style: "currency",
-        currency: "USD",
-      }).format(n);
+      return new Intl.NumberFormat("es-EC", { style: "currency", currency: "USD" }).format(n);
     } catch {
       return `$${Number(n || 0).toFixed(2)}`.replace(".", ",");
     }
@@ -76,13 +73,11 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
         }
         continue;
       }
-
       if (ch === "," && !inQuotes) {
         row.push(cell.trim());
         cell = "";
         continue;
       }
-
       if ((ch === "\n" || ch === "\r") && !inQuotes) {
         if (ch === "\r" && next === "\n") i++;
         row.push(cell.trim());
@@ -91,23 +86,51 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
         row = [];
         continue;
       }
-
       cell += ch;
     }
 
-    // última
     row.push(cell.trim());
     if (row.some((x) => x !== "")) rows.push(row);
-
     return rows;
+  }
+
+  // ✅ acepta media como:
+  // - "url1|url2|url3"
+  // - "url1,url2,url3"
+  // - o una sola "url"
+  function normalizeMedia(mediaVal) {
+    if (Array.isArray(mediaVal)) return mediaVal.filter(Boolean);
+
+    const s = String(mediaVal || "").trim();
+    if (!s) return "";
+
+    if (s.includes("|")) {
+      return s
+        .split("|")
+        .map((x) => x.trim())
+        .filter(Boolean);
+    }
+
+    // si viene con comas y parece lista
+    if (s.includes(",") && !/^https?:\/\//i.test(s)) {
+      return s
+        .split(",")
+        .map((x) => x.trim())
+        .filter(Boolean);
+    }
+
+    return s; // una sola
   }
 
   function normalizeProduct(p) {
     const price = Number(String(p.price || "0").replace(",", "."));
     const featuredRaw = String(p.featured || "").trim().toLowerCase();
-    const featured = featuredRaw === "yes" || featuredRaw === "si" || featuredRaw === "true" || featuredRaw === "1";
+    const featured =
+      featuredRaw === "yes" ||
+      featuredRaw === "si" ||
+      featuredRaw === "true" ||
+      featuredRaw === "1";
 
-    // sizes: acepta "S|M|L" o "S, M, L"
     const sizesStr = String(p.sizes || "").trim();
     const sizes = sizesStr.includes("|")
       ? sizesStr.split("|").map((s) => s.trim()).filter(Boolean)
@@ -120,21 +143,18 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
       price: Number.isFinite(price) ? price : 0,
       sizes,
       tag: String(p.tag || "").trim(),
-      media: String(p.media || "").trim(),
+      media: normalizeMedia(p.media),
       featured,
     };
   }
 
   async function loadProductsFromCSV() {
-    // ✅ cache-bust para GitHub Pages
     const url = `data/productos.csv?v=${Date.now()}`;
-
     const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) throw new Error("No se pudo cargar productos.csv");
 
     const text = await res.text();
     const rows = parseCSV(text);
-
     if (!rows.length) throw new Error("CSV vacío");
 
     const headers = rows[0].map((h) => h.trim().toLowerCase());
@@ -163,6 +183,266 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
 
     if (!out.length) throw new Error("No hay productos válidos en el CSV");
     return out;
+  }
+
+  // =========================
+  // ✅ GALLERY MODAL (Swipe)
+  // =========================
+  let modalState = {
+    open: false,
+    productId: null,
+    images: [],
+    index: 0,
+    touchX: 0,
+    touchY: 0,
+    touching: false,
+  };
+
+  function ensureGalleryModal() {
+    if (document.getElementById("galleryModal")) return;
+
+    const modal = document.createElement("div");
+    modal.id = "galleryModal";
+    modal.setAttribute("aria-hidden", "true");
+    modal.style.cssText = `
+      position:fixed; inset:0; z-index:2000;
+      display:none;
+    `;
+
+    modal.innerHTML = `
+      <div id="galleryBackdrop" style="position:absolute;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);"></div>
+
+      <div id="galleryCard" style="
+        position:absolute; left:50%; top:50%;
+        transform:translate(-50%,-50%);
+        width:min(920px, 94vw);
+        background:rgba(16,16,22,.96);
+        border:1px solid rgba(255,255,255,.14);
+        border-radius:22px;
+        box-shadow:0 24px 80px rgba(0,0,0,.55);
+        overflow:hidden;
+      ">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.10);">
+          <div>
+            <div id="galleryTitle" style="font-weight:1000;color:#fff;font-size:16px;line-height:1.1;"></div>
+            <div id="gallerySub" style="color:rgba(255,255,255,.72);font-weight:800;font-size:12px;margin-top:2px;"></div>
+          </div>
+          <button id="galleryClose" type="button" style="
+            background:rgba(255,255,255,.10);
+            border:1px solid rgba(255,255,255,.16);
+            color:#fff;
+            border-radius:12px;
+            padding:10px 12px;
+            cursor:pointer;
+          ">✕</button>
+        </div>
+
+        <div id="galleryStage" style="
+          position:relative;
+          background:#0b0b0f;
+          height:min(72vh, 640px);
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          touch-action: pan-y;
+          user-select:none;
+        ">
+          <button id="galleryPrev" type="button" style="
+            position:absolute;left:12px;top:50%;transform:translateY(-50%);
+            width:44px;height:44px;border-radius:14px;
+            border:1px solid rgba(255,255,255,.18);
+            background:rgba(0,0,0,.40);
+            color:#fff;cursor:pointer;font-weight:1000;
+          ">‹</button>
+
+          <img id="galleryImg" alt="" style="
+            width:100%;
+            height:100%;
+            object-fit:contain;
+            display:block;
+          "/>
+
+          <button id="galleryNext" type="button" style="
+            position:absolute;right:12px;top:50%;transform:translateY(-50%);
+            width:44px;height:44px;border-radius:14px;
+            border:1px solid rgba(255,255,255,.18);
+            background:rgba(0,0,0,.40);
+            color:#fff;cursor:pointer;font-weight:1000;
+          ">›</button>
+
+          <div id="galleryDots" style="
+            position:absolute;left:0;right:0;bottom:12px;
+            display:flex;gap:6px;justify-content:center;align-items:center;
+          "></div>
+        </div>
+
+        <div style="padding:14px;display:flex;gap:10px;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,.10);">
+          <div style="color:rgba(255,255,255,.78);font-weight:900;font-size:13px;">
+            Desliza ← → para cambiar foto
+          </div>
+          <button id="galleryAdd" type="button" class="btn btn--gold" style="border-radius:999px;padding:12px 16px;font-weight:1000;cursor:pointer;">
+            Agregar al carrito
+          </button>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // events
+    const close = () => closeGallery();
+    modal.querySelector("#galleryBackdrop").addEventListener("click", close);
+    modal.querySelector("#galleryClose").addEventListener("click", close);
+
+    modal.querySelector("#galleryPrev").addEventListener("click", () => stepGallery(-1));
+    modal.querySelector("#galleryNext").addEventListener("click", () => stepGallery(1));
+
+    modal.querySelector("#galleryAdd").addEventListener("click", () => {
+      if (modalState.productId) {
+        addToCart(modalState.productId);
+        openDrawer();
+      }
+    });
+
+    // swipe
+    const stage = modal.querySelector("#galleryStage");
+    stage.addEventListener("touchstart", (e) => {
+      if (!e.touches?.length) return;
+      modalState.touching = true;
+      modalState.touchX = e.touches[0].clientX;
+      modalState.touchY = e.touches[0].clientY;
+    }, { passive: true });
+
+    stage.addEventListener("touchend", (e) => {
+      if (!modalState.touching) return;
+      modalState.touching = false;
+
+      const t = e.changedTouches?.[0];
+      if (!t) return;
+
+      const dx = t.clientX - modalState.touchX;
+      const dy = t.clientY - modalState.touchY;
+
+      // si es más horizontal que vertical
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 45) {
+        if (dx < 0) stepGallery(1);
+        else stepGallery(-1);
+      }
+    }, { passive: true });
+
+    // teclado
+    document.addEventListener("keydown", (e) => {
+      if (!modalState.open) return;
+      if (e.key === "Escape") closeGallery();
+      if (e.key === "ArrowLeft") stepGallery(-1);
+      if (e.key === "ArrowRight") stepGallery(1);
+    });
+  }
+
+  function getProductImages(p) {
+    if (!p) return [];
+    const m = p.media;
+
+    if (Array.isArray(m)) {
+      const arr = m.map((x) => String(x || "").trim()).filter(Boolean);
+      return arr.length ? arr : ["assets/logo.png"];
+    }
+
+    const s = String(m || "").trim();
+    if (!s) return ["assets/logo.png"];
+
+    // si viene "a|b|c"
+    if (s.includes("|")) {
+      const arr = s.split("|").map((x) => x.trim()).filter(Boolean);
+      return arr.length ? arr : ["assets/logo.png"];
+    }
+
+    return [s];
+  }
+
+  function openGallery(productId) {
+    const p = PRODUCTS.find((x) => x.id === productId);
+    if (!p) return;
+
+    ensureGalleryModal();
+
+    const modal = document.getElementById("galleryModal");
+    const imgEl = modal.querySelector("#galleryImg");
+    const titleEl = modal.querySelector("#galleryTitle");
+    const subEl = modal.querySelector("#gallerySub");
+
+    modalState.open = true;
+    modalState.productId = productId;
+    modalState.images = getProductImages(p);
+    modalState.index = 0;
+
+    titleEl.textContent = p.name;
+    subEl.textContent = `${p.category} • ${money(p.price || 0)}`;
+
+    renderGallery();
+    modal.style.display = "block";
+    modal.setAttribute("aria-hidden", "false");
+
+    // focus safe
+    imgEl?.focus?.();
+  }
+
+  function closeGallery() {
+    const modal = document.getElementById("galleryModal");
+    if (!modal) return;
+    modalState.open = false;
+    modalState.productId = null;
+    modalState.images = [];
+    modalState.index = 0;
+    modal.style.display = "none";
+    modal.setAttribute("aria-hidden", "true");
+  }
+
+  function stepGallery(dir) {
+    if (!modalState.open) return;
+    const n = modalState.images.length || 0;
+    if (n <= 1) return;
+    modalState.index = (modalState.index + dir + n) % n;
+    renderGallery();
+  }
+
+  function renderGallery() {
+    const modal = document.getElementById("galleryModal");
+    if (!modal) return;
+
+    const imgEl = modal.querySelector("#galleryImg");
+    const dots = modal.querySelector("#galleryDots");
+    const prev = modal.querySelector("#galleryPrev");
+    const next = modal.querySelector("#galleryNext");
+
+    const imgs = modalState.images || [];
+    const idx = modalState.index || 0;
+
+    const src = imgs[idx] || "assets/logo.png";
+    imgEl.src = src;
+    imgEl.onerror = () => {
+      imgEl.onerror = null;
+      imgEl.src = "assets/logo.png";
+      imgEl.style.objectFit = "contain";
+    };
+
+    const many = imgs.length > 1;
+    prev.style.display = many ? "block" : "none";
+    next.style.display = many ? "block" : "none";
+
+    dots.innerHTML = imgs
+      .map((_, i) => {
+        const active = i === idx;
+        return `<span style="
+          width:${active ? 18 : 8}px;
+          height:8px;
+          border-radius:999px;
+          background:${active ? "rgba(255,255,255,.92)" : "rgba(255,255,255,.32)"};
+          transition:all .18s ease;
+          display:inline-block;
+        "></span>`;
+      })
+      .join("");
   }
 
   // =========================
@@ -245,21 +525,25 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
     if (sort === "priceDesc") out.sort((a, b) => (b.price || 0) - (a.price || 0));
     if (sort === "nameAsc") out.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
     if (sort === "featured") out.sort((a, b) => (b.featured === true) - (a.featured === true));
-
     return out;
   }
 
   // =========================
   // PRODUCT CARD
   // =========================
+  function getCoverMedia(p) {
+    const imgs = getProductImages(p);
+    return imgs[0] || "assets/logo.png";
+  }
+
   function productCardHTML(p) {
     const badge = p.tag ? `<div class="badge">${p.tag}</div>` : "";
     const plus = `<div class="plus" aria-hidden="true">+</div>`;
-    const media = p.media || "";
+    const cover = getCoverMedia(p);
 
-    const mediaHTML = isVideo(media)
-      ? `<video src="${media}" muted playsinline loop></video>`
-      : `<img src="${media}" alt="${p.name}" loading="lazy"
+    const mediaHTML = isVideo(cover)
+      ? `<video src="${cover}" muted playsinline loop></video>`
+      : `<img src="${cover}" alt="${p.name}" loading="lazy"
             onerror="this.onerror=null; this.src='assets/logo.png'; this.style.objectFit='contain'; this.style.padding='18px';" />`;
 
     return `
@@ -267,7 +551,8 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
         <div class="media">
           ${badge}
           ${mediaHTML}
-          <button class="hit" data-add="${p.id}" title="Agregar"
+          <!-- tocar la imagen abre galería -->
+          <button class="hit" data-open="${p.id}" title="Ver fotos"
             style="all:unset;cursor:pointer;position:absolute;inset:0">
             ${plus}
           </button>
@@ -325,7 +610,8 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
         )}`;
         lines.push(line);
 
-        const imgSrc = p.media && !isVideo(p.media) ? p.media : "assets/logo.png";
+        const imgs = getProductImages(p);
+        const imgSrc = imgs[0] && !isVideo(imgs[0]) ? imgs[0] : "assets/logo.png";
 
         return `
           <div class="ci">
@@ -352,7 +638,6 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
 
     msg += lines.join("\n");
     msg += `\n\nTotal: ${money(cartTotal())}\n\n¿Me confirmas disponibilidad y envío?`;
-
     els.waOrderBtn.href = waLink(msg);
   }
 
@@ -379,10 +664,9 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
     renderCart();
   }
 
+  // ✅ ahora "Ver" abre la galería
   function viewProduct(id) {
-    const p = PRODUCTS.find((x) => x.id === id);
-    if (!p) return;
-    alert(`${p.name}\n${p.category}\n${money(p.price || 0)}\nTallas: ${(p.sizes || []).join(", ")}`);
+    openGallery(id);
   }
 
   // =========================
@@ -413,7 +697,6 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
     Promise.race([Promise.all(critical.map(preload)), timeout]).then(() => {
       clearInterval(tick);
       if (bar) bar.style.width = "100%";
-
       setTimeout(() => {
         els.loader.style.display = "none";
         els.loader.setAttribute("aria-hidden", "true");
@@ -474,14 +757,23 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
     els.productsGrid?.addEventListener("click", (e) => {
       const addBtn = e.target.closest("[data-add]");
       const viewBtn = e.target.closest("[data-view]");
+      const openBtn = e.target.closest("[data-open]");
+
       if (addBtn) {
         const id = addBtn.getAttribute("data-add");
         addToCart(id);
         openDrawer();
       }
+
       if (viewBtn) {
         const id = viewBtn.getAttribute("data-view");
         viewProduct(id);
+      }
+
+      // ✅ click en imagen abre modal con swipe
+      if (openBtn) {
+        const id = openBtn.getAttribute("data-open");
+        openGallery(id);
       }
     });
 
