@@ -981,3 +981,11 @@ body.theme-women .pmodal__close{
   border: 1px solid rgba(168,85,247,.30) !important;
   box-shadow: 0 10px 22px rgba(0,0,0,.10) !important;
 }
+/* ✅ FIX REAL: la X del modal en tema mujer (TU CLASE ES pmodal__close) */
+body.theme-women .pmodal__close{
+  color:#17131f !important;
+  opacity:1 !important;
+  background: rgba(168,85,247,.16) !important;
+  border: 1px solid rgba(168,85,247,.30) !important;
+  box-shadow: 0 10px 22px rgba(0,0,0,.10) !important;
+}
