@@ -1,4 +1,4 @@
-import { STORE, PRODUCTS } from "./products.js";
+import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
 
 (() => {
   const WA_NUMBER = STORE?.whatsappNumber || "593962722395";
@@ -52,6 +52,120 @@ import { STORE, PRODUCTS } from "./products.js";
   const isVideo = (url) => /\.(mp4|webm|ogg)$/i.test(url || "");
 
   // =========================
+  // ✅ PRODUCTS (se cargan desde CSV)
+  // =========================
+  let PRODUCTS = Array.isArray(FALLBACK_PRODUCTS) ? [...FALLBACK_PRODUCTS] : [];
+
+  // CSV parser (soporta comillas y comas dentro)
+  function parseCSV(text) {
+    const rows = [];
+    let row = [];
+    let cell = "";
+    let inQuotes = false;
+
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      const next = text[i + 1];
+
+      if (ch === '"') {
+        if (inQuotes && next === '"') {
+          cell += '"';
+          i++;
+        } else {
+          inQuotes = !inQuotes;
+        }
+        continue;
+      }
+
+      if (ch === "," && !inQuotes) {
+        row.push(cell.trim());
+        cell = "";
+        continue;
+      }
+
+      if ((ch === "\n" || ch === "\r") && !inQuotes) {
+        if (ch === "\r" && next === "\n") i++;
+        row.push(cell.trim());
+        cell = "";
+        if (row.some((x) => x !== "")) rows.push(row);
+        row = [];
+        continue;
+      }
+
+      cell += ch;
+    }
+
+    // última
+    row.push(cell.trim());
+    if (row.some((x) => x !== "")) rows.push(row);
+
+    return rows;
+  }
+
+  function normalizeProduct(p) {
+    const price = Number(String(p.price || "0").replace(",", "."));
+    const featuredRaw = String(p.featured || "").trim().toLowerCase();
+    const featured = featuredRaw === "yes" || featuredRaw === "si" || featuredRaw === "true" || featuredRaw === "1";
+
+    // sizes: acepta "S|M|L" o "S, M, L"
+    const sizesStr = String(p.sizes || "").trim();
+    const sizes = sizesStr.includes("|")
+      ? sizesStr.split("|").map((s) => s.trim()).filter(Boolean)
+      : sizesStr.split(",").map((s) => s.trim()).filter(Boolean);
+
+    return {
+      id: String(p.id || "").trim(),
+      name: String(p.name || "").trim(),
+      category: String(p.category || "").trim(),
+      price: Number.isFinite(price) ? price : 0,
+      sizes,
+      tag: String(p.tag || "").trim(),
+      media: String(p.media || "").trim(),
+      featured,
+    };
+  }
+
+  async function loadProductsFromCSV() {
+    // ✅ cache-bust para GitHub Pages
+    const url = `data/productos.csv?v=${Date.now()}`;
+
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) throw new Error("No se pudo cargar productos.csv");
+
+    const text = await res.text();
+    const rows = parseCSV(text);
+
+    if (!rows.length) throw new Error("CSV vacío");
+
+    const headers = rows[0].map((h) => h.trim().toLowerCase());
+    const idx = (name) => headers.indexOf(name);
+
+    const needed = ["id", "name", "category", "price", "sizes", "tag", "media", "featured"];
+    const ok = needed.every((k) => idx(k) !== -1);
+    if (!ok) throw new Error("CSV no tiene columnas correctas");
+
+    const out = [];
+    for (let i = 1; i < rows.length; i++) {
+      const r = rows[i];
+      const obj = {
+        id: r[idx("id")] || "",
+        name: r[idx("name")] || "",
+        category: r[idx("category")] || "",
+        price: r[idx("price")] || "",
+        sizes: r[idx("sizes")] || "",
+        tag: r[idx("tag")] || "",
+        media: r[idx("media")] || "",
+        featured: r[idx("featured")] || "",
+      };
+      const normalized = normalizeProduct(obj);
+      if (normalized.id && normalized.name) out.push(normalized);
+    }
+
+    if (!out.length) throw new Error("No hay productos válidos en el CSV");
+    return out;
+  }
+
+  // =========================
   // CART (localStorage)
   // =========================
   const CART_KEY = "flowurban_cart_v1";
@@ -101,7 +215,6 @@ import { STORE, PRODUCTS } from "./products.js";
     if (els.waContact) els.waContact.href = waLink();
     if (els.floatWa) els.floatWa.href = waLink();
 
-    // socials (pon tus links reales)
     if (els.igBtn) els.igBtn.href = "#";
     if (els.ttBtn) els.ttBtn.href = "#";
 
@@ -273,7 +386,7 @@ import { STORE, PRODUCTS } from "./products.js";
   }
 
   // =========================
-  // LOADER (USA loader.png, Y NUNCA SE QUEDA PEGADO)
+  // LOADER (no se pega)
   // =========================
   function fastLoader() {
     if (!els.loader) return;
@@ -294,24 +407,19 @@ import { STORE, PRODUCTS } from "./products.js";
         img.src = src;
       });
 
-    // ✅ CRÍTICOS (incluye loader.png)
     const critical = ["assets/loader.png", "assets/hero.jpg", "assets/logo.png"];
-
-    // ✅ Plan B para no quedarse pegado por internet lento
     const timeout = new Promise((res) => setTimeout(res, 1600));
 
     Promise.race([Promise.all(critical.map(preload)), timeout]).then(() => {
       clearInterval(tick);
       if (bar) bar.style.width = "100%";
 
-      // mínimo visible para que no “parpadee”
       setTimeout(() => {
         els.loader.style.display = "none";
         els.loader.setAttribute("aria-hidden", "true");
       }, 350);
     });
 
-    // ✅ ULTRA SEGURO: aunque haya error, se apaga en 4.5s
     setTimeout(() => {
       if (!els.loader) return;
       els.loader.style.display = "none";
@@ -320,7 +428,7 @@ import { STORE, PRODUCTS } from "./products.js";
   }
 
   // =========================
-  // THEME SWITCH (UNA SOLA VEZ)
+  // THEME SWITCH
   // =========================
   function initThemeSwitch() {
     const btnWomen = document.getElementById("btnWomen");
@@ -341,7 +449,7 @@ import { STORE, PRODUCTS } from "./products.js";
   }
 
   // =========================
-  // UI WIRES
+  // UI
   // =========================
   function wireUI() {
     setWaLinks();
@@ -395,8 +503,19 @@ import { STORE, PRODUCTS } from "./products.js";
     });
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", async () => {
     initThemeSwitch();
+
+    // ✅ Primero intenta CSV
+    try {
+      const fromCSV = await loadProductsFromCSV();
+      PRODUCTS = fromCSV;
+      console.log("✅ Productos cargados desde CSV:", PRODUCTS.length);
+    } catch (err) {
+      console.warn("⚠️ No se pudo cargar CSV, usando products.js", err);
+      PRODUCTS = Array.isArray(FALLBACK_PRODUCTS) ? [...FALLBACK_PRODUCTS] : [];
+    }
+
     wireUI();
     fastLoader();
   });
