@@ -989,3 +989,9 @@ body.theme-women .pmodal__close{
   border: 1px solid rgba(168,85,247,.30) !important;
   box-shadow: 0 10px 22px rgba(0,0,0,.10) !important;
 }
+body.theme-women .pmodal__close{
+  color:#fff !important;
+  opacity:1 !important;
+  background: rgba(0,0,0,.35) !important;
+  border: 1px solid rgba(255,255,255,.22) !important;
+}
