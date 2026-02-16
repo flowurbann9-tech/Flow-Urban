@@ -52,9 +52,54 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
   const isVideo = (url) => /\.(mp4|webm|ogg)$/i.test(url || "");
 
   // =========================
+  // ✅ MULTI-FOTO: media puede venir como:
+  // "a.jpg"  o  "a.jpg|b.jpg|c.jpg"
+  // =========================
+  function mediaToList(media) {
+    const m = String(media || "").trim();
+    if (!m) return [];
+    if (m.includes("|")) return m.split("|").map((s) => s.trim()).filter(Boolean);
+    if (m.includes(";")) return m.split(";").map((s) => s.trim()).filter(Boolean);
+    return [m];
+  }
+
+  function normalizeProduct(p) {
+    const price = Number(String(p.price || "0").replace(",", "."));
+    const featuredRaw = String(p.featured || "").trim().toLowerCase();
+    const featured =
+      featuredRaw === "yes" ||
+      featuredRaw === "si" ||
+      featuredRaw === "true" ||
+      featuredRaw === "1";
+
+    // sizes: acepta "S|M|L" o "S, M, L"
+    const sizesStr = String(p.sizes || "").trim();
+    const sizes = sizesStr.includes("|")
+      ? sizesStr.split("|").map((s) => s.trim()).filter(Boolean)
+      : sizesStr.split(",").map((s) => s.trim()).filter(Boolean);
+
+    const media = String(p.media || "").trim();
+    const mediaList = mediaToList(media).slice(0, 3); // ✅ máximo 3 fotos
+
+    return {
+      id: String(p.id || "").trim(),
+      name: String(p.name || "").trim(),
+      category: String(p.category || "").trim(),
+      price: Number.isFinite(price) ? price : 0,
+      sizes,
+      tag: String(p.tag || "").trim(),
+      media,
+      mediaList,
+      featured,
+    };
+  }
+
+  // =========================
   // ✅ PRODUCTS (se cargan desde CSV)
   // =========================
-  let PRODUCTS = Array.isArray(FALLBACK_PRODUCTS) ? [...FALLBACK_PRODUCTS] : [];
+  let PRODUCTS = Array.isArray(FALLBACK_PRODUCTS)
+    ? FALLBACK_PRODUCTS.map(normalizeProduct)
+    : [];
 
   // CSV parser (soporta comillas y comas dentro)
   function parseCSV(text) {
@@ -101,48 +146,6 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
     return rows;
   }
 
-  // ✅ media puede ser:
-  // - "assets/x.jpg" (1 imagen)
-  // - "assets/a.jpg|assets/b.jpg|assets/c.jpg" (varias)
-  // - ["a.jpg","b.jpg"] (si algún día lo pones así en products.js)
-  function toMediaList(media) {
-    if (Array.isArray(media)) return media.map(String).map((s) => s.trim()).filter(Boolean);
-    const m = String(media || "").trim();
-    if (!m) return [];
-    if (m.includes("|")) return m.split("|").map((s) => s.trim()).filter(Boolean);
-    if (m.includes(";")) return m.split(";").map((s) => s.trim()).filter(Boolean);
-    return [m];
-  }
-
-  function normalizeProduct(p) {
-    const price = Number(String(p.price || "0").replace(",", "."));
-    const featuredRaw = String(p.featured || "").trim().toLowerCase();
-    const featured =
-      featuredRaw === "yes" ||
-      featuredRaw === "si" ||
-      featuredRaw === "true" ||
-      featuredRaw === "1";
-
-    const sizesStr = String(p.sizes || "").trim();
-    const sizes = sizesStr.includes("|")
-      ? sizesStr.split("|").map((s) => s.trim()).filter(Boolean)
-      : sizesStr.split(",").map((s) => s.trim()).filter(Boolean);
-
-    const mediaList = toMediaList(p.media);
-
-    return {
-      id: String(p.id || "").trim(),
-      name: String(p.name || "").trim(),
-      category: String(p.category || "").trim(),
-      price: Number.isFinite(price) ? price : 0,
-      sizes,
-      tag: String(p.tag || "").trim(),
-      media: String(p.media || "").trim(), // se mantiene
-      mediaList, // ✅ nuevo (para slider)
-      featured,
-    };
-  }
-
   async function loadProductsFromCSV() {
     const url = `data/productos.csv?v=${Date.now()}`;
 
@@ -151,7 +154,6 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
 
     const text = await res.text();
     const rows = parseCSV(text);
-
     if (!rows.length) throw new Error("CSV vacío");
 
     const headers = rows[0].map((h) => h.trim().toLowerCase());
@@ -267,29 +269,22 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
   }
 
   // =========================
-  // ✅ MODAL SLIDER (se crea desde JS, no toca tu HTML)
+  // ✅ MODAL SLIDER (NO toca tu HTML)
   // =========================
-  const modal = {
-    root: null,
-    backdrop: null,
-    panel: null,
-    close: null,
-    title: null,
-    meta: null,
-    price: null,
-    sizes: null,
-    addBtn: null,
-    track: null,
-    dots: null,
-    prev: null,
-    next: null,
-    state: { open: false, id: null, idx: 0, list: [] },
-  };
+  let modalRoot = null;
+  let modalTrack = null;
+  let modalDots = null;
+  let modalTitle = null;
+  let modalMeta = null;
+  let modalPrice = null;
+  let modalSizes = null;
+  let modalAddBtn = null;
+
+  const modalState = { open: false, id: null, idx: 0, list: [] };
 
   function ensureModal() {
-    if (modal.root) return;
+    if (modalRoot) return;
 
-    // estilos mínimos inline (para no tocar tu styles.css)
     const style = document.createElement("style");
     style.textContent = `
       .fuModal{position:fixed;inset:0;z-index:10050;display:none}
@@ -300,17 +295,17 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
         background:rgba(18,18,24,.96);border:1px solid rgba(255,255,255,.12);
         box-shadow:0 26px 80px rgba(0,0,0,.55)}
       body.theme-women .fuModal__panel{background:rgba(255,255,255,.90);border-color:rgba(168,85,247,.20)}
-      .fuModal__top{display:flex;align-items:center;justify-content:space-between;padding:14px 14px;border-bottom:1px solid rgba(255,255,255,.08)}
+      .fuModal__top{display:flex;align-items:center;justify-content:space-between;padding:14px;border-bottom:1px solid rgba(255,255,255,.08)}
       body.theme-women .fuModal__top{border-bottom-color:rgba(20,10,40,.10)}
-      .fuModal__t{font-weight:1000}
+      .fuModal__t{font-weight:1000;color:#fff}
+      body.theme-women .fuModal__t{color:#17131f}
       .fuModal__x{cursor:pointer;border:0;background:rgba(255,255,255,.10);color:#fff;border-radius:12px;padding:10px 12px}
       body.theme-women .fuModal__x{background:rgba(168,85,247,.12);color:#17131f;border:1px solid rgba(168,85,247,.22)}
       .fuModal__media{position:relative;background:#0f0f14}
       body.theme-women .fuModal__media{background:#fff}
       .fuModal__viewport{width:100%;aspect-ratio:1/1;overflow:hidden;touch-action:pan-y}
       .fuModal__track{display:flex;height:100%;transform:translateX(0);transition:transform .25s ease}
-      .fuModal__slide{min-width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#0f0f14}
-      body.theme-women .fuModal__slide{background:#fff}
+      .fuModal__slide{min-width:100%;height:100%}
       .fuModal__slide img{width:100%;height:100%;object-fit:cover}
       .fuModal__navBtn{position:absolute;top:50%;transform:translateY(-50%);border:0;cursor:pointer;
         width:44px;height:44px;border-radius:14px;background:rgba(0,0,0,.55);color:#fff;display:grid;place-items:center}
@@ -323,17 +318,19 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
       .fuDot.isOn{background:rgba(255,255,255,.92)}
       body.theme-women .fuDot.isOn{background:rgba(168,85,247,.85)}
       .fuModal__body{padding:14px}
-      .fuModal__meta{opacity:.8;font-weight:800;font-size:13px;margin-top:4px}
-      .fuModal__price{margin-top:10px;font-weight:1000}
+      .fuModal__meta{opacity:.8;font-weight:800;font-size:13px;margin-top:4px;color:#fff}
+      body.theme-women .fuModal__meta{color:#17131f}
+      .fuModal__price{margin-top:10px;font-weight:1000;color:#fff}
       body.theme-women .fuModal__price{color:#ff5db1}
-      .fuModal__sizes{margin-top:8px;opacity:.85;font-size:13px}
+      .fuModal__sizes{margin-top:8px;opacity:.85;font-size:13px;color:#fff}
+      body.theme-women .fuModal__sizes{color:#17131f}
       .fuModal__actions{margin-top:14px;display:grid;grid-template-columns:1fr;gap:10px}
     `;
     document.head.appendChild(style);
 
-    const root = document.createElement("div");
-    root.className = "fuModal";
-    root.innerHTML = `
+    modalRoot = document.createElement("div");
+    modalRoot.className = "fuModal";
+    modalRoot.innerHTML = `
       <div class="fuModal__bd" data-close="1"></div>
       <div class="fuModal__panel" role="dialog" aria-modal="true" aria-label="Producto">
         <div class="fuModal__top">
@@ -360,34 +357,28 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
         </div>
       </div>
     `;
-    document.body.appendChild(root);
+    document.body.appendChild(modalRoot);
 
-    modal.root = root;
-    modal.backdrop = root.querySelector(".fuModal__bd");
-    modal.panel = root.querySelector(".fuModal__panel");
-    modal.close = root.querySelector('[data-close="1"]');
-    modal.title = root.querySelector("#fuModalTitle");
-    modal.meta = root.querySelector("#fuMeta");
-    modal.price = root.querySelector("#fuPrice");
-    modal.sizes = root.querySelector("#fuSizes");
-    modal.addBtn = root.querySelector("#fuAddBtn");
-    modal.track = root.querySelector("#fuTrack");
-    modal.dots = root.querySelector("#fuDots");
-    modal.prev = root.querySelector("#fuPrev");
-    modal.next = root.querySelector("#fuNext");
+    modalTrack = modalRoot.querySelector("#fuTrack");
+    modalDots = modalRoot.querySelector("#fuDots");
+    modalTitle = modalRoot.querySelector("#fuModalTitle");
+    modalMeta = modalRoot.querySelector("#fuMeta");
+    modalPrice = modalRoot.querySelector("#fuPrice");
+    modalSizes = modalRoot.querySelector("#fuSizes");
+    modalAddBtn = modalRoot.querySelector("#fuAddBtn");
 
-    // cerrar
-    root.addEventListener("click", (e) => {
-      const c = e.target.closest('[data-close="1"]');
-      if (c) closeModal();
+    const prevBtn = modalRoot.querySelector("#fuPrev");
+    const nextBtn = modalRoot.querySelector("#fuNext");
+    const viewport = modalRoot.querySelector("#fuViewport");
+
+    modalRoot.addEventListener("click", (e) => {
+      if (e.target.closest('[data-close="1"]')) closeModal();
     });
 
-    // botones nav
-    modal.prev.addEventListener("click", () => slideTo(modal.state.idx - 1));
-    modal.next.addEventListener("click", () => slideTo(modal.state.idx + 1));
+    prevBtn.addEventListener("click", () => slideTo(modalState.idx - 1));
+    nextBtn.addEventListener("click", () => slideTo(modalState.idx + 1));
 
-    // swipe
-    const viewport = root.querySelector("#fuViewport");
+    // Swipe
     let startX = 0;
     let lastX = 0;
     let dragging = false;
@@ -396,27 +387,27 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
       dragging = true;
       startX = x;
       lastX = x;
-      modal.track.style.transition = "none";
+      modalTrack.style.transition = "none";
     };
     const onMove = (x) => {
       if (!dragging) return;
       lastX = x;
       const dx = x - startX;
       const w = viewport.clientWidth || 1;
-      const base = -modal.state.idx * w;
-      modal.track.style.transform = `translateX(${base + dx}px)`;
+      const base = -modalState.idx * w;
+      modalTrack.style.transform = `translateX(${base + dx}px)`;
     };
     const onUp = () => {
       if (!dragging) return;
       dragging = false;
-      modal.track.style.transition = "transform .25s ease";
+      modalTrack.style.transition = "transform .25s ease";
       const dx = lastX - startX;
       const w = viewport.clientWidth || 1;
       if (Math.abs(dx) > w * 0.18) {
-        if (dx < 0) slideTo(modal.state.idx + 1);
-        else slideTo(modal.state.idx - 1);
+        if (dx < 0) slideTo(modalState.idx + 1);
+        else slideTo(modalState.idx - 1);
       } else {
-        slideTo(modal.state.idx);
+        slideTo(modalState.idx);
       }
     };
 
@@ -431,30 +422,24 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
     window.addEventListener("mousemove", (e) => onMove(e.clientX));
     window.addEventListener("mouseup", onUp);
 
-    // esc
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && modal.state.open) closeModal();
+      if (e.key === "Escape" && modalState.open) closeModal();
     });
   }
 
   function slideTo(nextIdx) {
-    if (!modal.state.list.length) return;
-    const max = modal.state.list.length - 1;
+    if (!modalState.list.length) return;
+    const max = modalState.list.length - 1;
     const idx = Math.max(0, Math.min(max, nextIdx));
-    modal.state.idx = idx;
+    modalState.idx = idx;
 
-    const viewport = modal.root.querySelector("#fuViewport");
+    const viewport = modalRoot.querySelector("#fuViewport");
     const w = viewport.clientWidth || 1;
-    modal.track.style.transform = `translateX(${-idx * w}px)`;
+    modalTrack.style.transform = `translateX(${-idx * w}px)`;
 
-    // dots
-    Array.from(modal.dots.children).forEach((d, i) => {
+    Array.from(modalDots.children).forEach((d, i) => {
       d.classList.toggle("isOn", i === idx);
     });
-
-    // habilitar/deshabilitar
-    modal.prev.style.opacity = idx === 0 ? "0.35" : "1";
-    modal.next.style.opacity = idx === max ? "0.35" : "1";
   }
 
   function openModal(id) {
@@ -463,27 +448,22 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
     const p = PRODUCTS.find((x) => x.id === id);
     if (!p) return;
 
-    const list = (p.mediaList && p.mediaList.length ? p.mediaList : toMediaList(p.media)).slice(0, 8);
+    const list = (p.mediaList && p.mediaList.length ? p.mediaList : mediaToList(p.media)).slice(0, 3);
     const safeList = list.length ? list : ["assets/logo.png"];
 
-    modal.state.open = true;
-    modal.state.id = id;
-    modal.state.idx = 0;
-    modal.state.list = safeList;
+    modalState.open = true;
+    modalState.id = id;
+    modalState.idx = 0;
+    modalState.list = safeList;
 
-    modal.title.textContent = p.name || "Producto";
-    modal.meta.textContent = p.category || "";
-    modal.price.textContent = money(p.price || 0);
-    modal.sizes.textContent = `Tallas: ${(p.sizes || []).join(", ")}`;
+    modalTitle.textContent = p.name || "Producto";
+    modalMeta.textContent = p.category || "";
+    modalPrice.textContent = money(p.price || 0);
+    modalSizes.textContent = `Tallas: ${(p.sizes || []).join(", ")}`;
 
-    // slides
-    modal.track.innerHTML = safeList
+    modalTrack.innerHTML = safeList
       .map((src) => {
         const s = String(src || "").trim() || "assets/logo.png";
-        if (isVideo(s)) {
-          // si en algún momento pones video en el slider
-          return `<div class="fuModal__slide"><video src="${s}" muted playsinline loop style="width:100%;height:100%;object-fit:cover"></video></div>`;
-        }
         return `<div class="fuModal__slide">
           <img src="${s}" alt="${p.name}" loading="eager"
             onerror="this.onerror=null; this.src='assets/logo.png'; this.style.objectFit='contain'; this.style.padding='18px';" />
@@ -491,34 +471,27 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
       })
       .join("");
 
-    // dots
-    modal.dots.innerHTML = safeList
+    modalDots.innerHTML = safeList
       .map((_, i) => `<span class="fuDot ${i === 0 ? "isOn" : ""}"></span>`)
       .join("");
 
-    // add button (NO cambia tu carrito)
-    modal.addBtn.onclick = () => {
+    modalAddBtn.onclick = () => {
       addToCart(id);
       openDrawer();
     };
 
-    modal.root.classList.add("isOpen");
+    modalRoot.classList.add("isOpen");
     document.body.style.overflow = "hidden";
-
-    // play videos si hay
-    requestAnimationFrame(() => {
-      modal.track.querySelectorAll("video").forEach((v) => v.play().catch(() => {}));
-      slideTo(0);
-    });
+    requestAnimationFrame(() => slideTo(0));
   }
 
   function closeModal() {
-    if (!modal.root) return;
-    modal.state.open = false;
-    modal.state.id = null;
-    modal.state.idx = 0;
-    modal.state.list = [];
-    modal.root.classList.remove("isOpen");
+    if (!modalRoot) return;
+    modalState.open = false;
+    modalState.id = null;
+    modalState.idx = 0;
+    modalState.list = [];
+    modalRoot.classList.remove("isOpen");
     document.body.style.overflow = "";
   }
 
@@ -529,7 +502,7 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
     const badge = p.tag ? `<div class="badge">${p.tag}</div>` : "";
     const plus = `<div class="plus" aria-hidden="true">+</div>`;
 
-    const list = (p.mediaList && p.mediaList.length ? p.mediaList : toMediaList(p.media));
+    const list = (p.mediaList && p.mediaList.length ? p.mediaList : mediaToList(p.media));
     const thumb = (list && list.length ? list[0] : p.media) || "assets/logo.png";
 
     const mediaHTML = isVideo(thumb)
@@ -537,17 +510,20 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
       : `<img src="${thumb}" alt="${p.name}" loading="lazy"
             onerror="this.onerror=null; this.src='assets/logo.png'; this.style.objectFit='contain'; this.style.padding='18px';" />`;
 
+    // ✅ la tarjeta abre modal (menos los botones)
     return `
       <article class="card" data-open="${p.id}">
         <div class="media" data-open="${p.id}">
           ${badge}
           ${mediaHTML}
-          <!-- ✅ SOLO ESTE botón agrega al carrito -->
+
+          <!-- ✅ ESTE botón agrega (no abre modal) -->
           <button class="hit" data-add="${p.id}" title="Agregar"
-            style="all:unset;cursor:pointer;position:absolute;inset:0">
+            style="all:unset;cursor:pointer;position:absolute;right:0;bottom:0;left:0;top:0">
             ${plus}
           </button>
         </div>
+
         <div class="card__body" data-open="${p.id}">
           <div class="title">${p.name}</div>
           <div class="meta">${p.category}</div>
@@ -601,8 +577,8 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
         )}`;
         lines.push(line);
 
-        const list = (p.mediaList && p.mediaList.length ? p.mediaList : toMediaList(p.media));
-        const imgSrc = (list && list.length && !isVideo(list[0])) ? list[0] : "assets/logo.png";
+        const list = (p.mediaList && p.mediaList.length ? p.mediaList : mediaToList(p.media));
+        const imgSrc = list && list.length ? list[0] : "assets/logo.png";
 
         return `
           <div class="ci">
@@ -656,7 +632,7 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
     renderCart();
   }
 
-  // ✅ ahora "Ver" abre el slider (y no daña nada)
+  // ✅ "Ver" abre modal
   function viewProduct(id) {
     openModal(id);
   }
@@ -727,14 +703,18 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
   // =========================
   // UI
   // =========================
+  function buildCategoryAndRender() {
+    buildCategorySelect();
+    renderProducts();
+  }
+
   function wireUI() {
     setWaLinks();
 
     closeDrawer();
     renderCart();
 
-    buildCategorySelect();
-    renderProducts();
+    buildCategoryAndRender();
 
     els.searchInput?.addEventListener("input", renderProducts);
     els.categorySelect?.addEventListener("change", renderProducts);
@@ -747,9 +727,7 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
       renderProducts();
     });
 
-    // ✅ Clicks en grid:
-    // - Si toca "Agregar" => agrega y abre carrito
-    // - Si toca la tarjeta/imagen/texto => abre slider del producto
+    // ✅ Clicks: prioridad a "Agregar"
     els.productsGrid?.addEventListener("click", (e) => {
       const addBtn = e.target.closest("[data-add]");
       if (addBtn) {
@@ -797,12 +775,12 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
     // ✅ Primero intenta CSV
     try {
       const fromCSV = await loadProductsFromCSV();
-      PRODUCTS = fromCSV.map((p) => (p.mediaList ? p : normalizeProduct(p)));
+      PRODUCTS = fromCSV.map(normalizeProduct);
       console.log("✅ Productos cargados desde CSV:", PRODUCTS.length);
     } catch (err) {
       console.warn("⚠️ No se pudo cargar CSV, usando products.js", err);
       PRODUCTS = Array.isArray(FALLBACK_PRODUCTS)
-        ? FALLBACK_PRODUCTS.map((p) => normalizeProduct(p))
+        ? FALLBACK_PRODUCTS.map(normalizeProduct)
         : [];
     }
 
@@ -810,4 +788,3 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
     fastLoader();
   });
 })();
-```0
