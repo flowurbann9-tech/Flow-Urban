@@ -12,7 +12,11 @@ export const PRODUCTS = [
     sizes: ["S", "M", "L", "XL"],
     featured: true,
     tag: "Nuevo",
-    media: "assets/logo.png",
+    media: [
+      "assets/logo.png",
+      "assets/logo.png",
+      "assets/logo.png",
+    ],
   },
   {
     id: "p2",
@@ -22,7 +26,11 @@ export const PRODUCTS = [
     sizes: ["S", "M", "L", "XL"],
     featured: true,
     tag: "Top",
-    media: "assets/logo.png",
+    media: [
+      "assets/logo.png",
+      "assets/logo.png",
+      "assets/logo.png",
+    ],
   },
   {
     id: "p3",
@@ -31,7 +39,11 @@ export const PRODUCTS = [
     price: 34.99,
     sizes: ["S", "M", "L", "XL"],
     tag: "Nuevo",
-    media: "assets/logo.png",
+    media: [
+      "assets/logo.png",
+      "assets/logo.png",
+      "assets/logo.png",
+    ],
   },
   {
     id: "p4",
@@ -41,6 +53,10 @@ export const PRODUCTS = [
     sizes: ["S", "M", "L", "XL"],
     featured: false,
     tag: "Nuevo",
-    media: "assets/logo.png",
+    media: [
+      "assets/logo.png",
+      "assets/logo.png",
+      "assets/logo.png",
+    ],
   },
 ];
