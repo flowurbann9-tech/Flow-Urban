@@ -34,11 +34,10 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
     loader: document.getElementById("loader"),
     barFill: document.getElementById("barFill"),
 
-    // ✅ MODAL
+    // ✅ MODAL PRODUCTO
     pModal: document.getElementById("pModal"),
     pModalBack: document.getElementById("pModalBack"),
     pModalClose: document.getElementById("pModalClose"),
-    pSlider: document.getElementById("pSlider"),
     pSliderTrack: document.getElementById("pSliderTrack"),
     pSliderDots: document.getElementById("pSliderDots"),
     pTitle: document.getElementById("pTitle"),
@@ -65,7 +64,7 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
   const isVideo = (url) => /\.(mp4|webm|ogg)$/i.test(url || "");
 
   // =========================
-  // ✅ PRODUCTS (CSV + fallback)
+  // ✅ PRODUCTS (se cargan desde CSV)
   // =========================
   let PRODUCTS = Array.isArray(FALLBACK_PRODUCTS) ? [...FALLBACK_PRODUCTS] : [];
 
@@ -91,17 +90,16 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
       }
 
       if (ch === "," && !inQuotes) {
-        row.push(cell);
+        row.push(cell.trim());
         cell = "";
         continue;
       }
 
       if ((ch === "\n" || ch === "\r") && !inQuotes) {
         if (ch === "\r" && next === "\n") i++;
-        row.push(cell);
+        row.push(cell.trim());
         cell = "";
-        // guarda filas que tengan algo
-        if (row.some((x) => String(x || "").trim() !== "")) rows.push(row);
+        if (row.some((x) => x !== "")) rows.push(row);
         row = [];
         continue;
       }
@@ -109,15 +107,15 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
       cell += ch;
     }
 
-    row.push(cell);
-    if (row.some((x) => String(x || "").trim() !== "")) rows.push(row);
+    row.push(cell.trim());
+    if (row.some((x) => x !== "")) rows.push(row);
 
     return rows;
   }
 
-  function normalizeProduct(raw) {
-    const price = Number(String(raw.price || "0").replace(",", "."));
-    const featuredRaw = String(raw.featured || "").trim().toLowerCase();
+  function normalizeProduct(p) {
+    const price = Number(String(p.price || "0").replace(",", "."));
+    const featuredRaw = String(p.featured || "").trim().toLowerCase();
     const featured =
       featuredRaw === "yes" ||
       featuredRaw === "si" ||
@@ -125,66 +123,36 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
       featuredRaw === "1";
 
     // sizes: acepta "S|M|L" o "S, M, L"
-    const sizesStr = String(raw.sizes || "").trim();
+    const sizesStr = String(p.sizes || "").trim();
     const sizes = sizesStr.includes("|")
-      ? sizesStr
-          .split("|")
-          .map((s) => s.trim())
-          .filter(Boolean)
-      : sizesStr
-          .split(",")
-          .map((s) => s.trim())
-          .filter(Boolean);
-
-    // ✅ media: puede venir "a.jpg|b.jpg|c.jpg"
-    const mediaStr = String(raw.media || "").trim();
-    const mediaList = mediaStr
-      .split("|")
-      .map((x) => x.trim())
-      .filter(Boolean);
+      ? sizesStr.split("|").map((s) => s.trim()).filter(Boolean)
+      : sizesStr.split(",").map((s) => s.trim()).filter(Boolean);
 
     return {
-      id: String(raw.id || "").trim(),
-      name: String(raw.name || "").trim(),
-      category: String(raw.category || "").trim(),
+      id: String(p.id || "").trim(),
+      name: String(p.name || "").trim(),
+      category: String(p.category || "").trim(),
       price: Number.isFinite(price) ? price : 0,
       sizes,
-      tag: String(raw.tag || "").trim(),
-      media: mediaList[0] || "",     // ✅ para la card (primera foto)
-      mediaList: mediaList.length ? mediaList : (mediaStr ? [mediaStr] : []), // ✅ para el modal
+      tag: String(p.tag || "").trim(),
+      media: String(p.media || "").trim(), // ✅ puede ser "a.jpg|b.jpg|c.jpg"
       featured,
     };
   }
 
   async function loadProductsFromCSV() {
+    // ✅ cache-bust para GitHub Pages
     const url = `data/productos.csv?v=${Date.now()}`;
+
     const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) throw new Error("No se pudo cargar productos.csv");
 
     const text = await res.text();
     const rows = parseCSV(text);
+
     if (!rows.length) throw new Error("CSV vacío");
 
-    // ✅ encuentra la fila header real (la que contiene 'id')
-    let headerRowIndex = -1;
-    let headerStartIdx = 0;
-
-    for (let i = 0; i < rows.length; i++) {
-      const row = rows[i].map((h) => String(h || "").trim().toLowerCase());
-      const idPos = row.indexOf("id");
-      if (idPos !== -1) {
-        headerRowIndex = i;
-        headerStartIdx = idPos;
-        break;
-      }
-    }
-
-    if (headerRowIndex === -1) throw new Error("No encontré encabezados (id,name,...)");
-
-    const headers = rows[headerRowIndex]
-      .slice(headerStartIdx)
-      .map((h) => String(h || "").trim().toLowerCase());
-
+    const headers = rows[0].map((h) => h.trim().toLowerCase());
     const idx = (name) => headers.indexOf(name);
 
     const needed = ["id", "name", "category", "price", "sizes", "tag", "media", "featured"];
@@ -192,12 +160,8 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
     if (!ok) throw new Error("CSV no tiene columnas correctas");
 
     const out = [];
-
-    for (let i = headerRowIndex + 1; i < rows.length; i++) {
-      const rFull = rows[i];
-      const r = rFull.slice(headerStartIdx); // ✅ corta columnas vacías de inicio
-      if (r.length < headers.length) continue; // fila incompleta
-
+    for (let i = 1; i < rows.length; i++) {
+      const r = rows[i];
       const obj = {
         id: r[idx("id")] || "",
         name: r[idx("name")] || "",
@@ -208,7 +172,6 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
         media: r[idx("media")] || "",
         featured: r[idx("featured")] || "",
       };
-
       const normalized = normalizeProduct(obj);
       if (normalized.id && normalized.name) out.push(normalized);
     }
@@ -302,118 +265,21 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
   }
 
   // =========================
-  // ✅ PRODUCT MODAL + SLIDER
+  // ✅ MEDIA HELPERS (3 fotos por producto)
   // =========================
-  let modalProductId = null;
-  let slideIndex = 0;
-  let slideCount = 0;
-
-  function openProductModal(p) {
-    if (!els.pModal || !els.pSliderTrack || !els.pSliderDots) return;
-
-    modalProductId = p.id;
-
-    // textos
-    if (els.pTitle) els.pTitle.textContent = p.name || "";
-    if (els.pMeta) els.pMeta.textContent = p.category || "";
-    if (els.pPrice) els.pPrice.textContent = money(p.price || 0);
-    if (els.pSizes) els.pSizes.textContent = `Tallas: ${(p.sizes || []).join(", ")}`;
-
-    // slides
-    const list = Array.isArray(p.mediaList) && p.mediaList.length
-      ? p.mediaList
-      : (p.media ? [p.media] : []);
-
-    slideCount = list.length || 1;
-    slideIndex = 0;
-
-    els.pSliderTrack.innerHTML = list
-      .map((src) => {
-        const safe = src || "assets/logo.png";
-        if (isVideo(safe)) {
-          return `
-            <div class="pslide">
-              <video src="${safe}" muted playsinline loop></video>
-            </div>
-          `;
-        }
-        return `
-          <div class="pslide">
-            <img src="${safe}" alt="${p.name || "Producto"}"
-              onerror="this.onerror=null; this.src='assets/logo.png'; this.style.objectFit='contain'; this.style.padding='18px';" />
-          </div>
-        `;
-      })
-      .join("");
-
-    els.pSliderDots.innerHTML = Array.from({ length: slideCount })
-      .map((_, i) => `<div class="pdot ${i === 0 ? "pdot--on" : ""}" data-dot="${i}"></div>`)
-      .join("");
-
-    // mostrar modal
-    document.body.classList.add("pmodalOpen");
-    els.pModal.setAttribute("aria-hidden", "false");
-
-    // play videos si hay
-    requestAnimationFrame(() => {
-      els.pSliderTrack?.querySelectorAll("video").forEach((v) => v.play().catch(() => {}));
-    });
-
-    updateSlider();
+  function splitMedia(mediaStr) {
+    const raw = String(mediaStr || "").trim();
+    if (!raw) return [];
+    // soporta "a.jpg|b.jpg|c.jpg" (con espacios)
+    return raw
+      .split("|")
+      .map((s) => s.trim())
+      .filter(Boolean);
   }
 
-  function closeProductModal() {
-    if (!els.pModal) return;
-    document.body.classList.remove("pmodalOpen");
-    els.pModal.setAttribute("aria-hidden", "true");
-    modalProductId = null;
-  }
-
-  function updateSlider() {
-    if (!els.pSliderTrack || !els.pSliderDots) return;
-    const x = slideIndex * -100;
-    els.pSliderTrack.style.transform = `translateX(${x}%)`;
-    els.pSliderDots.querySelectorAll(".pdot").forEach((d, i) => {
-      d.classList.toggle("pdot--on", i === slideIndex);
-    });
-  }
-
-  function goToSlide(i) {
-    if (!slideCount) return;
-    slideIndex = Math.max(0, Math.min(slideCount - 1, i));
-    updateSlider();
-  }
-
-  function nextSlide() {
-    goToSlide(slideIndex + 1);
-  }
-
-  function prevSlide() {
-    goToSlide(slideIndex - 1);
-  }
-
-  // swipe
-  let touchStartX = 0;
-  let touchDeltaX = 0;
-  let dragging = false;
-
-  function onTouchStart(e) {
-    dragging = true;
-    touchDeltaX = 0;
-    touchStartX = e.touches ? e.touches[0].clientX : e.clientX;
-  }
-  function onTouchMove(e) {
-    if (!dragging) return;
-    const x = e.touches ? e.touches[0].clientX : e.clientX;
-    touchDeltaX = x - touchStartX;
-  }
-  function onTouchEnd() {
-    if (!dragging) return;
-    dragging = false;
-
-    const TH = 45; // umbral swipe
-    if (touchDeltaX <= -TH) nextSlide();
-    else if (touchDeltaX >= TH) prevSlide();
+  function firstMedia(p) {
+    const list = splitMedia(p.media);
+    return list[0] || p.media || "assets/logo.png";
   }
 
   // =========================
@@ -421,21 +287,27 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
   // =========================
   function productCardHTML(p) {
     const badge = p.tag ? `<div class="badge">${p.tag}</div>` : "";
-    const media = p.media || "";
-    const mediaHTML = isVideo(media)
-      ? `<video class="pmedia" src="${media}" muted playsinline loop></video>`
-      : `<img class="pmedia" src="${media}" alt="${p.name}" loading="lazy"
+    const plus = `<div class="plus" aria-hidden="true">+</div>`;
+
+    const media0 = firstMedia(p);
+    const mediaHTML = isVideo(media0)
+      ? `<video src="${media0}" muted playsinline loop></video>`
+      : `<img src="${media0}" alt="${p.name}" loading="lazy"
             onerror="this.onerror=null; this.src='assets/logo.png'; this.style.objectFit='contain'; this.style.padding='18px';" />`;
 
     // ✅ IMPORTANTE:
-    // - NO ponemos botón "hit" encima (eso era lo que te agregaba al carrito al tocar la foto)
-    // - el + es el que agrega, y la foto abre modal
+    // - la foto abre modal => data-open
+    // - el + agrega carrito => data-add
     return `
-      <article class="card" data-card="${p.id}">
+      <article class="card">
         <div class="media" data-open="${p.id}">
           ${badge}
           ${mediaHTML}
-          <button class="plus" data-add="${p.id}" type="button" aria-label="Agregar">+</button>
+
+          <button class="hit" data-add="${p.id}" title="Agregar"
+            style="all:unset;cursor:pointer;position:absolute;right:12px;bottom:12px;width:44px;height:44px;z-index:3">
+            ${plus}
+          </button>
         </div>
         <div class="card__body">
           <div class="title">${p.name}</div>
@@ -490,12 +362,13 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
         )}`;
         lines.push(line);
 
-        const imgSrc = p.media && !isVideo(p.media) ? p.media : "assets/logo.png";
+        const imgSrc = firstMedia(p);
+        const safeImg = imgSrc && !isVideo(imgSrc) ? imgSrc : "assets/logo.png";
 
         return `
           <div class="ci">
             <div class="ci__img">
-              <img src="${imgSrc}" alt="${p.name}"
+              <img src="${safeImg}" alt="${p.name}"
                 onerror="this.onerror=null; this.src='assets/logo.png'; this.style.objectFit='contain'; this.style.padding='10px';" />
             </div>
             <div>
@@ -542,6 +415,341 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
     delete cart[id];
     saveCart(cart);
     renderCart();
+  }
+
+  // =========================
+  // ✅ MODAL + SLIDER (SWIPE)
+  // =========================
+  let modalProductId = null;
+  let sliderIndex = 0;
+  let sliderItems = []; // lista de urls (img/video)
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let isSwiping = false;
+
+  function openProductModal(id) {
+    const p = PRODUCTS.find((x) => x.id === id);
+    if (!p || !els.pModal) return;
+
+    modalProductId = id;
+    sliderIndex = 0;
+
+    const list = splitMedia(p.media);
+    sliderItems = list.length ? list : [p.media || "assets/logo.png"];
+
+    // render slides
+    if (els.pSliderTrack) {
+      els.pSliderTrack.innerHTML = sliderItems
+        .map((url) => {
+          const u = String(url || "").trim();
+          if (!u) return "";
+          if (isVideo(u)) {
+            return `
+              <div class="pslide">
+                <video src="${u}" playsinline controls></video>
+              </div>
+            `;
+          }
+          return `
+            <div class="pslide">
+              <img src="${u}" alt="${p.name}"
+                onerror="this.onerror=null; this.src='assets/logo.png'; this.style.objectFit='contain'; this.style.padding='18px';" />
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    // dots
+    if (els.pSliderDots) {
+      els.pSliderDots.innerHTML = sliderItems
+        .map((_, i) => `<span class="pdot ${i === 0 ? "pdot--on" : ""}" data-dot="${i}"></span>`)
+        .join("");
+    }
+
+    // info
+    if (els.pTitle) els.pTitle.textContent = p.name || "";
+    if (els.pMeta) els.pMeta.textContent = p.category || "";
+    if (els.pPrice) els.pPrice.textContent = money(p.price || 0);
+    if (els.pSizes) els.pSizes.textContent = `Tallas: ${(p.sizes || []).join(", ")}`;
+
+    // show modal
+    document.body.classList.add("pmodalOpen");
+    els.pModal.setAttribute("aria-hidden", "false");
+
+    // posicion inicial
+    updateSlider();
+
+    // play videos if any
+    requestAnimationFrame(() => {
+      els.pSliderTrack?.querySelectorAll("video").forEach((v) => v.play().catch(() => {}));
+    });
+
+    // activar zoom sobre el slide actual
+    attachZoomToCurrentSlide();
+  }
+
+  function closeProductModal() {
+    if (!els.pModal) return;
+    document.body.classList.remove("pmodalOpen");
+    els.pModal.setAttribute("aria-hidden", "true");
+    modalProductId = null;
+    sliderIndex = 0;
+    sliderItems = [];
+  }
+
+  function updateDots() {
+    if (!els.pSliderDots) return;
+    els.pSliderDots.querySelectorAll(".pdot").forEach((d) => {
+      const i = Number(d.getAttribute("data-dot"));
+      d.classList.toggle("pdot--on", i === sliderIndex);
+    });
+  }
+
+  function updateSlider() {
+    if (!els.pSliderTrack) return;
+    const x = sliderIndex * 100;
+    els.pSliderTrack.style.transform = `translateX(-${x}%)`;
+    updateDots();
+
+    // reset zoom del slide actual
+    attachZoomToCurrentSlide(true);
+  }
+
+  function nextSlide() {
+    if (sliderItems.length <= 1) return;
+    sliderIndex = Math.min(sliderItems.length - 1, sliderIndex + 1);
+    updateSlider();
+  }
+
+  function prevSlide() {
+    if (sliderItems.length <= 1) return;
+    sliderIndex = Math.max(0, sliderIndex - 1);
+    updateSlider();
+  }
+
+  // =========================
+  // ✅ PINCH ZOOM + DOBLE TAP (MÓVIL) para el MODAL
+  // =========================
+  function makePinchZoom(container) {
+    if (!container) return;
+
+    // evita duplicar listeners
+    if (container.__pzBound) return;
+    container.__pzBound = true;
+
+    let scale = 1;
+    let startScale = 1;
+    let lastTap = 0;
+
+    let panX = 0;
+    let panY = 0;
+    let startPanX = 0;
+    let startPanY = 0;
+
+    let startDist = 0;
+    let startMidX = 0;
+    let startMidY = 0;
+
+    let isPinching = false;
+    let isPanning = false;
+
+    const getMedia = () => container.querySelector("img,video");
+
+    const apply = () => {
+      const media = getMedia();
+      if (!media) return;
+      media.style.transformOrigin = "center center";
+      media.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+      media.style.transition = "none";
+    };
+
+    const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+
+    const reset = () => {
+      scale = 1;
+      panX = 0;
+      panY = 0;
+      apply();
+    };
+
+    const dist = (t1, t2) => {
+      const dx = t2.clientX - t1.clientX;
+      const dy = t2.clientY - t1.clientY;
+      return Math.hypot(dx, dy);
+    };
+
+    const mid = (t1, t2) => ({
+      x: (t1.clientX + t2.clientX) / 2,
+      y: (t1.clientY + t2.clientY) / 2,
+    });
+
+    container.style.touchAction = "none";
+
+    container.addEventListener(
+      "touchstart",
+      (e) => {
+        const media = getMedia();
+        if (!media) return;
+
+        // DOBLE TAP
+        const now = Date.now();
+        if (e.touches.length === 1) {
+          if (now - lastTap < 260) {
+            if (scale === 1) {
+              scale = 2.2;
+              panX = 0;
+              panY = 0;
+            } else {
+              reset();
+            }
+            apply();
+            e.preventDefault();
+          }
+          lastTap = now;
+        }
+
+        if (e.touches.length === 2) {
+          isPinching = true;
+          isPanning = false;
+
+          startScale = scale;
+          startDist = dist(e.touches[0], e.touches[1]);
+
+          const m = mid(e.touches[0], e.touches[1]);
+          startMidX = m.x;
+          startMidY = m.y;
+
+          startPanX = panX;
+          startPanY = panY;
+
+          e.preventDefault();
+        } else if (e.touches.length === 1 && scale > 1) {
+          isPanning = true;
+          isPinching = false;
+
+          startPanX = panX;
+          startPanY = panY;
+
+          startMidX = e.touches[0].clientX;
+          startMidY = e.touches[0].clientY;
+
+          e.preventDefault();
+        }
+      },
+      { passive: false }
+    );
+
+    container.addEventListener(
+      "touchmove",
+      (e) => {
+        const media = getMedia();
+        if (!media) return;
+
+        if (isPinching && e.touches.length === 2) {
+          const d = dist(e.touches[0], e.touches[1]);
+          const factor = d / startDist;
+
+          scale = clamp(startScale * factor, 1, 4);
+
+          const m = mid(e.touches[0], e.touches[1]);
+          panX = startPanX + (m.x - startMidX) * 0.35;
+          panY = startPanY + (m.y - startMidY) * 0.35;
+
+          apply();
+          e.preventDefault();
+        }
+
+        if (isPanning && e.touches.length === 1 && scale > 1) {
+          const x = e.touches[0].clientX;
+          const y = e.touches[0].clientY;
+
+          panX = startPanX + (x - startMidX);
+          panY = startPanY + (y - startMidY);
+
+          apply();
+          e.preventDefault();
+        }
+      },
+      { passive: false }
+    );
+
+    container.addEventListener("touchend", (e) => {
+      if (e.touches.length === 0) {
+        isPinching = false;
+        isPanning = false;
+        if (scale < 1.05) reset();
+      }
+    });
+
+    // reset externo
+    container.addEventListener("zoomReset", reset);
+  }
+
+  function attachZoomToCurrentSlide(resetFirst = false) {
+    // el slide actual es el N dentro del track
+    const slides = els.pSliderTrack?.querySelectorAll(".pslide");
+    if (!slides || !slides.length) return;
+    const current = slides[sliderIndex];
+    if (!current) return;
+
+    // bind zoom
+    makePinchZoom(current);
+
+    // reset si cambiamos de slide
+    if (resetFirst) current.dispatchEvent(new Event("zoomReset"));
+  }
+
+  function bindSliderSwipe() {
+    const slider = document.getElementById("pSlider");
+    if (!slider) return;
+
+    slider.addEventListener(
+      "touchstart",
+      (e) => {
+        if (e.touches.length !== 1) return;
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        isSwiping = true;
+      },
+      { passive: true }
+    );
+
+    slider.addEventListener(
+      "touchmove",
+      (e) => {
+        if (!isSwiping || e.touches.length !== 1) return;
+        const dx = e.touches[0].clientX - touchStartX;
+        const dy = e.touches[0].clientY - touchStartY;
+
+        // si el movimiento es mas horizontal, bloquea scroll
+        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10) {
+          e.preventDefault();
+        }
+      },
+      { passive: false }
+    );
+
+    slider.addEventListener(
+      "touchend",
+      (e) => {
+        if (!isSwiping) return;
+        isSwiping = false;
+
+        const touch = e.changedTouches[0];
+        if (!touch) return;
+
+        const dx = touch.clientX - touchStartX;
+        const dy = touch.clientY - touchStartY;
+
+        // swipe horizontal
+        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 45) {
+          if (dx < 0) nextSlide();
+          else prevSlide();
+        }
+      },
+      { passive: true }
+    );
   }
 
   // =========================
@@ -619,7 +827,6 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
     buildCategorySelect();
     renderProducts();
 
-    // filtros
     els.searchInput?.addEventListener("input", renderProducts);
     els.categorySelect?.addEventListener("change", renderProducts);
     els.sortSelect?.addEventListener("change", renderProducts);
@@ -631,38 +838,42 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
       renderProducts();
     });
 
-    // ✅ CLICK EN GRID:
-    // - data-add => carrito
-    // - data-view o data-open o click en img/video => modal
+    // ✅ Grid clicks:
+    // - click en foto => abre modal
+    // - click en + o botón agregar => agrega al carrito
     els.productsGrid?.addEventListener("click", (e) => {
       const addBtn = e.target.closest("[data-add]");
+      const viewBtn = e.target.closest("[data-view]");
+      const openArea = e.target.closest("[data-open]");
+
+      // ✅ Agregar (prioridad)
       if (addBtn) {
+        e.preventDefault();
+        e.stopPropagation();
         const id = addBtn.getAttribute("data-add");
         addToCart(id);
         openDrawer();
         return;
       }
 
-      const viewBtn = e.target.closest("[data-view]");
-      const openArea = e.target.closest("[data-open]");
-      const mediaEl = e.target.closest(".pmedia");
+      // ✅ Ver (abre modal también)
+      if (viewBtn) {
+        const id = viewBtn.getAttribute("data-view");
+        openProductModal(id);
+        return;
+      }
 
-      const id = (viewBtn && viewBtn.getAttribute("data-view")) ||
-                (openArea && openArea.getAttribute("data-open")) ||
-                (mediaEl && mediaEl.closest("[data-open]")?.getAttribute("data-open"));
-
-      if (id) {
-        const p = PRODUCTS.find((x) => x.id === id);
-        if (p) openProductModal(p);
+      // ✅ Click en foto/area media => abre modal
+      if (openArea) {
+        const id = openArea.getAttribute("data-open");
+        openProductModal(id);
       }
     });
 
-    // drawer
     els.openCartBtn?.addEventListener("click", openDrawer);
     els.closeCartBtn?.addEventListener("click", closeDrawer);
     els.backdrop?.addEventListener("click", closeDrawer);
 
-    // carrito + -
     els.cartItems?.addEventListener("click", (e) => {
       const dec = e.target.closest("[data-dec]");
       const inc = e.target.closest("[data-inc]");
@@ -672,48 +883,35 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
       if (del) delCart(del.getAttribute("data-del"));
     });
 
-    // ✅ modal wires
-    els.pModalBack?.addEventListener("click", closeProductModal);
-    els.pModalClose?.addEventListener("click", closeProductModal);
-
-    els.pSliderDots?.addEventListener("click", (e) => {
-      const dot = e.target.closest("[data-dot]");
-      if (!dot) return;
-      const i = Number(dot.getAttribute("data-dot"));
-      if (Number.isFinite(i)) goToSlide(i);
-    });
-
-    // swipe en slider (touch + mouse)
-    if (els.pSlider) {
-      els.pSlider.addEventListener("touchstart", onTouchStart, { passive: true });
-      els.pSlider.addEventListener("touchmove", onTouchMove, { passive: true });
-      els.pSlider.addEventListener("touchend", onTouchEnd, { passive: true });
-
-      els.pSlider.addEventListener("mousedown", onTouchStart);
-      window.addEventListener("mousemove", onTouchMove);
-      window.addEventListener("mouseup", onTouchEnd);
-    }
-
-    // botón agregar dentro del modal
-    els.pAddBtn?.addEventListener("click", () => {
-      if (!modalProductId) return;
-      addToCart(modalProductId);
-      openDrawer();
-      closeProductModal();
-    });
-
-    // ESC para cerrar (drawer y modal)
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
         closeDrawer();
         closeProductModal();
       }
-      // opcional: flechas para slider
-      if (document.body.classList.contains("pmodalOpen")) {
-        if (e.key === "ArrowRight") nextSlide();
-        if (e.key === "ArrowLeft") prevSlide();
-      }
     });
+
+    // ✅ Modal events
+    els.pModalBack?.addEventListener("click", closeProductModal);
+    els.pModalClose?.addEventListener("click", closeProductModal);
+
+    // dots click
+    els.pSliderDots?.addEventListener("click", (e) => {
+      const dot = e.target.closest("[data-dot]");
+      if (!dot) return;
+      sliderIndex = Number(dot.getAttribute("data-dot") || 0);
+      updateSlider();
+    });
+
+    // add from modal
+    els.pAddBtn?.addEventListener("click", () => {
+      if (!modalProductId) return;
+      addToCart(modalProductId);
+      closeProductModal();
+      openDrawer();
+    });
+
+    // swipe
+    bindSliderSwipe();
   }
 
   document.addEventListener("DOMContentLoaded", async () => {
