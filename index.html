@@ -7,30 +7,34 @@
   <meta name="theme-color" content="#0b0b0f" />
   <link rel="stylesheet" href="styles.css" />
 </head>
-  <!-- MODAL PRODUCTO (PRO) -->
-<div class="pmodal" id="pModal" aria-hidden="true">
-  <div class="pmodal__back" id="pModalBack"></div>
-
-  <div class="pmodal__card" role="dialog" aria-label="Producto">
-    <button class="pmodal__close" id="pModalClose" type="button">✕</button>
-
-    <div class="pslider" id="pSlider">
-      <div class="pslider__track" id="pSliderTrack"></div>
-      <div class="pslider__dots" id="pSliderDots"></div>
-    </div>
-
-    <div class="pmodal__body">
-      <div class="pmodal__title" id="pTitle"></div>
-      <div class="pmodal__meta" id="pMeta"></div>
-      <div class="pmodal__price" id="pPrice"></div>
-      <div class="pmodal__sizes" id="pSizes"></div>
-
-      <button class="btn btn--gold btn--wide" id="pAddBtn" type="button">Agregar al carrito</button>
-    </div>
-  </div>
-</div>
 
 <body>
+
+  <!-- ✅ MODAL PRODUCTO (PRO) — debe ir DENTRO del body -->
+  <div class="pmodal" id="pModal" aria-hidden="true">
+    <div class="pmodal__back" id="pModalBack"></div>
+
+    <div class="pmodal__card" role="dialog" aria-label="Producto">
+      <button class="pmodal__close" id="pModalClose" type="button">✕</button>
+
+      <div class="pslider" id="pSlider">
+        <div class="pslider__track" id="pSliderTrack"></div>
+        <div class="pslider__dots" id="pSliderDots"></div>
+      </div>
+
+      <div class="pmodal__body">
+        <div class="pmodal__title" id="pTitle"></div>
+        <div class="pmodal__meta" id="pMeta"></div>
+        <div class="pmodal__price" id="pPrice"></div>
+        <div class="pmodal__sizes" id="pSizes"></div>
+
+        <button class="btn btn--gold btn--wide" id="pAddBtn" type="button">
+          Agregar al carrito
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- TOP TICKER -->
   <div class="ticker">
     <div class="ticker__inner">
@@ -67,9 +71,10 @@
     <a href="#catalogo">CATÁLOGO</a>
     <a href="#contacto">CONTACTO</a>
   </nav>
+
   <div class="genderSwitch">
-  <button id="btnWomen" class="genderBtn" type="button">💜 MUJER</button>
-<button id="btnMen" class="genderBtn genderBtn--active" type="button">🖤 HOMBRE</button>
+    <button id="btnWomen" class="genderBtn" type="button">💜 MUJER</button>
+    <button id="btnMen" class="genderBtn genderBtn--active" type="button">🖤 HOMBRE</button>
   </div>
 
   <!-- HERO -->
@@ -168,7 +173,7 @@
     </div>
   </div>
 
-  <!-- IMPORTANTÍSIMO: como products.js/app.js usan export/import, deben cargarse como MODULE -->
+  <!-- JS -->
   <script type="module" src="app.js"></script>
 </body>
 </html>
