@@ -973,3 +973,11 @@ body.theme-women .closeModal svg{
   fill: #fff !important;
   stroke: #fff !important;
 }
+/* ✅ FIX REAL: la X del modal (pmodal__close) en tema mujer */
+body.theme-women .pmodal__close{
+  color:#17131f !important;          /* visible en fondo claro */
+  opacity:1 !important;
+  background: rgba(168,85,247,.16) !important;
+  border: 1px solid rgba(168,85,247,.30) !important;
+  box-shadow: 0 10px 22px rgba(0,0,0,.10) !important;
+}
