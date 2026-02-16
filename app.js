@@ -40,7 +40,10 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
 
   const money = (n) => {
     try {
-      return new Intl.NumberFormat("es-EC", { style: "currency", currency: "USD" }).format(n);
+      return new Intl.NumberFormat("es-EC", {
+        style: "currency",
+        currency: "USD",
+      }).format(n);
     } catch {
       return `$${Number(n || 0).toFixed(2)}`.replace(".", ",");
     }
@@ -73,11 +76,13 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
         }
         continue;
       }
+
       if (ch === "," && !inQuotes) {
         row.push(cell.trim());
         cell = "";
         continue;
       }
+
       if ((ch === "\n" || ch === "\r") && !inQuotes) {
         if (ch === "\r" && next === "\n") i++;
         row.push(cell.trim());
@@ -86,40 +91,27 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
         row = [];
         continue;
       }
+
       cell += ch;
     }
 
     row.push(cell.trim());
     if (row.some((x) => x !== "")) rows.push(row);
+
     return rows;
   }
 
-  // ✅ acepta media como:
-  // - "url1|url2|url3"
-  // - "url1,url2,url3"
-  // - o una sola "url"
-  function normalizeMedia(mediaVal) {
-    if (Array.isArray(mediaVal)) return mediaVal.filter(Boolean);
-
-    const s = String(mediaVal || "").trim();
-    if (!s) return "";
-
-    if (s.includes("|")) {
-      return s
-        .split("|")
-        .map((x) => x.trim())
-        .filter(Boolean);
-    }
-
-    // si viene con comas y parece lista
-    if (s.includes(",") && !/^https?:\/\//i.test(s)) {
-      return s
-        .split(",")
-        .map((x) => x.trim())
-        .filter(Boolean);
-    }
-
-    return s; // una sola
+  // ✅ media puede ser:
+  // - "assets/x.jpg" (1 imagen)
+  // - "assets/a.jpg|assets/b.jpg|assets/c.jpg" (varias)
+  // - ["a.jpg","b.jpg"] (si algún día lo pones así en products.js)
+  function toMediaList(media) {
+    if (Array.isArray(media)) return media.map(String).map((s) => s.trim()).filter(Boolean);
+    const m = String(media || "").trim();
+    if (!m) return [];
+    if (m.includes("|")) return m.split("|").map((s) => s.trim()).filter(Boolean);
+    if (m.includes(";")) return m.split(";").map((s) => s.trim()).filter(Boolean);
+    return [m];
   }
 
   function normalizeProduct(p) {
@@ -136,6 +128,8 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
       ? sizesStr.split("|").map((s) => s.trim()).filter(Boolean)
       : sizesStr.split(",").map((s) => s.trim()).filter(Boolean);
 
+    const mediaList = toMediaList(p.media);
+
     return {
       id: String(p.id || "").trim(),
       name: String(p.name || "").trim(),
@@ -143,18 +137,21 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
       price: Number.isFinite(price) ? price : 0,
       sizes,
       tag: String(p.tag || "").trim(),
-      media: normalizeMedia(p.media),
+      media: String(p.media || "").trim(), // se mantiene
+      mediaList, // ✅ nuevo (para slider)
       featured,
     };
   }
 
   async function loadProductsFromCSV() {
     const url = `data/productos.csv?v=${Date.now()}`;
+
     const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) throw new Error("No se pudo cargar productos.csv");
 
     const text = await res.text();
     const rows = parseCSV(text);
+
     if (!rows.length) throw new Error("CSV vacío");
 
     const headers = rows[0].map((h) => h.trim().toLowerCase());
@@ -183,266 +180,6 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
 
     if (!out.length) throw new Error("No hay productos válidos en el CSV");
     return out;
-  }
-
-  // =========================
-  // ✅ GALLERY MODAL (Swipe)
-  // =========================
-  let modalState = {
-    open: false,
-    productId: null,
-    images: [],
-    index: 0,
-    touchX: 0,
-    touchY: 0,
-    touching: false,
-  };
-
-  function ensureGalleryModal() {
-    if (document.getElementById("galleryModal")) return;
-
-    const modal = document.createElement("div");
-    modal.id = "galleryModal";
-    modal.setAttribute("aria-hidden", "true");
-    modal.style.cssText = `
-      position:fixed; inset:0; z-index:2000;
-      display:none;
-    `;
-
-    modal.innerHTML = `
-      <div id="galleryBackdrop" style="position:absolute;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);"></div>
-
-      <div id="galleryCard" style="
-        position:absolute; left:50%; top:50%;
-        transform:translate(-50%,-50%);
-        width:min(920px, 94vw);
-        background:rgba(16,16,22,.96);
-        border:1px solid rgba(255,255,255,.14);
-        border-radius:22px;
-        box-shadow:0 24px 80px rgba(0,0,0,.55);
-        overflow:hidden;
-      ">
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.10);">
-          <div>
-            <div id="galleryTitle" style="font-weight:1000;color:#fff;font-size:16px;line-height:1.1;"></div>
-            <div id="gallerySub" style="color:rgba(255,255,255,.72);font-weight:800;font-size:12px;margin-top:2px;"></div>
-          </div>
-          <button id="galleryClose" type="button" style="
-            background:rgba(255,255,255,.10);
-            border:1px solid rgba(255,255,255,.16);
-            color:#fff;
-            border-radius:12px;
-            padding:10px 12px;
-            cursor:pointer;
-          ">✕</button>
-        </div>
-
-        <div id="galleryStage" style="
-          position:relative;
-          background:#0b0b0f;
-          height:min(72vh, 640px);
-          display:flex;
-          align-items:center;
-          justify-content:center;
-          touch-action: pan-y;
-          user-select:none;
-        ">
-          <button id="galleryPrev" type="button" style="
-            position:absolute;left:12px;top:50%;transform:translateY(-50%);
-            width:44px;height:44px;border-radius:14px;
-            border:1px solid rgba(255,255,255,.18);
-            background:rgba(0,0,0,.40);
-            color:#fff;cursor:pointer;font-weight:1000;
-          ">‹</button>
-
-          <img id="galleryImg" alt="" style="
-            width:100%;
-            height:100%;
-            object-fit:contain;
-            display:block;
-          "/>
-
-          <button id="galleryNext" type="button" style="
-            position:absolute;right:12px;top:50%;transform:translateY(-50%);
-            width:44px;height:44px;border-radius:14px;
-            border:1px solid rgba(255,255,255,.18);
-            background:rgba(0,0,0,.40);
-            color:#fff;cursor:pointer;font-weight:1000;
-          ">›</button>
-
-          <div id="galleryDots" style="
-            position:absolute;left:0;right:0;bottom:12px;
-            display:flex;gap:6px;justify-content:center;align-items:center;
-          "></div>
-        </div>
-
-        <div style="padding:14px;display:flex;gap:10px;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,.10);">
-          <div style="color:rgba(255,255,255,.78);font-weight:900;font-size:13px;">
-            Desliza ← → para cambiar foto
-          </div>
-          <button id="galleryAdd" type="button" class="btn btn--gold" style="border-radius:999px;padding:12px 16px;font-weight:1000;cursor:pointer;">
-            Agregar al carrito
-          </button>
-        </div>
-      </div>
-    `;
-
-    document.body.appendChild(modal);
-
-    // events
-    const close = () => closeGallery();
-    modal.querySelector("#galleryBackdrop").addEventListener("click", close);
-    modal.querySelector("#galleryClose").addEventListener("click", close);
-
-    modal.querySelector("#galleryPrev").addEventListener("click", () => stepGallery(-1));
-    modal.querySelector("#galleryNext").addEventListener("click", () => stepGallery(1));
-
-    modal.querySelector("#galleryAdd").addEventListener("click", () => {
-      if (modalState.productId) {
-        addToCart(modalState.productId);
-        openDrawer();
-      }
-    });
-
-    // swipe
-    const stage = modal.querySelector("#galleryStage");
-    stage.addEventListener("touchstart", (e) => {
-      if (!e.touches?.length) return;
-      modalState.touching = true;
-      modalState.touchX = e.touches[0].clientX;
-      modalState.touchY = e.touches[0].clientY;
-    }, { passive: true });
-
-    stage.addEventListener("touchend", (e) => {
-      if (!modalState.touching) return;
-      modalState.touching = false;
-
-      const t = e.changedTouches?.[0];
-      if (!t) return;
-
-      const dx = t.clientX - modalState.touchX;
-      const dy = t.clientY - modalState.touchY;
-
-      // si es más horizontal que vertical
-      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 45) {
-        if (dx < 0) stepGallery(1);
-        else stepGallery(-1);
-      }
-    }, { passive: true });
-
-    // teclado
-    document.addEventListener("keydown", (e) => {
-      if (!modalState.open) return;
-      if (e.key === "Escape") closeGallery();
-      if (e.key === "ArrowLeft") stepGallery(-1);
-      if (e.key === "ArrowRight") stepGallery(1);
-    });
-  }
-
-  function getProductImages(p) {
-    if (!p) return [];
-    const m = p.media;
-
-    if (Array.isArray(m)) {
-      const arr = m.map((x) => String(x || "").trim()).filter(Boolean);
-      return arr.length ? arr : ["assets/logo.png"];
-    }
-
-    const s = String(m || "").trim();
-    if (!s) return ["assets/logo.png"];
-
-    // si viene "a|b|c"
-    if (s.includes("|")) {
-      const arr = s.split("|").map((x) => x.trim()).filter(Boolean);
-      return arr.length ? arr : ["assets/logo.png"];
-    }
-
-    return [s];
-  }
-
-  function openGallery(productId) {
-    const p = PRODUCTS.find((x) => x.id === productId);
-    if (!p) return;
-
-    ensureGalleryModal();
-
-    const modal = document.getElementById("galleryModal");
-    const imgEl = modal.querySelector("#galleryImg");
-    const titleEl = modal.querySelector("#galleryTitle");
-    const subEl = modal.querySelector("#gallerySub");
-
-    modalState.open = true;
-    modalState.productId = productId;
-    modalState.images = getProductImages(p);
-    modalState.index = 0;
-
-    titleEl.textContent = p.name;
-    subEl.textContent = `${p.category} • ${money(p.price || 0)}`;
-
-    renderGallery();
-    modal.style.display = "block";
-    modal.setAttribute("aria-hidden", "false");
-
-    // focus safe
-    imgEl?.focus?.();
-  }
-
-  function closeGallery() {
-    const modal = document.getElementById("galleryModal");
-    if (!modal) return;
-    modalState.open = false;
-    modalState.productId = null;
-    modalState.images = [];
-    modalState.index = 0;
-    modal.style.display = "none";
-    modal.setAttribute("aria-hidden", "true");
-  }
-
-  function stepGallery(dir) {
-    if (!modalState.open) return;
-    const n = modalState.images.length || 0;
-    if (n <= 1) return;
-    modalState.index = (modalState.index + dir + n) % n;
-    renderGallery();
-  }
-
-  function renderGallery() {
-    const modal = document.getElementById("galleryModal");
-    if (!modal) return;
-
-    const imgEl = modal.querySelector("#galleryImg");
-    const dots = modal.querySelector("#galleryDots");
-    const prev = modal.querySelector("#galleryPrev");
-    const next = modal.querySelector("#galleryNext");
-
-    const imgs = modalState.images || [];
-    const idx = modalState.index || 0;
-
-    const src = imgs[idx] || "assets/logo.png";
-    imgEl.src = src;
-    imgEl.onerror = () => {
-      imgEl.onerror = null;
-      imgEl.src = "assets/logo.png";
-      imgEl.style.objectFit = "contain";
-    };
-
-    const many = imgs.length > 1;
-    prev.style.display = many ? "block" : "none";
-    next.style.display = many ? "block" : "none";
-
-    dots.innerHTML = imgs
-      .map((_, i) => {
-        const active = i === idx;
-        return `<span style="
-          width:${active ? 18 : 8}px;
-          height:8px;
-          border-radius:999px;
-          background:${active ? "rgba(255,255,255,.92)" : "rgba(255,255,255,.32)"};
-          transition:all .18s ease;
-          display:inline-block;
-        "></span>`;
-      })
-      .join("");
   }
 
   // =========================
@@ -525,39 +262,293 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
     if (sort === "priceDesc") out.sort((a, b) => (b.price || 0) - (a.price || 0));
     if (sort === "nameAsc") out.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
     if (sort === "featured") out.sort((a, b) => (b.featured === true) - (a.featured === true));
+
     return out;
+  }
+
+  // =========================
+  // ✅ MODAL SLIDER (se crea desde JS, no toca tu HTML)
+  // =========================
+  const modal = {
+    root: null,
+    backdrop: null,
+    panel: null,
+    close: null,
+    title: null,
+    meta: null,
+    price: null,
+    sizes: null,
+    addBtn: null,
+    track: null,
+    dots: null,
+    prev: null,
+    next: null,
+    state: { open: false, id: null, idx: 0, list: [] },
+  };
+
+  function ensureModal() {
+    if (modal.root) return;
+
+    // estilos mínimos inline (para no tocar tu styles.css)
+    const style = document.createElement("style");
+    style.textContent = `
+      .fuModal{position:fixed;inset:0;z-index:10050;display:none}
+      .fuModal.isOpen{display:block}
+      .fuModal__bd{position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(8px)}
+      .fuModal__panel{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+        width:min(560px,92vw);max-height:86vh;overflow:hidden;border-radius:22px;
+        background:rgba(18,18,24,.96);border:1px solid rgba(255,255,255,.12);
+        box-shadow:0 26px 80px rgba(0,0,0,.55)}
+      body.theme-women .fuModal__panel{background:rgba(255,255,255,.90);border-color:rgba(168,85,247,.20)}
+      .fuModal__top{display:flex;align-items:center;justify-content:space-between;padding:14px 14px;border-bottom:1px solid rgba(255,255,255,.08)}
+      body.theme-women .fuModal__top{border-bottom-color:rgba(20,10,40,.10)}
+      .fuModal__t{font-weight:1000}
+      .fuModal__x{cursor:pointer;border:0;background:rgba(255,255,255,.10);color:#fff;border-radius:12px;padding:10px 12px}
+      body.theme-women .fuModal__x{background:rgba(168,85,247,.12);color:#17131f;border:1px solid rgba(168,85,247,.22)}
+      .fuModal__media{position:relative;background:#0f0f14}
+      body.theme-women .fuModal__media{background:#fff}
+      .fuModal__viewport{width:100%;aspect-ratio:1/1;overflow:hidden;touch-action:pan-y}
+      .fuModal__track{display:flex;height:100%;transform:translateX(0);transition:transform .25s ease}
+      .fuModal__slide{min-width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#0f0f14}
+      body.theme-women .fuModal__slide{background:#fff}
+      .fuModal__slide img{width:100%;height:100%;object-fit:cover}
+      .fuModal__navBtn{position:absolute;top:50%;transform:translateY(-50%);border:0;cursor:pointer;
+        width:44px;height:44px;border-radius:14px;background:rgba(0,0,0,.55);color:#fff;display:grid;place-items:center}
+      body.theme-women .fuModal__navBtn{background:rgba(168,85,247,.14);color:#17131f;border:1px solid rgba(168,85,247,.20)}
+      .fuModal__navBtn.prev{left:10px}
+      .fuModal__navBtn.next{right:10px}
+      .fuModal__dots{position:absolute;left:0;right:0;bottom:10px;display:flex;gap:6px;justify-content:center}
+      .fuDot{width:8px;height:8px;border-radius:999px;background:rgba(255,255,255,.35)}
+      body.theme-women .fuDot{background:rgba(23,19,31,.22)}
+      .fuDot.isOn{background:rgba(255,255,255,.92)}
+      body.theme-women .fuDot.isOn{background:rgba(168,85,247,.85)}
+      .fuModal__body{padding:14px}
+      .fuModal__meta{opacity:.8;font-weight:800;font-size:13px;margin-top:4px}
+      .fuModal__price{margin-top:10px;font-weight:1000}
+      body.theme-women .fuModal__price{color:#ff5db1}
+      .fuModal__sizes{margin-top:8px;opacity:.85;font-size:13px}
+      .fuModal__actions{margin-top:14px;display:grid;grid-template-columns:1fr;gap:10px}
+    `;
+    document.head.appendChild(style);
+
+    const root = document.createElement("div");
+    root.className = "fuModal";
+    root.innerHTML = `
+      <div class="fuModal__bd" data-close="1"></div>
+      <div class="fuModal__panel" role="dialog" aria-modal="true" aria-label="Producto">
+        <div class="fuModal__top">
+          <div class="fuModal__t" id="fuModalTitle">Producto</div>
+          <button class="fuModal__x" type="button" aria-label="Cerrar" data-close="1">✕</button>
+        </div>
+
+        <div class="fuModal__media">
+          <div class="fuModal__viewport" id="fuViewport">
+            <div class="fuModal__track" id="fuTrack"></div>
+          </div>
+          <button class="fuModal__navBtn prev" type="button" id="fuPrev" aria-label="Anterior">‹</button>
+          <button class="fuModal__navBtn next" type="button" id="fuNext" aria-label="Siguiente">›</button>
+          <div class="fuModal__dots" id="fuDots"></div>
+        </div>
+
+        <div class="fuModal__body">
+          <div class="fuModal__meta" id="fuMeta"></div>
+          <div class="fuModal__price" id="fuPrice"></div>
+          <div class="fuModal__sizes" id="fuSizes"></div>
+          <div class="fuModal__actions">
+            <button class="btn btn--gold btn--wide" type="button" id="fuAddBtn">Agregar al carrito</button>
+          </div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(root);
+
+    modal.root = root;
+    modal.backdrop = root.querySelector(".fuModal__bd");
+    modal.panel = root.querySelector(".fuModal__panel");
+    modal.close = root.querySelector('[data-close="1"]');
+    modal.title = root.querySelector("#fuModalTitle");
+    modal.meta = root.querySelector("#fuMeta");
+    modal.price = root.querySelector("#fuPrice");
+    modal.sizes = root.querySelector("#fuSizes");
+    modal.addBtn = root.querySelector("#fuAddBtn");
+    modal.track = root.querySelector("#fuTrack");
+    modal.dots = root.querySelector("#fuDots");
+    modal.prev = root.querySelector("#fuPrev");
+    modal.next = root.querySelector("#fuNext");
+
+    // cerrar
+    root.addEventListener("click", (e) => {
+      const c = e.target.closest('[data-close="1"]');
+      if (c) closeModal();
+    });
+
+    // botones nav
+    modal.prev.addEventListener("click", () => slideTo(modal.state.idx - 1));
+    modal.next.addEventListener("click", () => slideTo(modal.state.idx + 1));
+
+    // swipe
+    const viewport = root.querySelector("#fuViewport");
+    let startX = 0;
+    let lastX = 0;
+    let dragging = false;
+
+    const onDown = (x) => {
+      dragging = true;
+      startX = x;
+      lastX = x;
+      modal.track.style.transition = "none";
+    };
+    const onMove = (x) => {
+      if (!dragging) return;
+      lastX = x;
+      const dx = x - startX;
+      const w = viewport.clientWidth || 1;
+      const base = -modal.state.idx * w;
+      modal.track.style.transform = `translateX(${base + dx}px)`;
+    };
+    const onUp = () => {
+      if (!dragging) return;
+      dragging = false;
+      modal.track.style.transition = "transform .25s ease";
+      const dx = lastX - startX;
+      const w = viewport.clientWidth || 1;
+      if (Math.abs(dx) > w * 0.18) {
+        if (dx < 0) slideTo(modal.state.idx + 1);
+        else slideTo(modal.state.idx - 1);
+      } else {
+        slideTo(modal.state.idx);
+      }
+    };
+
+    viewport.addEventListener("touchstart", (e) => onDown(e.touches[0].clientX), { passive: true });
+    viewport.addEventListener("touchmove", (e) => onMove(e.touches[0].clientX), { passive: true });
+    viewport.addEventListener("touchend", onUp);
+
+    viewport.addEventListener("mousedown", (e) => {
+      e.preventDefault();
+      onDown(e.clientX);
+    });
+    window.addEventListener("mousemove", (e) => onMove(e.clientX));
+    window.addEventListener("mouseup", onUp);
+
+    // esc
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal.state.open) closeModal();
+    });
+  }
+
+  function slideTo(nextIdx) {
+    if (!modal.state.list.length) return;
+    const max = modal.state.list.length - 1;
+    const idx = Math.max(0, Math.min(max, nextIdx));
+    modal.state.idx = idx;
+
+    const viewport = modal.root.querySelector("#fuViewport");
+    const w = viewport.clientWidth || 1;
+    modal.track.style.transform = `translateX(${-idx * w}px)`;
+
+    // dots
+    Array.from(modal.dots.children).forEach((d, i) => {
+      d.classList.toggle("isOn", i === idx);
+    });
+
+    // habilitar/deshabilitar
+    modal.prev.style.opacity = idx === 0 ? "0.35" : "1";
+    modal.next.style.opacity = idx === max ? "0.35" : "1";
+  }
+
+  function openModal(id) {
+    ensureModal();
+
+    const p = PRODUCTS.find((x) => x.id === id);
+    if (!p) return;
+
+    const list = (p.mediaList && p.mediaList.length ? p.mediaList : toMediaList(p.media)).slice(0, 8);
+    const safeList = list.length ? list : ["assets/logo.png"];
+
+    modal.state.open = true;
+    modal.state.id = id;
+    modal.state.idx = 0;
+    modal.state.list = safeList;
+
+    modal.title.textContent = p.name || "Producto";
+    modal.meta.textContent = p.category || "";
+    modal.price.textContent = money(p.price || 0);
+    modal.sizes.textContent = `Tallas: ${(p.sizes || []).join(", ")}`;
+
+    // slides
+    modal.track.innerHTML = safeList
+      .map((src) => {
+        const s = String(src || "").trim() || "assets/logo.png";
+        if (isVideo(s)) {
+          // si en algún momento pones video en el slider
+          return `<div class="fuModal__slide"><video src="${s}" muted playsinline loop style="width:100%;height:100%;object-fit:cover"></video></div>`;
+        }
+        return `<div class="fuModal__slide">
+          <img src="${s}" alt="${p.name}" loading="eager"
+            onerror="this.onerror=null; this.src='assets/logo.png'; this.style.objectFit='contain'; this.style.padding='18px';" />
+        </div>`;
+      })
+      .join("");
+
+    // dots
+    modal.dots.innerHTML = safeList
+      .map((_, i) => `<span class="fuDot ${i === 0 ? "isOn" : ""}"></span>`)
+      .join("");
+
+    // add button (NO cambia tu carrito)
+    modal.addBtn.onclick = () => {
+      addToCart(id);
+      openDrawer();
+    };
+
+    modal.root.classList.add("isOpen");
+    document.body.style.overflow = "hidden";
+
+    // play videos si hay
+    requestAnimationFrame(() => {
+      modal.track.querySelectorAll("video").forEach((v) => v.play().catch(() => {}));
+      slideTo(0);
+    });
+  }
+
+  function closeModal() {
+    if (!modal.root) return;
+    modal.state.open = false;
+    modal.state.id = null;
+    modal.state.idx = 0;
+    modal.state.list = [];
+    modal.root.classList.remove("isOpen");
+    document.body.style.overflow = "";
   }
 
   // =========================
   // PRODUCT CARD
   // =========================
-  function getCoverMedia(p) {
-    const imgs = getProductImages(p);
-    return imgs[0] || "assets/logo.png";
-  }
-
   function productCardHTML(p) {
     const badge = p.tag ? `<div class="badge">${p.tag}</div>` : "";
     const plus = `<div class="plus" aria-hidden="true">+</div>`;
-    const cover = getCoverMedia(p);
 
-    const mediaHTML = isVideo(cover)
-      ? `<video src="${cover}" muted playsinline loop></video>`
-      : `<img src="${cover}" alt="${p.name}" loading="lazy"
+    const list = (p.mediaList && p.mediaList.length ? p.mediaList : toMediaList(p.media));
+    const thumb = (list && list.length ? list[0] : p.media) || "assets/logo.png";
+
+    const mediaHTML = isVideo(thumb)
+      ? `<video src="${thumb}" muted playsinline loop></video>`
+      : `<img src="${thumb}" alt="${p.name}" loading="lazy"
             onerror="this.onerror=null; this.src='assets/logo.png'; this.style.objectFit='contain'; this.style.padding='18px';" />`;
 
     return `
-      <article class="card">
-        <div class="media">
+      <article class="card" data-open="${p.id}">
+        <div class="media" data-open="${p.id}">
           ${badge}
           ${mediaHTML}
-          <!-- tocar la imagen abre galería -->
-          <button class="hit" data-open="${p.id}" title="Ver fotos"
+          <!-- ✅ SOLO ESTE botón agrega al carrito -->
+          <button class="hit" data-add="${p.id}" title="Agregar"
             style="all:unset;cursor:pointer;position:absolute;inset:0">
             ${plus}
           </button>
         </div>
-        <div class="card__body">
+        <div class="card__body" data-open="${p.id}">
           <div class="title">${p.name}</div>
           <div class="meta">${p.category}</div>
           <div class="price">${money(p.price || 0)}</div>
@@ -610,8 +601,8 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
         )}`;
         lines.push(line);
 
-        const imgs = getProductImages(p);
-        const imgSrc = imgs[0] && !isVideo(imgs[0]) ? imgs[0] : "assets/logo.png";
+        const list = (p.mediaList && p.mediaList.length ? p.mediaList : toMediaList(p.media));
+        const imgSrc = (list && list.length && !isVideo(list[0])) ? list[0] : "assets/logo.png";
 
         return `
           <div class="ci">
@@ -638,6 +629,7 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
 
     msg += lines.join("\n");
     msg += `\n\nTotal: ${money(cartTotal())}\n\n¿Me confirmas disponibilidad y envío?`;
+
     els.waOrderBtn.href = waLink(msg);
   }
 
@@ -664,9 +656,9 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
     renderCart();
   }
 
-  // ✅ ahora "Ver" abre la galería
+  // ✅ ahora "Ver" abre el slider (y no daña nada)
   function viewProduct(id) {
-    openGallery(id);
+    openModal(id);
   }
 
   // =========================
@@ -697,6 +689,7 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
     Promise.race([Promise.all(critical.map(preload)), timeout]).then(() => {
       clearInterval(tick);
       if (bar) bar.style.width = "100%";
+
       setTimeout(() => {
         els.loader.style.display = "none";
         els.loader.setAttribute("aria-hidden", "true");
@@ -754,26 +747,29 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
       renderProducts();
     });
 
+    // ✅ Clicks en grid:
+    // - Si toca "Agregar" => agrega y abre carrito
+    // - Si toca la tarjeta/imagen/texto => abre slider del producto
     els.productsGrid?.addEventListener("click", (e) => {
       const addBtn = e.target.closest("[data-add]");
-      const viewBtn = e.target.closest("[data-view]");
-      const openBtn = e.target.closest("[data-open]");
-
       if (addBtn) {
         const id = addBtn.getAttribute("data-add");
         addToCart(id);
         openDrawer();
+        return;
       }
 
+      const viewBtn = e.target.closest("[data-view]");
       if (viewBtn) {
         const id = viewBtn.getAttribute("data-view");
         viewProduct(id);
+        return;
       }
 
-      // ✅ click en imagen abre modal con swipe
-      if (openBtn) {
-        const id = openBtn.getAttribute("data-open");
-        openGallery(id);
+      const open = e.target.closest("[data-open]");
+      if (open) {
+        const id = open.getAttribute("data-open");
+        if (id) openModal(id);
       }
     });
 
@@ -801,14 +797,17 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
     // ✅ Primero intenta CSV
     try {
       const fromCSV = await loadProductsFromCSV();
-      PRODUCTS = fromCSV;
+      PRODUCTS = fromCSV.map((p) => (p.mediaList ? p : normalizeProduct(p)));
       console.log("✅ Productos cargados desde CSV:", PRODUCTS.length);
     } catch (err) {
       console.warn("⚠️ No se pudo cargar CSV, usando products.js", err);
-      PRODUCTS = Array.isArray(FALLBACK_PRODUCTS) ? [...FALLBACK_PRODUCTS] : [];
+      PRODUCTS = Array.isArray(FALLBACK_PRODUCTS)
+        ? FALLBACK_PRODUCTS.map((p) => normalizeProduct(p))
+        : [];
     }
 
     wireUI();
     fastLoader();
   });
 })();
+```0
