@@ -953,3 +953,132 @@ img{
 .pslide img{
   pointer-events: none; /* OJO: solo si tu click lo hace el .hit encima */
 }
+/* =====================================================
+   🍎 APPLE ULTRA SMOOTH — SOLO ANIMACIONES
+   No cambia diseño, solo mejora fluidez
+   ===================================================== */
+
+/* Scroll suave */
+html{
+  scroll-behavior:smooth;
+}
+
+/* -------------------------
+   BOTONES
+------------------------- */
+.btn{
+  transition:
+    transform .18s cubic-bezier(.4,0,.2,1),
+    box-shadow .25s cubic-bezier(.4,0,.2,1),
+    filter .25s ease;
+}
+
+.btn:hover{
+  transform: translateY(-2px);
+  filter: brightness(1.03);
+}
+
+.btn:active{
+  transform: scale(.96);
+}
+
+/* -------------------------
+   CARDS PRODUCTO
+------------------------- */
+.card{
+  transition:
+    transform .35s cubic-bezier(.4,0,.2,1),
+    box-shadow .35s cubic-bezier(.4,0,.2,1);
+}
+
+.card:hover{
+  transform: translateY(-6px);
+  box-shadow: 0 22px 48px rgba(0,0,0,.18);
+}
+
+/* Imagen suave dentro de card */
+.media img{
+  transition: transform .6s cubic-bezier(.4,0,.2,1);
+}
+
+.card:hover .media img{
+  transform: scale(1.04);
+}
+
+/* -------------------------
+   HERO
+------------------------- */
+.hero__img{
+  transition: transform 1.2s cubic-bezier(.4,0,.2,1);
+}
+
+.hero:hover .hero__img{
+  transform: scale(1.02);
+}
+
+/* -------------------------
+   DRAWER CARRITO
+------------------------- */
+.drawer{
+  transition: transform .38s cubic-bezier(.4,0,.2,1);
+}
+
+.backdrop{
+  transition: opacity .3s ease;
+}
+
+/* -------------------------
+   MODAL PRODUCTO
+------------------------- */
+.pmodal__card{
+  transition:
+    transform .32s cubic-bezier(.4,0,.2,1),
+    opacity .32s ease;
+}
+
+/* -------------------------
+   FLOATING WHATSAPP
+------------------------- */
+.floatWa{
+  transition:
+    transform .22s cubic-bezier(.4,0,.2,1),
+    box-shadow .25s ease;
+}
+
+.floatWa:hover{
+  transform: translateY(-4px) scale(1.03);
+}
+
+.floatWa:active{
+  transform: scale(.96);
+}
+
+/* -------------------------
+   NAV underline elegante
+------------------------- */
+.nav a{
+  position:relative;
+}
+
+.nav a::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-4px;
+  width:0%;
+  height:2px;
+  background:var(--accent);
+  transition: width .28s cubic-bezier(.4,0,.2,1);
+}
+
+.nav a:hover::after{
+  width:100%;
+}
+
+/* -------------------------
+   INPUT FOCUS suave
+------------------------- */
+.field input,
+.field select{
+  transition: box-shadow .25s ease, border-color .25s ease;
+}
