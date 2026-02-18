@@ -1082,3 +1082,116 @@ html{
 .field select{
   transition: box-shadow .25s ease, border-color .25s ease;
 }
+/* =====================================================
+   💎 PREMIUM INVISIBLE EXPERIENCE
+   No cambia diseño. Solo sensación de calidad.
+   ===================================================== */
+
+/* 1️⃣ Consistencia de timing global */
+:root{
+  --ease-premium: cubic-bezier(.4,0,.2,1);
+  --t-fast: .18s;
+  --t-mid: .28s;
+  --t-slow: .38s;
+}
+
+/* 2️⃣ Micro profundidad en hover (sin cambiar diseño) */
+.card{
+  transition:
+    transform var(--t-mid) var(--ease-premium),
+    box-shadow var(--t-mid) var(--ease-premium);
+}
+
+.card:hover{
+  transform: translateY(-6px) scale(1.01);
+}
+
+/* 3️⃣ Botones con sensación física */
+.btn{
+  transition:
+    transform var(--t-fast) var(--ease-premium),
+    box-shadow var(--t-mid) var(--ease-premium),
+    filter var(--t-fast) ease;
+}
+
+.btn:hover{
+  transform: translateY(-2px) scale(1.02);
+}
+
+.btn:active{
+  transform: scale(.94);
+}
+
+/* 4️⃣ Carrito con mini rebote elegante */
+.cartCount{
+  transition: transform .2s var(--ease-premium);
+}
+
+body.drawerOpen .cartCount{
+  animation: cartPulse .35s var(--ease-premium);
+}
+
+@keyframes cartPulse{
+  0%{ transform: scale(1); }
+  40%{ transform: scale(1.18); }
+  100%{ transform: scale(1); }
+}
+
+/* 5️⃣ Modal más premium al aparecer */
+body.pmodalOpen .pmodal__card{
+  animation: modalLuxury .32s var(--ease-premium);
+}
+
+@keyframes modalLuxury{
+  0%{
+    transform: translate(-50%,-48%) scale(.96);
+    opacity:0;
+  }
+  100%{
+    transform: translate(-50%,-50%) scale(1);
+    opacity:1;
+  }
+}
+
+/* 6️⃣ Floating WA más refinado */
+.floatWa{
+  transition:
+    transform var(--t-fast) var(--ease-premium),
+    box-shadow var(--t-mid) var(--ease-premium);
+}
+
+.floatWa:hover{
+  transform: translateY(-5px) scale(1.05);
+}
+
+/* 7️⃣ Inputs con foco premium suave */
+.field input,
+.field select{
+  transition:
+    box-shadow var(--t-fast) ease,
+    border-color var(--t-fast) ease;
+}
+
+.field input:focus,
+.field select:focus{
+  box-shadow: 0 0 0 3px rgba(200,167,74,.18);
+}
+
+/* 8️⃣ Hero respiración ultra sutil */
+.hero__img{
+  transition: transform 1.4s var(--ease-premium);
+}
+
+.hero:hover .hero__img{
+  transform: scale(1.015);
+}
+
+/* 9️⃣ Aparición suave general (muy sutil) */
+body{
+  animation: pageFade .5s ease-out;
+}
+
+@keyframes pageFade{
+  from{ opacity:0; }
+  to{ opacity:1; }
+}
