@@ -1250,3 +1250,18 @@ body.drawerOpen .cartCount{
   opacity:1;
   transform:scale(1);
 }
+/* ====================================
+   LOGO MUJER UN POCO MÁS GRANDE
+   ==================================== */
+
+.brand__logo{
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  transition: transform .3s ease, opacity .25s ease;
+}
+
+/* Cuando está en modo mujer */
+body.theme-women #brandLogo{
+  transform: scale(1.15);
+}
