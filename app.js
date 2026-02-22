@@ -777,6 +777,21 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
   function initThemeSwitch() {
     const btnWomen = document.getElementById("btnWomen");
     const btnMen = document.getElementById("btnMen");
+    const brandLogo = document.querySelector(".brand__logo");
+
+// Guardar logo original
+const defaultLogo = "assets/logo.png";
+const womenLogo = "assets/logo-women.png";
+
+btnWomen.addEventListener("click", () => {
+  document.body.classList.add("theme-women");
+  brandLogo.src = womenLogo;
+});
+
+btnMen.addEventListener("click", () => {
+  document.body.classList.remove("theme-women");
+  brandLogo.src = defaultLogo;
+});
     if (!btnWomen || !btnMen) return;
 
     const applyTheme = (t) => {
