@@ -993,3 +993,40 @@ document.addEventListener(
   },
   { passive: false }
 );
+const btnWomen = document.getElementById("btnWomen");
+const btnMen = document.getElementById("btnMen");
+const logo = document.getElementById("brandLogo");
+
+// Cambiar imagen con animación
+function changeLogo(src){
+  logo.classList.add("fade-out");
+
+  setTimeout(() => {
+    logo.src = src;
+    logo.classList.remove("fade-out");
+    logo.classList.add("fade-in");
+
+    setTimeout(() => {
+      logo.classList.remove("fade-in");
+    }, 250);
+
+  }, 250);
+}
+
+// MUJER
+btnWomen.addEventListener("click", () => {
+  document.body.classList.add("theme-women");
+  btnWomen.classList.add("genderBtn--active");
+  btnMen.classList.remove("genderBtn--active");
+
+  changeLogo("assets/logo-women.png"); // ← tu segunda imagen
+});
+
+// HOMBRE
+btnMen.addEventListener("click", () => {
+  document.body.classList.remove("theme-women");
+  btnMen.classList.add("genderBtn--active");
+  btnWomen.classList.remove("genderBtn--active");
+
+  changeLogo("assets/logo.png"); // ← logo normal
+});
