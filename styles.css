@@ -1237,3 +1237,16 @@ body.drawerOpen .cartCount{
   35%{ transform: scale(1.25); }
   100%{ transform: scale(1); }
 }
+.brand__logo{
+  transition: opacity .25s ease, transform .25s ease;
+}
+
+.brand__logo.fade-out{
+  opacity:0;
+  transform:scale(.92);
+}
+
+.brand__logo.fade-in{
+  opacity:1;
+  transform:scale(1);
+}
