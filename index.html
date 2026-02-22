@@ -10,7 +10,7 @@
 
 <body>
 
-  <!-- ✅ MODAL PRODUCTO (PRO) — debe ir DENTRO del body -->
+  <!-- MODAL PRODUCTO -->
   <div class="pmodal" id="pModal" aria-hidden="true">
     <div class="pmodal__back" id="pModalBack"></div>
 
@@ -49,7 +49,13 @@
   <!-- HEADER -->
   <header class="header">
     <div class="header__left">
-      <img class="brand__logo" src="assets/logo.png" alt="Flow Urban" loading="eager" />
+      <!-- ✅ AQUÍ ESTÁ LA CORRECCIÓN -->
+      <img id="brandLogo"
+           class="brand__logo"
+           src="assets/logo.png"
+           alt="Flow Urban"
+           loading="eager" />
+
       <div class="brand__txt">
         <div class="brand__name">FLOW URBAN</div>
         <div class="brand__sub">Authentic store</div>
@@ -72,6 +78,7 @@
     <a href="#contacto">CONTACTO</a>
   </nav>
 
+  <!-- SWITCH -->
   <div class="genderSwitch">
     <button id="btnWomen" class="genderBtn" type="button">💜 MUJER</button>
     <button id="btnMen" class="genderBtn genderBtn--active" type="button">🖤 HOMBRE</button>
@@ -91,7 +98,7 @@
       </div>
     </section>
 
-    <!-- CATALOGO -->
+    <!-- CATÁLOGO -->
     <section class="section" id="catalogo">
       <h2 class="h2">NEW DROPS</h2>
       <p class="muted">Busca tu estilo, elige talla y arma tu carrito.</p>
@@ -132,7 +139,9 @@
         <a class="btn btn--ghost" href="#" id="igBtn" rel="noopener">Instagram</a>
         <a class="btn btn--ghost" href="#" id="ttBtn" rel="noopener">TikTok</a>
       </div>
-      <a class="btn btn--gold btn--wide" id="waContact" href="#" rel="noopener">Hablar por WhatsApp</a>
+      <a class="btn btn--gold btn--wide" id="waContact" href="#" rel="noopener">
+        Hablar por WhatsApp
+      </a>
     </section>
   </main>
 
@@ -157,8 +166,12 @@
         <span>Total</span>
         <strong id="cartTotal">$0,00</strong>
       </div>
-      <a class="btn btn--gold btn--wide" id="waOrderBtn" href="#" rel="noopener">Pedir por WhatsApp</a>
-      <div class="small muted">Te armamos el pedido por WhatsApp con tallas y cantidades.</div>
+      <a class="btn btn--gold btn--wide" id="waOrderBtn" href="#" rel="noopener">
+        Pedir por WhatsApp
+      </a>
+      <div class="small muted">
+        Te armamos el pedido por WhatsApp con tallas y cantidades.
+      </div>
     </div>
   </aside>
 
@@ -175,5 +188,6 @@
 
   <!-- JS -->
   <script type="module" src="app.js"></script>
+
 </body>
-</html>
+      </html>
