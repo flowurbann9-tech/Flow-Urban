@@ -6,15 +6,20 @@
     loader.setAttribute('aria-hidden', 'true');
   };
 
-  hideLoader();
-  document.addEventListener('DOMContentLoaded', hideLoader, { once: true });
-  window.addEventListener('load', hideLoader, { once: true });
+  const slides = [
+    'assets/hero.jpg?v=5',
+    'assets/SmartSelect_20260625_142913_ChatGPT.jpg?v=1'
+  ];
 
-  const cleanHero = () => {
+  let current = 0;
+  let timerStarted = false;
+
+  const setupHero = () => {
     const hero = document.querySelector('.hero__img');
     if (!hero) return;
 
-    hero.src = 'assets/hero.jpg?v=4';
+    document.querySelectorAll('.hero-continuation').forEach((el) => el.remove());
+
     hero.loading = 'eager';
     hero.decoding = 'async';
     hero.style.opacity = '1';
@@ -23,10 +28,32 @@
     hero.style.imageRendering = 'auto';
     hero.style.objectFit = 'cover';
     hero.style.objectPosition = 'center center';
+    hero.src = slides[current];
 
-    document.querySelectorAll('.hero-continuation').forEach((el) => el.remove());
+    // Precarga suave de la segunda foto para que cambie sin trabarse.
+    const preload = new Image();
+    preload.src = slides[1];
+
+    if (timerStarted) return;
+    timerStarted = true;
+
+    setInterval(() => {
+      current = (current + 1) % slides.length;
+      hero.style.transition = 'opacity .28s ease';
+      hero.style.opacity = '0.55';
+
+      setTimeout(() => {
+        hero.src = slides[current];
+        hero.style.opacity = '1';
+      }, 160);
+    }, 4300);
   };
 
-  cleanHero();
-  document.addEventListener('DOMContentLoaded', cleanHero, { once: true });
+  hideLoader();
+  setupHero();
+  document.addEventListener('DOMContentLoaded', () => {
+    hideLoader();
+    setupHero();
+  }, { once: true });
+  window.addEventListener('load', hideLoader, { once: true });
 })();
