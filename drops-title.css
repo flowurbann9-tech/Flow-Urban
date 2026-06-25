@@ -1,0 +1,82 @@
+/* FLOW URBAN — NEW DROPS title premium */
+
+#catalogo .h2{
+  position:relative !important;
+  display:inline-block !important;
+  margin-bottom:16px !important;
+  font-size:clamp(3.4rem, 11vw, 7.4rem) !important;
+  line-height:.82 !important;
+  letter-spacing:-.10em !important;
+  text-transform:uppercase !important;
+  font-weight:1000 !important;
+  color:transparent !important;
+  background:linear-gradient(135deg, #ffffff 0%, #fff2bd 22%, #f472b6 46%, #ec4899 66%, #8b5cf6 100%) !important;
+  -webkit-background-clip:text !important;
+  background-clip:text !important;
+  text-shadow:0 18px 42px rgba(236,72,153,.20) !important;
+}
+
+#catalogo .h2::before{
+  content:"✦";
+  display:inline-block;
+  margin-right:12px;
+  font-size:.35em;
+  vertical-align:middle;
+  color:#ec4899;
+  background:none !important;
+  -webkit-text-fill-color:#ec4899;
+  filter:drop-shadow(0 8px 16px rgba(236,72,153,.35));
+}
+
+#catalogo .h2::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-12px;
+  width:78%;
+  height:6px;
+  border-radius:999px;
+  background:linear-gradient(90deg, #8b5cf6, #ec4899, #fff2bd);
+  box-shadow:0 10px 24px rgba(236,72,153,.26);
+}
+
+#catalogo .muted{
+  margin-top:24px !important;
+  font-size:1.02rem !important;
+  color:rgba(255,255,255,.74) !important;
+}
+
+#catalogo{
+  position:relative !important;
+  overflow:hidden !important;
+}
+
+#catalogo::before{
+  content:"NEW ARRIVALS";
+  position:absolute;
+  right:16px;
+  top:14px;
+  font-size:clamp(2rem, 7vw, 5.4rem);
+  font-weight:1000;
+  letter-spacing:-.08em;
+  color:rgba(255,255,255,.045);
+  pointer-events:none;
+  z-index:0;
+}
+
+#catalogo > *{
+  position:relative;
+  z-index:1;
+}
+
+@media(max-width:720px){
+  #catalogo .h2{
+    font-size:clamp(3.2rem, 16vw, 5.4rem) !important;
+    letter-spacing:-.11em !important;
+  }
+
+  #catalogo .h2::after{
+    height:5px;
+    bottom:-10px;
+  }
+}
