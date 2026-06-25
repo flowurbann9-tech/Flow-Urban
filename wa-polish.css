@@ -1,0 +1,144 @@
+/* =====================================================
+   FLOW URBAN — WHATSAPP & HERO POLISH
+   Ajustes finales: estrellita, botón flotante premium,
+   logo claro y portada sin filtros raros.
+   ===================================================== */
+
+/* Mantener la portada principal limpia y sin color raro */
+.hero__img{
+  filter:none !important;
+  image-rendering:auto !important;
+  object-fit:cover !important;
+  object-position:center center !important;
+}
+
+/* Estrellita premium en botones de WhatsApp */
+.btn--wa::before,
+#waHeader::before,
+#waContact::before,
+#waOrderBtn::before,
+#topWa::before{
+  content:"✦";
+  display:inline-block;
+  margin-right:7px;
+  font-size:1.02em;
+  line-height:1;
+  transform:translateY(-1px);
+}
+
+/* Botones WhatsApp más finos */
+.btn--wa,
+#waHeader,
+#waContact,
+#waOrderBtn,
+#topWa{
+  background:linear-gradient(135deg, #fff2bd 0%, #d9b45d 46%, #b88d33 100%) !important;
+  color:#111 !important;
+  border:1px solid rgba(255,242,189,.55) !important;
+  box-shadow:0 16px 34px rgba(217,180,93,.26), inset 0 1px 0 rgba(255,255,255,.45) !important;
+}
+
+/* Botón flotante mejorado con foto/logo Flow Urban completo */
+.floatWa,
+#floatWa{
+  width:76px !important;
+  height:76px !important;
+  right:18px !important;
+  bottom:18px !important;
+  display:grid !important;
+  place-items:center !important;
+  border-radius:999px !important;
+  border:2px solid rgba(255,242,189,.78) !important;
+  background:
+    radial-gradient(circle at 30% 18%, rgba(255,242,189,.95) 0%, rgba(217,180,93,.82) 32%, rgba(13,13,17,.96) 70%) !important;
+  box-shadow:
+    0 22px 56px rgba(0,0,0,.48),
+    0 0 0 8px rgba(217,180,93,.10),
+    0 0 34px rgba(217,180,93,.35) !important;
+  overflow:visible !important;
+  backdrop-filter:blur(10px) saturate(130%) !important;
+  -webkit-backdrop-filter:blur(10px) saturate(130%) !important;
+}
+
+.floatWa::after,
+#floatWa::after{
+  content:"✦";
+  position:absolute;
+  top:-7px;
+  right:-4px;
+  width:24px;
+  height:24px;
+  display:grid;
+  place-items:center;
+  border-radius:999px;
+  color:#111;
+  font-size:13px;
+  font-weight:1000;
+  background:linear-gradient(135deg, #fff2bd, #d9b45d);
+  border:1px solid rgba(255,255,255,.55);
+  box-shadow:0 10px 22px rgba(0,0,0,.32);
+}
+
+.floatWa .waIcon,
+#floatWa .waIcon{
+  width:66px !important;
+  height:66px !important;
+  padding:4px !important;
+  border-radius:999px !important;
+  object-fit:contain !important;
+  object-position:center !important;
+  background:rgba(5,5,8,.92) !important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.10), 0 8px 18px rgba(0,0,0,.36) !important;
+  filter:none !important;
+  transform:none !important;
+}
+
+.floatWa:hover,
+#floatWa:hover{
+  transform:translateY(-5px) scale(1.05) !important;
+  box-shadow:
+    0 28px 68px rgba(0,0,0,.52),
+    0 0 0 10px rgba(217,180,93,.12),
+    0 0 42px rgba(217,180,93,.50) !important;
+}
+
+/* Tema mujer: estrella y botón flotante morado/rosado */
+body.theme-women .btn--wa,
+body.theme-women #waHeader,
+body.theme-women #waContact,
+body.theme-women #waOrderBtn,
+body.theme-women #topWa{
+  color:#fff !important;
+  background:linear-gradient(135deg, #8b5cf6, #ec4899) !important;
+  border-color:rgba(255,255,255,.42) !important;
+  box-shadow:0 16px 34px rgba(236,72,153,.22), inset 0 1px 0 rgba(255,255,255,.25) !important;
+}
+
+body.theme-women .floatWa,
+body.theme-women #floatWa{
+  border-color:rgba(236,72,153,.75) !important;
+  background:radial-gradient(circle at 30% 18%, #fff 0%, #ec4899 36%, #8b5cf6 78%) !important;
+  box-shadow:0 22px 56px rgba(53,27,78,.22), 0 0 0 8px rgba(236,72,153,.10), 0 0 34px rgba(236,72,153,.35) !important;
+}
+
+body.theme-women .floatWa::after,
+body.theme-women #floatWa::after{
+  color:#fff;
+  background:linear-gradient(135deg, #8b5cf6, #ec4899);
+}
+
+@media(max-width:720px){
+  .floatWa,
+  #floatWa{
+    width:68px !important;
+    height:68px !important;
+    right:14px !important;
+    bottom:15px !important;
+  }
+
+  .floatWa .waIcon,
+  #floatWa .waIcon{
+    width:59px !important;
+    height:59px !important;
+  }
+}
