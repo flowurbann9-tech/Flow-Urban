@@ -1,0 +1,134 @@
+/* FLOW URBAN — ajustes finales visuales */
+
+/* Foto principal más clara y sin apariencia opaca */
+.hero__img{
+  opacity:1 !important;
+  filter:none !important;
+  image-rendering:auto !important;
+  object-fit:cover !important;
+  object-position:center center !important;
+}
+
+.hero::after{
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.38) 0%, rgba(0,0,0,.16) 44%, rgba(0,0,0,.08) 100%),
+    linear-gradient(0deg, rgba(0,0,0,.30), transparent 56%) !important;
+}
+
+body.theme-women .hero::after{
+  background:
+    linear-gradient(90deg, rgba(32,14,44,.30) 0%, rgba(32,14,44,.12) 45%, rgba(32,14,44,.04) 100%),
+    linear-gradient(0deg, rgba(32,14,44,.22), transparent 58%) !important;
+}
+
+.hero::before{
+  color:rgba(255,255,255,.08) !important;
+}
+
+/* WhatsApp con estrella premium */
+.btn--wa::before,
+#waHeader::before,
+#waContact::before,
+#waOrderBtn::before,
+#topWa::before{
+  content:"✦";
+  display:inline-block;
+  margin-right:7px;
+  font-size:1.05em;
+  transform:translateY(-1px);
+}
+
+/* Botón flotante más premium y con foto/logo Flow Urban más visible */
+#floatWa.floatWa,
+.floatWa{
+  width:84px !important;
+  height:84px !important;
+  right:16px !important;
+  bottom:16px !important;
+  display:grid !important;
+  place-items:center !important;
+  border-radius:999px !important;
+  overflow:visible !important;
+  border:2px solid rgba(255,242,189,.88) !important;
+  background:radial-gradient(circle at 30% 20%, #fff2bd 0%, #d9b45d 34%, #111015 76%) !important;
+  box-shadow:
+    0 24px 64px rgba(0,0,0,.50),
+    0 0 0 8px rgba(217,180,93,.10),
+    0 0 38px rgba(217,180,93,.42) !important;
+}
+
+#floatWa.floatWa::after,
+.floatWa::after{
+  content:"✦";
+  position:absolute;
+  top:-7px;
+  right:-4px;
+  width:25px;
+  height:25px;
+  display:grid;
+  place-items:center;
+  border-radius:999px;
+  color:#111;
+  font-size:13px;
+  font-weight:1000;
+  background:linear-gradient(135deg, #fff2bd, #d9b45d);
+  border:1px solid rgba(255,255,255,.70);
+  box-shadow:0 10px 24px rgba(0,0,0,.34);
+}
+
+#floatWa .waIcon,
+.floatWa .waIcon{
+  width:76px !important;
+  height:76px !important;
+  max-width:76px !important;
+  max-height:76px !important;
+  padding:3px !important;
+  border-radius:999px !important;
+  object-fit:contain !important;
+  object-position:center !important;
+  background:#050508 !important;
+  filter:none !important;
+  transform:none !important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.12), 0 8px 18px rgba(0,0,0,.34) !important;
+}
+
+#floatWa.floatWa:hover,
+.floatWa:hover{
+  transform:translateY(-5px) scale(1.05) !important;
+  box-shadow:
+    0 30px 76px rgba(0,0,0,.54),
+    0 0 0 10px rgba(217,180,93,.12),
+    0 0 46px rgba(217,180,93,.52) !important;
+}
+
+body.theme-women #floatWa.floatWa,
+body.theme-women .floatWa{
+  border-color:rgba(236,72,153,.86) !important;
+  background:radial-gradient(circle at 30% 20%, #fff 0%, #ec4899 40%, #8b5cf6 82%) !important;
+  box-shadow:
+    0 24px 64px rgba(53,27,78,.24),
+    0 0 0 8px rgba(236,72,153,.10),
+    0 0 38px rgba(236,72,153,.42) !important;
+}
+
+body.theme-women #floatWa.floatWa::after,
+body.theme-women .floatWa::after{
+  color:#fff;
+  background:linear-gradient(135deg, #8b5cf6, #ec4899);
+}
+
+@media(max-width:720px){
+  #floatWa.floatWa,
+  .floatWa{
+    width:76px !important;
+    height:76px !important;
+    right:12px !important;
+    bottom:14px !important;
+  }
+
+  #floatWa .waIcon,
+  .floatWa .waIcon{
+    width:68px !important;
+    height:68px !important;
+  }
+}
