@@ -41,9 +41,16 @@
 }
 
 #catalogo .muted{
+  display:inline-block !important;
   margin-top:24px !important;
+  padding:10px 14px !important;
+  border-radius:999px !important;
   font-size:1.02rem !important;
-  color:rgba(255,255,255,.74) !important;
+  font-weight:800 !important;
+  color:#24102f !important;
+  background:linear-gradient(135deg, rgba(255,242,189,.92), rgba(255,255,255,.86), rgba(244,114,182,.18)) !important;
+  border:1px solid rgba(236,72,153,.25) !important;
+  box-shadow:0 10px 24px rgba(236,72,153,.12) !important;
 }
 
 #catalogo{
@@ -78,5 +85,11 @@
   #catalogo .h2::after{
     height:5px;
     bottom:-10px;
+  }
+
+  #catalogo .muted{
+    font-size:.94rem !important;
+    line-height:1.35 !important;
+    border-radius:18px !important;
   }
 }
