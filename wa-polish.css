@@ -37,10 +37,18 @@ body.theme-women .hero::after{
 #waContact,
 #waOrderBtn,
 #topWa{
-  background:linear-gradient(135deg, #fff2bd 0%, #d9b45d 46%, #b88d33 100%) !important;
-  color:#111 !important;
-  border:1px solid rgba(255,242,189,.60) !important;
-  box-shadow:0 16px 34px rgba(217,180,93,.27), inset 0 1px 0 rgba(255,255,255,.46) !important;
+  background:linear-gradient(135deg, #8b5cf6 0%, #ec4899 55%, #f472b6 100%) !important;
+  color:#fff !important;
+  border:1px solid rgba(255,255,255,.55) !important;
+  box-shadow:0 16px 34px rgba(236,72,153,.25), inset 0 1px 0 rgba(255,255,255,.35) !important;
+}
+
+#waContact,
+#waOrderBtn{
+  width:100% !important;
+  justify-content:center !important;
+  text-align:center !important;
+  letter-spacing:.12em !important;
 }
 
 #floatWa.floatWa,
