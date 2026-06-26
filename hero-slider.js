@@ -32,6 +32,27 @@
     });
   };
 
+  const setupGenderCatalog = () => {
+    const grid = document.getElementById('productsGrid');
+    const btnWomen = document.getElementById('btnWomen');
+    const btnMen = document.getElementById('btnMen');
+    if (!grid) return;
+
+    const apply = () => {
+      const women = document.body.classList.contains('theme-women');
+      grid.querySelectorAll('.card').forEach((card) => {
+        const cat = (card.querySelector('.meta')?.textContent || '').trim().toLowerCase();
+        if (cat === 'maquillaje') card.style.display = women ? '' : 'none';
+        if (cat === 'gorras') card.style.display = women ? 'none' : '';
+      });
+    };
+
+    apply();
+    btnWomen?.addEventListener('click', () => setTimeout(apply, 80));
+    btnMen?.addEventListener('click', () => setTimeout(apply, 80));
+    new MutationObserver(apply).observe(grid, { childList: true });
+  };
+
   const setupHero = () => {
     const hero = document.querySelector('.hero__img');
     if (!hero) return;
@@ -72,16 +93,19 @@
   hideLoader();
   setupHero();
   tuneImages();
+  setupGenderCatalog();
 
   document.addEventListener('DOMContentLoaded', () => {
     hideLoader();
     setupHero();
     tuneImages();
+    setupGenderCatalog();
   }, { once: true });
 
   window.addEventListener('load', () => {
     hideLoader();
     tuneImages();
+    setupGenderCatalog();
   }, { once: true });
 
   window.addEventListener('resize', () => {
