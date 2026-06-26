@@ -158,6 +158,22 @@
   box-shadow:0 12px 26px rgba(236,72,153,.22) !important;
 }
 
+/* Contacto: que salga completo */
+#contacto{
+  overflow:visible !important;
+}
+
+#contacto .h2{
+  display:inline-block !important;
+  max-width:100% !important;
+  overflow:visible !important;
+  white-space:nowrap !important;
+  padding-right:26px !important;
+  font-size:clamp(3rem, 8.8vw, 6.1rem) !important;
+  letter-spacing:-.055em !important;
+  line-height:.94 !important;
+}
+
 @media(max-width:720px){
   #catalogo .h2{
     font-size:clamp(2.85rem, 13.5vw, 4.95rem) !important;
@@ -194,5 +210,12 @@
   #catalogo #clearBtn{
     min-height:46px !important;
     border-radius:16px !important;
+  }
+
+  #contacto .h2{
+    font-size:clamp(2.65rem, 14vw, 4.8rem) !important;
+    letter-spacing:-.045em !important;
+    padding-right:34px !important;
+    max-width:calc(100vw - 20px) !important;
   }
 }
