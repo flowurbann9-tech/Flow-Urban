@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="WhatsApp Flow Urban">
+  <defs>
+    <radialGradient id="bg" cx="32%" cy="24%" r="80%">
+      <stop offset="0" stop-color="#fff2bd"/>
+      <stop offset="0.28" stop-color="#d9b45d"/>
+      <stop offset="0.58" stop-color="#ec4899"/>
+      <stop offset="1" stop-color="#111015"/>
+    </radialGradient>
+    <linearGradient id="phone" x1="130" y1="92" x2="390" y2="420">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.45" stop-color="#fff2bd"/>
+      <stop offset="1" stop-color="#ffffff"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <circle cx="256" cy="256" r="246" fill="url(#bg)"/>
+  <circle cx="256" cy="256" r="224" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="10"/>
+  <circle cx="256" cy="256" r="186" fill="rgba(8,8,12,.54)"/>
+
+  <path d="M153 368l25-82c-14-26-18-57-10-87 17-63 82-101 145-84 63 17 101 82 84 145-17 63-82 101-145 84-27-7-50-23-66-43l-33 67z" fill="none" stroke="url(#phone)" stroke-width="30" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
+  <path d="M222 178c-9 3-20 18-19 31 2 35 41 82 78 97 20 8 43 6 55-8 8-9 16-26 12-34-4-7-41-24-50-21-7 3-13 18-20 20-8 3-36-21-43-35-5-9 7-18 8-27 1-8-13-28-21-23z" fill="url(#phone)"/>
+
+  <text x="256" y="438" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="44" font-weight="900" letter-spacing="4" fill="#fff2bd">FLOW</text>
+  <path d="M382 94l11 23 25 4-18 18 4 25-22-12-23 12 5-25-18-18 25-4z" fill="#fff2bd"/>
+</svg>
