@@ -7,6 +7,14 @@
   let current = 0;
   let started = false;
 
+  const isDesktop = () => window.innerWidth >= 900;
+
+  const fitHero = (hero) => {
+    hero.style.objectFit = isDesktop() ? 'contain' : 'cover';
+    hero.style.objectPosition = isDesktop() ? 'center center' : 'center top';
+    hero.style.background = '#0b0b0f';
+  };
+
   const hideLoader = () => {
     const loader = document.getElementById('loader');
     if (!loader) return;
@@ -37,8 +45,7 @@
     hero.style.transform = 'none';
     hero.style.filter = 'none';
     hero.style.imageRendering = 'auto';
-    hero.style.objectFit = 'cover';
-    hero.style.objectPosition = 'center top';
+    fitHero(hero);
     hero.src = slides[current];
 
     if (started) return;
@@ -56,7 +63,7 @@
 
       setTimeout(() => {
         hero.src = slides[current];
-        hero.style.objectPosition = 'center top';
+        fitHero(hero);
         hero.style.opacity = '1';
       }, 180);
     }, 4200);
@@ -76,4 +83,9 @@
     hideLoader();
     tuneImages();
   }, { once: true });
+
+  window.addEventListener('resize', () => {
+    const hero = document.querySelector('.hero__img');
+    if (hero) fitHero(hero);
+  });
 })();
