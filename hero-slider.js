@@ -89,7 +89,18 @@
       .flowExtraCard h3{position:relative;z-index:1;margin:8px 0 4px;color:#17111f;font-weight:1000;font-size:1.25rem;line-height:1.05}
       .flowExtraCard strong{position:relative;z-index:1;display:block;color:#8b5cf6;font-size:1.25rem}
       .flowExtraCard a{position:relative;z-index:1;display:inline-block;width:max-content;margin-top:12px;padding:12px 22px;border-radius:999px;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;text-decoration:none;font-weight:1000;letter-spacing:.08em}
-      @media(max-width:720px){.flowExtrasGrid{grid-template-columns:1fr}.flowExtras{width:calc(100% - 18px)}.flowExtraCard{min-height:235px;padding:16px}.flowExtraIcon{height:105px;font-size:4rem;margin-top:36px}.flowExtraCard h3{font-size:1.2rem}}
+
+      body.theme-women .footer-premium{background:linear-gradient(135deg,#fff7fb 0%,#ffe3f2 42%,#f0e6ff 100%)!important;border:1px solid rgba(236,72,153,.28)!important;box-shadow:0 18px 42px rgba(236,72,153,.18)!important;color:#24102f!important}
+      body.theme-women .footer-premium::before{content:"FLOW BEAUTY";position:absolute;right:18px;top:12px;font-size:clamp(2rem,7vw,5rem);font-weight:1000;letter-spacing:-.08em;color:rgba(236,72,153,.08);pointer-events:none}
+      body.theme-women .footer-brand__logo{background:#fff!important;border:1px solid rgba(236,72,153,.20)!important;box-shadow:0 10px 24px rgba(236,72,153,.14)!important}
+      body.theme-women .footer-brand__name{color:transparent!important;background:linear-gradient(135deg,#8b5cf6,#ec4899,#d9b45d)!important;-webkit-background-clip:text!important;background-clip:text!important}
+      body.theme-women .footer-brand__sub,body.theme-women .footer-premium__desc,body.theme-women .footer-box p,body.theme-women .footer-box a,body.theme-women .footer-premium__bottom span{color:#5a365f!important}
+      body.theme-women .footer-box{background:rgba(255,255,255,.62)!important;border:1px solid rgba(236,72,153,.18)!important;box-shadow:0 10px 28px rgba(236,72,153,.10)!important}
+      body.theme-women .footer-box h4{color:#ec4899!important;text-shadow:none!important}
+      body.theme-women .footer-premium__bottom{border-top:1px solid rgba(236,72,153,.18)!important}
+      body.theme-women .footer-premium__desc{font-weight:750!important}
+
+      @media(max-width:720px){.flowExtrasGrid{grid-template-columns:1fr}.flowExtras{width:calc(100% - 18px)}.flowExtraCard{min-height:235px;padding:16px}.flowExtraIcon{height:105px;font-size:4rem;margin-top:36px}.flowExtraCard h3{font-size:1.2rem}body.theme-women .footer-premium{border-radius:30px!important}}
     `;
     document.head.appendChild(s);
   };
