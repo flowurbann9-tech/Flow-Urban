@@ -1,5 +1,11 @@
 (() => {
-  const HERO = 'assets/SmartSelect_20260625_142913_ChatGPT.jpg?v=2';
+  const slides = [
+    'assets/hero.jpg?v=6',
+    'assets/SmartSelect_20260625_142913_ChatGPT.jpg?v=2'
+  ];
+
+  let current = 0;
+  let started = false;
 
   const hideLoader = () => {
     const loader = document.getElementById('loader');
@@ -33,7 +39,26 @@
     hero.style.imageRendering = 'auto';
     hero.style.objectFit = 'cover';
     hero.style.objectPosition = 'center center';
-    hero.src = HERO;
+    hero.src = slides[current];
+
+    if (started) return;
+    started = true;
+
+    setTimeout(() => {
+      const preload = new Image();
+      preload.src = slides[1];
+    }, 1200);
+
+    setInterval(() => {
+      current = (current + 1) % slides.length;
+      hero.style.transition = 'opacity .35s ease';
+      hero.style.opacity = '0.35';
+
+      setTimeout(() => {
+        hero.src = slides[current];
+        hero.style.opacity = '1';
+      }, 180);
+    }, 4200);
   };
 
   hideLoader();
