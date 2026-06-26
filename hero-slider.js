@@ -10,7 +10,7 @@
   const isDesktop = () => window.innerWidth >= 900;
 
   const fitHero = (hero) => {
-    hero.style.objectFit = isDesktop() ? 'cover' : 'cover';
+    hero.style.objectFit = 'cover';
     hero.style.objectPosition = isDesktop() ? 'center center' : 'center top';
     hero.style.background = '#0b0b0f';
   };
@@ -48,10 +48,9 @@
     const title = women ? 'MAQUILLAJE' : 'GORRAS';
     const sub = women ? 'Beauty drops para completar tu outfit con flow.' : 'Gorras urbanas para completar tu estilo.';
     const emoji = women ? '💄' : '🧢';
-    const img = women ? 'assets/logo-women.png' : 'assets/logo.png';
     const items = women
-      ? [['Set Maquillaje Glow', '$6,00', 'Beauty, Mujer'], ['Labial Urban Glam', '$3,50', 'Makeup, Glow']]
-      : [['Gorra Flow Urban', '$5,00', 'Cap, Streetwear'], ['Gorra Negra Premium', '$7,00', 'Premium, Urban']];
+      ? [['Set Maquillaje Glow', '$6,00', 'Beauty, Mujer', '💋'], ['Labial Urban Glam', '$3,50', 'Makeup, Glow', '💄']]
+      : [['Gorra Flow Urban', '$5,00', 'Cap, Streetwear', '🧢'], ['Gorra Negra Premium', '$7,00', 'Premium, Urban', '🖤']];
 
     sec.innerHTML = `
       <div class="flowExtrasHead">
@@ -63,7 +62,7 @@
         ${items.map((it) => `
           <article class="flowExtraCard">
             <div class="flowExtraTag">${it[2]}</div>
-            <div class="flowExtraImg"><img src="${img}" alt="${it[0]}" loading="lazy"></div>
+            <div class="flowExtraIcon">${it[3]}</div>
             <h3>${it[0]}</h3>
             <strong>${it[1]}</strong>
             <a href="#contacto">PEDIR</a>
@@ -79,7 +78,18 @@
     s.textContent = `
       .flowExtras{width:min(1220px,calc(100% - 24px));margin:30px auto!important;padding:0!important;}
       .flowExtrasHead{padding:24px 18px;border-radius:28px;background:linear-gradient(135deg,rgba(17,17,24,.96),rgba(236,72,153,.22),rgba(139,92,246,.20));border:1px solid rgba(255,242,189,.28);box-shadow:0 16px 36px rgba(0,0,0,.16)}
-      .flowExtrasHead span{display:inline-block;padding:9px 13px;border-radius:999px;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;font-weight:1000;font-size:.78rem;letter-spacing:.09em}.flowExtrasHead h2{margin:12px 0 0;color:#fff;font-size:clamp(2.7rem,9vw,6rem);line-height:.86;letter-spacing:-.08em}.flowExtrasHead p{margin:10px 0 0;color:#fff2bd;font-weight:800}.flowExtrasGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:18px}.flowExtraCard{position:relative;border-radius:28px;background:linear-gradient(180deg,#fff,rgba(255,255,255,.78));padding:16px;box-shadow:0 16px 34px rgba(0,0,0,.12);overflow:hidden}.flowExtraTag{position:absolute;top:16px;left:16px;padding:9px 12px;border-radius:999px;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;font-size:.72rem;font-weight:1000;letter-spacing:.08em}.flowExtraImg{height:220px;display:grid;place-items:center;border-radius:22px;background:linear-gradient(135deg,#f7f2ff,#fff)}.flowExtraImg img{width:76%;height:76%;object-fit:contain}.flowExtraCard h3{margin:14px 0 4px;color:#17111f;font-weight:1000}.flowExtraCard strong{display:block;color:#8b5cf6;font-size:1.15rem}.flowExtraCard a{display:inline-block;margin-top:12px;padding:12px 20px;border-radius:999px;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;text-decoration:none;font-weight:1000;letter-spacing:.08em}@media(max-width:720px){.flowExtrasGrid{grid-template-columns:1fr}.flowExtraImg{height:210px}.flowExtras{width:calc(100% - 18px)}}
+      .flowExtrasHead span{display:inline-block;padding:9px 13px;border-radius:999px;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;font-weight:1000;font-size:.78rem;letter-spacing:.09em}
+      .flowExtrasHead h2{margin:12px 0 0;color:#fff;font-size:clamp(2.7rem,9vw,6rem);line-height:.86;letter-spacing:-.08em}
+      .flowExtrasHead p{margin:10px 0 0;color:#fff2bd;font-weight:800}
+      .flowExtrasGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:18px}
+      .flowExtraCard{position:relative;min-height:260px;border-radius:28px;background:linear-gradient(180deg,#fff,rgba(255,255,255,.82));padding:18px;box-shadow:0 16px 34px rgba(0,0,0,.12);overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
+      .flowExtraCard::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 70% 15%,rgba(236,72,153,.18),transparent 42%),radial-gradient(circle at 10% 20%,rgba(139,92,246,.18),transparent 38%);pointer-events:none}
+      .flowExtraTag{position:absolute;top:16px;left:16px;z-index:2;padding:9px 12px;border-radius:999px;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;font-size:.72rem;font-weight:1000;letter-spacing:.08em}
+      .flowExtraIcon{position:relative;z-index:1;height:120px;margin:38px 0 10px;display:grid;place-items:center;border-radius:24px;background:linear-gradient(135deg,#f7f2ff,#fff);font-size:4.6rem;box-shadow:inset 0 0 0 1px rgba(139,92,246,.10)}
+      .flowExtraCard h3{position:relative;z-index:1;margin:8px 0 4px;color:#17111f;font-weight:1000;font-size:1.25rem;line-height:1.05}
+      .flowExtraCard strong{position:relative;z-index:1;display:block;color:#8b5cf6;font-size:1.25rem}
+      .flowExtraCard a{position:relative;z-index:1;display:inline-block;width:max-content;margin-top:12px;padding:12px 22px;border-radius:999px;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;text-decoration:none;font-weight:1000;letter-spacing:.08em}
+      @media(max-width:720px){.flowExtrasGrid{grid-template-columns:1fr}.flowExtras{width:calc(100% - 18px)}.flowExtraCard{min-height:235px;padding:16px}.flowExtraIcon{height:105px;font-size:4rem;margin-top:36px}.flowExtraCard h3{font-size:1.2rem}}
     `;
     document.head.appendChild(s);
   };
