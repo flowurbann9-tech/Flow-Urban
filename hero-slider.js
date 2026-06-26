@@ -10,6 +10,14 @@
     loader.setAttribute('aria-hidden', 'true');
   };
 
+  const tuneImages = () => {
+    document.querySelectorAll('img').forEach((img) => {
+      if (img.classList.contains('hero__img') || img.id === 'brandLogo') return;
+      img.loading = 'lazy';
+      img.decoding = 'async';
+    });
+  };
+
   const setupHero = () => {
     const hero = document.querySelector('.hero__img');
     if (!hero) return;
@@ -30,11 +38,16 @@
 
   hideLoader();
   setupHero();
+  tuneImages();
 
   document.addEventListener('DOMContentLoaded', () => {
     hideLoader();
     setupHero();
+    tuneImages();
   }, { once: true });
 
-  window.addEventListener('load', hideLoader, { once: true });
+  window.addEventListener('load', () => {
+    hideLoader();
+    tuneImages();
+  }, { once: true });
 })();
