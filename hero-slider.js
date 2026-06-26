@@ -38,7 +38,7 @@
     hero.style.filter = 'none';
     hero.style.imageRendering = 'auto';
     hero.style.objectFit = 'cover';
-    hero.style.objectPosition = 'center center';
+    hero.style.objectPosition = 'center top';
     hero.src = slides[current];
 
     if (started) return;
@@ -56,6 +56,7 @@
 
       setTimeout(() => {
         hero.src = slides[current];
+        hero.style.objectPosition = 'center top';
         hero.style.opacity = '1';
       }, 180);
     }, 4200);
