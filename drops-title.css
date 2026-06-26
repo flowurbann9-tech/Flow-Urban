@@ -3,10 +3,14 @@
 #catalogo .h2{
   position:relative !important;
   display:inline-block !important;
+  max-width:100% !important;
+  overflow:visible !important;
+  white-space:nowrap !important;
+  padding-right:24px !important;
   margin-bottom:16px !important;
-  font-size:clamp(3.4rem, 11vw, 7.4rem) !important;
-  line-height:.82 !important;
-  letter-spacing:-.10em !important;
+  font-size:clamp(3.4rem, 10.5vw, 7.2rem) !important;
+  line-height:.86 !important;
+  letter-spacing:-.085em !important;
   text-transform:uppercase !important;
   font-weight:1000 !important;
   color:transparent !important;
@@ -19,7 +23,7 @@
 #catalogo .h2::before{
   content:"✦";
   display:inline-block;
-  margin-right:12px;
+  margin-right:10px;
   font-size:.35em;
   vertical-align:middle;
   color:#ec4899;
@@ -55,7 +59,7 @@
 
 #catalogo{
   position:relative !important;
-  overflow:hidden !important;
+  overflow:visible !important;
 }
 
 #catalogo::before{
@@ -156,13 +160,22 @@
 
 @media(max-width:720px){
   #catalogo .h2{
-    font-size:clamp(3.2rem, 16vw, 5.4rem) !important;
-    letter-spacing:-.11em !important;
+    font-size:clamp(2.85rem, 13.5vw, 4.95rem) !important;
+    letter-spacing:-.065em !important;
+    line-height:.90 !important;
+    padding-right:30px !important;
+    max-width:calc(100vw - 18px) !important;
+  }
+
+  #catalogo .h2::before{
+    margin-right:7px !important;
+    font-size:.30em !important;
   }
 
   #catalogo .h2::after{
     height:5px;
     bottom:-10px;
+    width:74%;
   }
 
   #catalogo .muted{
