@@ -1,0 +1,255 @@
+/* FLOW URBAN — ULTRA PREMIUM FINISH */
+
+:root{
+  --fu-dark:#0b0b10;
+  --fu-ink:#17111f;
+  --fu-gold:#fff2bd;
+  --fu-pink:#ec4899;
+  --fu-purple:#8b5cf6;
+}
+
+body{
+  background:
+    radial-gradient(circle at 12% 4%, rgba(236,72,153,.14), transparent 28%),
+    radial-gradient(circle at 90% 8%, rgba(139,92,246,.14), transparent 30%),
+    linear-gradient(180deg, #fff7fd 0%, #f3e9ff 45%, #ffffff 100%) !important;
+}
+
+body:not(.theme-women){
+  background:
+    radial-gradient(circle at 15% 5%, rgba(217,180,93,.12), transparent 28%),
+    radial-gradient(circle at 92% 10%, rgba(236,72,153,.12), transparent 30%),
+    linear-gradient(180deg, #f8f1ff 0%, #ffffff 55%, #f6efff 100%) !important;
+}
+
+.ticker,
+.header,
+.nav,
+.genderSwitch{
+  box-shadow:0 14px 34px rgba(139,92,246,.10) !important;
+}
+
+.header{
+  border:1px solid rgba(236,72,153,.14) !important;
+}
+
+.brand__name{
+  letter-spacing:.13em !important;
+  font-weight:1000 !important;
+}
+
+.nav a{
+  position:relative !important;
+  font-weight:1000 !important;
+}
+
+.nav a::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  bottom:5px;
+  width:0;
+  height:3px;
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--fu-purple),var(--fu-pink),var(--fu-gold));
+  transform:translateX(-50%);
+  transition:.25s ease;
+}
+
+.nav a:hover::after{
+  width:54%;
+}
+
+.btn,
+.genderBtn,
+#clearBtn{
+  text-transform:uppercase !important;
+  font-weight:1000 !important;
+}
+
+.hero{
+  border:1px solid rgba(255,255,255,.35) !important;
+  box-shadow:0 22px 54px rgba(0,0,0,.18), 0 0 0 1px rgba(236,72,153,.08) !important;
+}
+
+.hero__overlay{
+  text-shadow:0 12px 26px rgba(0,0,0,.38) !important;
+}
+
+.hero__kicker{
+  letter-spacing:-.055em !important;
+  font-weight:1000 !important;
+}
+
+.lux-banner__inner,
+#catalogo .filters,
+.footer-premium,
+.flowExtrasHead{
+  position:relative !important;
+  isolation:isolate !important;
+}
+
+.lux-banner__inner::after,
+#catalogo .filters::after,
+.footer-premium::after,
+.flowExtrasHead::after{
+  content:"";
+  position:absolute;
+  inset:1px;
+  border-radius:inherit;
+  background:linear-gradient(135deg, rgba(255,255,255,.18), transparent 34%, rgba(255,242,189,.10)) !important;
+  pointer-events:none;
+  z-index:-1;
+}
+
+.card{
+  border-radius:28px !important;
+  overflow:hidden !important;
+  background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.88)) !important;
+  border:1px solid rgba(236,72,153,.12) !important;
+  box-shadow:0 16px 34px rgba(0,0,0,.10), 0 0 0 1px rgba(139,92,246,.05) !important;
+  transition:transform .22s ease, box-shadow .22s ease !important;
+}
+
+.card:hover{
+  transform:translateY(-5px) !important;
+  box-shadow:0 24px 46px rgba(236,72,153,.16), 0 12px 24px rgba(0,0,0,.12) !important;
+}
+
+.card .title,
+.card h3{
+  font-weight:1000 !important;
+  color:#17111f !important;
+  letter-spacing:-.02em !important;
+}
+
+.price,
+.card .price{
+  color:#8b5cf6 !important;
+  font-weight:1000 !important;
+}
+
+.card .meta,
+.meta{
+  color:#5b3b61 !important;
+  font-weight:800 !important;
+}
+
+.badge,
+.tag{
+  border-radius:999px !important;
+  font-weight:1000 !important;
+}
+
+.btn--gold,
+.lux-banner__btn,
+.flowExtraCard a,
+#waOrderBtn,
+#waContact{
+  background:linear-gradient(135deg, #fff2bd 0%, #f472b6 48%, #8b5cf6 100%) !important;
+  color:#111015 !important;
+  border:1px solid rgba(255,255,255,.45) !important;
+  box-shadow:0 14px 30px rgba(236,72,153,.22) !important;
+}
+
+.btn--ghost,
+.btn--wa{
+  border:1px solid rgba(236,72,153,.24) !important;
+  background:rgba(255,255,255,.42) !important;
+  color:#24102f !important;
+}
+
+body:not(.theme-women) .btn--ghost,
+body:not(.theme-women) .btn--wa{
+  background:rgba(17,17,24,.78) !important;
+  color:#fff !important;
+}
+
+#catalogo .field input,
+#catalogo .field select{
+  backdrop-filter:blur(8px) !important;
+  -webkit-backdrop-filter:blur(8px) !important;
+}
+
+.flowExtrasHead{
+  overflow:hidden !important;
+}
+
+.flowExtrasHead h2{
+  text-shadow:0 16px 34px rgba(236,72,153,.22) !important;
+}
+
+.flowExtraCard{
+  border:1px solid rgba(236,72,153,.14) !important;
+}
+
+.floatWa{
+  transform:translateZ(0) !important;
+  box-shadow:0 18px 42px rgba(236,72,153,.28), 0 0 0 6px rgba(255,242,189,.09) !important;
+}
+
+body.theme-women .header,
+body.theme-women .nav,
+body.theme-women .genderSwitch,
+body.theme-women .ticker{
+  background:rgba(255,248,253,.78) !important;
+  border-color:rgba(236,72,153,.16) !important;
+}
+
+body.theme-women .brand__name,
+body.theme-women .h2,
+body.theme-women .hero__kicker{
+  background:linear-gradient(135deg,#8b5cf6,#ec4899,#d9b45d) !important;
+  -webkit-background-clip:text !important;
+  background-clip:text !important;
+  color:transparent !important;
+}
+
+body.theme-women #contacto{
+  background:linear-gradient(135deg, rgba(255,248,253,.92), rgba(243,232,255,.92), rgba(255,242,189,.35)) !important;
+  border:1px solid rgba(236,72,153,.20) !important;
+}
+
+body.theme-women #contacto .muted{
+  color:#4a2a50 !important;
+  background:rgba(255,255,255,.72) !important;
+}
+
+body.theme-women .footer-premium{
+  font-family:'Trebuchet MS','Segoe UI',system-ui,sans-serif !important;
+}
+
+body.theme-women .footer-brand__name,
+body.theme-women .footer-box h4{
+  font-family:Georgia,'Times New Roman',serif !important;
+}
+
+@media(max-width:720px){
+  .header{
+    border-radius:0 0 22px 22px !important;
+  }
+
+  .hero{
+    border-radius:26px !important;
+    margin:8px auto 14px !important;
+  }
+
+  .hero__overlay{
+    padding:18px !important;
+  }
+
+  .card{
+    border-radius:24px !important;
+  }
+
+  .btn,
+  .genderBtn{
+    letter-spacing:.06em !important;
+  }
+
+  .footer-premium,
+  .lux-banner__inner,
+  #catalogo .filters{
+    border-radius:26px !important;
+  }
+}
