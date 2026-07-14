@@ -27,8 +27,8 @@
     hero.loading = 'eager';
     hero.decoding = 'async';
     hero.fetchPriority = 'high';
-    hero.style.objectFit = 'cover';
-    hero.style.objectPosition = window.innerWidth >= 900 ? 'center center' : 'center top';
+    hero.style.setProperty('object-fit','cover','important');
+    hero.style.setProperty('object-position','center top','important');
     hero.style.opacity = '1';
     hero.style.transform = 'none';
     hero.style.filter = 'none';
