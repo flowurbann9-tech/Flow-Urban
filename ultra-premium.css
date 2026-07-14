@@ -67,20 +67,22 @@ body:not(.theme-women){
   font-weight:1000 !important;
 }
 
+/* PORTADA SIN CUADROS NEGROS */
 .hero{
-  height:clamp(560px, 54vw, 760px) !important;
-  min-height:560px !important;
+  height:clamp(420px, 42vw, 620px) !important;
+  min-height:420px !important;
   border:1px solid rgba(255,255,255,.35) !important;
   box-shadow:0 22px 54px rgba(0,0,0,.18), 0 0 0 1px rgba(236,72,153,.08) !important;
-  background-color:#0b0b0f !important;
+  background:transparent !important;
   overflow:hidden !important;
 }
 
 .hero__img{
   width:100% !important;
   height:100% !important;
-  object-fit:contain !important;
-  object-position:center center !important;
+  object-fit:cover !important;
+  object-position:center top !important;
+  background:transparent !important;
 }
 
 .hero__overlay{
@@ -199,6 +201,98 @@ body:not(.theme-women) .btn--wa{
   box-shadow:0 18px 42px rgba(236,72,153,.28), 0 0 0 6px rgba(255,242,189,.09) !important;
 }
 
+/* MODAL DE PRODUCTO — FOTO ABIERTA PREMIUM */
+.pmodal__back{
+  background:rgba(18,14,22,.55) !important;
+  backdrop-filter:blur(10px) !important;
+  -webkit-backdrop-filter:blur(10px) !important;
+}
+
+.pmodal__card{
+  overflow:hidden !important;
+  border-radius:30px !important;
+  background:linear-gradient(180deg,#ffffff 0%,#fff7fd 100%) !important;
+  border:1px solid rgba(236,72,153,.20) !important;
+  box-shadow:0 28px 70px rgba(0,0,0,.32), 0 0 0 1px rgba(255,242,189,.18) !important;
+}
+
+.pmodal__close{
+  background:rgba(17,17,24,.88) !important;
+  color:#fff !important;
+  border:1px solid rgba(255,255,255,.22) !important;
+  box-shadow:0 10px 24px rgba(0,0,0,.24) !important;
+}
+
+.pslider{
+  height:min(62vh, 560px) !important;
+  min-height:360px !important;
+  background:linear-gradient(135deg,#fff7fd,#f3e9ff,#ffffff) !important;
+  overflow:hidden !important;
+}
+
+.pslider__track{
+  height:100% !important;
+}
+
+.pslide{
+  min-width:100% !important;
+  height:100% !important;
+  display:grid !important;
+  place-items:center !important;
+  background:linear-gradient(135deg,#fff7fd,#f3e9ff,#ffffff) !important;
+  overflow:hidden !important;
+}
+
+.pslide img,
+.pslide video{
+  width:100% !important;
+  height:100% !important;
+  object-fit:cover !important;
+  object-position:center center !important;
+  padding:0 !important;
+  background:transparent !important;
+  border-radius:0 !important;
+}
+
+.pslider__dots{
+  bottom:12px !important;
+  background:rgba(255,255,255,.55) !important;
+  padding:6px 10px !important;
+  border-radius:999px !important;
+  backdrop-filter:blur(8px) !important;
+  -webkit-backdrop-filter:blur(8px) !important;
+}
+
+.pdot{
+  background:rgba(23,17,31,.28) !important;
+}
+
+.pdot--on{
+  background:linear-gradient(135deg,#fff2bd,#ec4899) !important;
+  box-shadow:0 0 12px rgba(236,72,153,.35) !important;
+}
+
+.pmodal__body{
+  background:linear-gradient(180deg,#ffffff,#fff7fd) !important;
+  color:#17111f !important;
+}
+
+.pmodal__title{
+  color:#17111f !important;
+  font-weight:1000 !important;
+}
+
+.pmodal__meta,
+.pmodal__sizes{
+  color:#5b3b61 !important;
+  font-weight:800 !important;
+}
+
+.pmodal__price{
+  color:#8b5cf6 !important;
+  font-weight:1000 !important;
+}
+
 body.theme-women .header,
 body.theme-women .nav,
 body.theme-women .genderSwitch,
@@ -270,5 +364,14 @@ body.theme-women .footer-box h4{
   .lux-banner__inner,
   #catalogo .filters{
     border-radius:26px !important;
+  }
+
+  .pslider{
+    height:54vh !important;
+    min-height:320px !important;
+  }
+
+  .pmodal__card{
+    border-radius:24px !important;
   }
 }
