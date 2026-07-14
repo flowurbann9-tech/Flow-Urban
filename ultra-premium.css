@@ -68,8 +68,19 @@ body:not(.theme-women){
 }
 
 .hero{
+  height:clamp(560px, 54vw, 760px) !important;
+  min-height:560px !important;
   border:1px solid rgba(255,255,255,.35) !important;
   box-shadow:0 22px 54px rgba(0,0,0,.18), 0 0 0 1px rgba(236,72,153,.08) !important;
+  background-color:#0b0b0f !important;
+  overflow:hidden !important;
+}
+
+.hero__img{
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center center !important;
 }
 
 .hero__overlay{
@@ -230,8 +241,16 @@ body.theme-women .footer-box h4{
   }
 
   .hero{
+    height:72vh !important;
+    min-height:560px !important;
+    max-height:760px !important;
     border-radius:26px !important;
     margin:8px auto 14px !important;
+  }
+
+  .hero__img{
+    object-fit:cover !important;
+    object-position:center top !important;
   }
 
   .hero__overlay{
