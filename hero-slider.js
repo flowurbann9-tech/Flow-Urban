@@ -24,14 +24,24 @@
   const fitHero = () => {
     const hero = document.querySelector('.hero__img');
     if (!hero) return;
+    const wrap = hero.closest('.hero');
+    const desktop = window.innerWidth >= 900;
     hero.loading = 'eager';
     hero.decoding = 'async';
     hero.fetchPriority = 'high';
-    hero.style.setProperty('object-fit','cover','important');
-    hero.style.setProperty('object-position','center top','important');
+    hero.style.setProperty('object-fit', desktop ? 'contain' : 'cover', 'important');
+    hero.style.setProperty('object-position', desktop ? 'center center' : 'center top', 'important');
     hero.style.opacity = '1';
     hero.style.transform = 'none';
     hero.style.filter = 'none';
+    hero.style.background = '#0b0b0f';
+    if (wrap) {
+      wrap.style.backgroundColor = '#0b0b0f';
+      wrap.style.backgroundImage = `linear-gradient(90deg, rgba(0,0,0,.42), rgba(0,0,0,.18)), url('${hero.src || slides[current]}')`;
+      wrap.style.backgroundSize = 'cover';
+      wrap.style.backgroundPosition = 'center top';
+      wrap.style.backgroundRepeat = 'no-repeat';
+    }
     return hero;
   };
 
@@ -74,6 +84,7 @@
     if (!hero || started) return;
     started = true;
     hero.src = slides[current];
+    setTimeout(fitHero, 120);
     setTimeout(() => { const img = new Image(); img.src = slides[1]; }, 900);
     setInterval(() => {
       current = (current + 1) % slides.length;
