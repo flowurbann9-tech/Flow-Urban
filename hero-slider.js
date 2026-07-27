@@ -22,7 +22,7 @@
       const modal = document.createElement('link');
       modal.id = 'modalFixCSS';
       modal.rel = 'stylesheet';
-      modal.href = 'modal-fix.css?v=1';
+      modal.href = 'product-modal-fix.css?v=1';
       document.head.appendChild(modal);
     }
   };
@@ -57,6 +57,33 @@
       wrap.style.backgroundRepeat = 'no-repeat';
     }
     return hero;
+  };
+
+  const fixProductModal = () => {
+    const modal = document.getElementById('pModal');
+    if (!modal) return;
+    const card = modal.querySelector('.pmodal__card');
+    const slider = modal.querySelector('#pSlider,.pslider');
+    const track = modal.querySelector('#pSliderTrack,.pslider__track');
+    if (modal.getAttribute('aria-hidden') === 'false') {
+      modal.style.setProperty('display','flex','important');
+      if (card) {
+        card.style.setProperty('margin','auto','important');
+        card.style.setProperty('transform','none','important');
+      }
+      if (slider) {
+        slider.style.setProperty('overflow','hidden','important');
+      }
+      if (track) {
+        track.querySelectorAll('img,video').forEach((m) => {
+          m.style.setProperty('width','100%','important');
+          m.style.setProperty('height','100%','important');
+          m.style.setProperty('object-fit','contain','important');
+          m.style.setProperty('object-position','center center','important');
+          m.style.setProperty('transform','none','important');
+        });
+      }
+    }
   };
 
   const tuneImages = () => {
@@ -136,6 +163,7 @@
     startHero();
     tuneImages();
     injectExtras();
+    fixProductModal();
     setTimeout(setupReveal, 60);
     document.getElementById('btnWomen')?.addEventListener('click', () => setTimeout(injectExtras, 90));
     document.getElementById('btnMen')?.addEventListener('click', () => setTimeout(injectExtras, 90));
@@ -145,4 +173,6 @@
   document.addEventListener('DOMContentLoaded', boot, { once:true });
   window.addEventListener('load', boot, { once:true });
   window.addEventListener('resize', fitHero);
+  document.addEventListener('click', () => setTimeout(fixProductModal, 80));
+  new MutationObserver(fixProductModal).observe(document.body, { attributes:true, childList:true, subtree:true });
 })();
