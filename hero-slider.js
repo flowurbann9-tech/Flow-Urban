@@ -22,14 +22,14 @@
       const modal = document.createElement('link');
       modal.id = 'modalFixCSS';
       modal.rel = 'stylesheet';
-      modal.href = 'product-modal-fix.css?v=3';
+      modal.href = 'product-modal-fix.css?v=4';
       document.head.appendChild(modal);
     }
     if (!document.getElementById('oldModalFixCSS')) {
       const modal2 = document.createElement('link');
       modal2.id = 'oldModalFixCSS';
       modal2.rel = 'stylesheet';
-      modal2.href = 'modal-fix.css?v=3';
+      modal2.href = 'modal-fix.css?v=4';
       document.head.appendChild(modal2);
     }
   };
@@ -41,6 +41,14 @@
     loader.style.opacity = '0';
     loader.style.visibility = 'hidden';
     loader.setAttribute('aria-hidden','true');
+  };
+
+  const closeProductModal = () => {
+    const modal = document.getElementById('pModal');
+    if (!modal) return;
+    modal.setAttribute('aria-hidden','true');
+    modal.style.setProperty('display','none','important');
+    document.body.classList.remove('pmodalOpen');
   };
 
   const fitHero = () => {
@@ -78,9 +86,9 @@
       modal.style.setProperty('justify-content','center','important');
       modal.style.setProperty('padding','10px','important');
       if (card) {
-        card.style.setProperty('width','min(92vw,390px)','important');
-        card.style.setProperty('max-width','390px','important');
-        card.style.setProperty('max-height','82vh','important');
+        card.style.setProperty('width','min(94vw,420px)','important');
+        card.style.setProperty('max-width','420px','important');
+        card.style.setProperty('max-height','90vh','important');
         card.style.setProperty('margin','auto','important');
         card.style.setProperty('transform','none','important');
         card.style.setProperty('inset','auto','important');
@@ -88,16 +96,16 @@
         card.style.setProperty('flex-direction','column','important');
       }
       if (slider) {
-        slider.style.setProperty('height','245px','important');
-        slider.style.setProperty('min-height','245px','important');
-        slider.style.setProperty('max-height','245px','important');
+        slider.style.setProperty('height','390px','important');
+        slider.style.setProperty('min-height','390px','important');
+        slider.style.setProperty('max-height','54vh','important');
         slider.style.setProperty('overflow','hidden','important');
       }
       if (track) {
         track.style.setProperty('height','100%','important');
         track.querySelectorAll('.pslide').forEach((slide) => {
           slide.style.setProperty('height','100%','important');
-          slide.style.setProperty('padding','14px','important');
+          slide.style.setProperty('padding','10px','important');
           slide.style.setProperty('display','flex','important');
           slide.style.setProperty('align-items','center','important');
           slide.style.setProperty('justify-content','center','important');
@@ -204,6 +212,20 @@
   document.addEventListener('DOMContentLoaded', boot, { once:true });
   window.addEventListener('load', boot, { once:true });
   window.addEventListener('resize', fitHero);
-  document.addEventListener('click', () => setTimeout(fixProductModal, 80));
+  document.addEventListener('click', (e) => {
+    const modal = document.getElementById('pModal');
+    if (!modal || modal.getAttribute('aria-hidden') !== 'false') {
+      setTimeout(fixProductModal, 80);
+      return;
+    }
+    if (e.target.closest('.pmodal__close') || e.target.classList.contains('pmodal__back') || e.target === modal) {
+      e.preventDefault();
+      e.stopPropagation();
+      closeProductModal();
+      return;
+    }
+    setTimeout(fixProductModal, 80);
+  }, true);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeProductModal(); });
   new MutationObserver(fixProductModal).observe(document.body, { attributes:true, childList:true, subtree:true });
 })();
