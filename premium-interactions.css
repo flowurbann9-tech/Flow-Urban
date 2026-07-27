@@ -1,0 +1,209 @@
+/* FLOW URBAN — PREMIUM INTERACTIONS */
+
+@keyframes fuTapPop{
+  0%{transform:scale(1)}
+  38%{transform:scale(.94)}
+  72%{transform:scale(1.045)}
+  100%{transform:scale(1)}
+}
+
+@keyframes fuSelectGlow{
+  0%{box-shadow:0 0 0 0 rgba(236,72,153,.0)}
+  35%{box-shadow:0 0 0 8px rgba(236,72,153,.16),0 0 34px rgba(236,72,153,.28)}
+  100%{box-shadow:0 18px 36px rgba(0,0,0,.12)}
+}
+
+@keyframes fuModalLuxIn{
+  from{opacity:0;transform:translateY(18px) scale(.94);filter:blur(7px)}
+  to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}
+}
+
+@keyframes fuCartPulse{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.12)}
+}
+
+@keyframes fuGoldSweep{
+  0%{transform:translateX(-130%) skewX(-18deg)}
+  100%{transform:translateX(160%) skewX(-18deg)}
+}
+
+.card,
+.btn,
+.genderBtn,
+.pill-link,
+#pAddBtn,
+#waOrderBtn,
+.floatWa,
+.cartCount{
+  -webkit-tap-highlight-color:transparent!important;
+}
+
+.card{
+  transform-origin:center!important;
+  transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s ease,filter .25s ease!important;
+}
+
+.card:active,
+.card.fu-selected{
+  animation:fuSelectGlow .62s ease both!important;
+}
+
+.card:active{
+  transform:scale(.985)!important;
+}
+
+.media{
+  position:relative!important;
+  isolation:isolate!important;
+}
+
+.media::after{
+  content:"TOCA PARA VER";
+  position:absolute;
+  left:14px;
+  right:14px;
+  bottom:14px;
+  z-index:4;
+  padding:9px 12px;
+  border-radius:999px;
+  background:rgba(17,17,24,.64);
+  color:#fff2bd;
+  font-size:.68rem;
+  font-weight:1000;
+  letter-spacing:.12em;
+  text-align:center;
+  opacity:0;
+  transform:translateY(8px);
+  transition:.25s ease;
+  pointer-events:none;
+  backdrop-filter:blur(8px);
+}
+
+.card:hover .media::after,
+.card:active .media::after{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.plus{
+  transition:transform .22s ease,box-shadow .22s ease!important;
+}
+
+.hit:active .plus,
+.btn:active,
+.genderBtn:active,
+#pAddBtn:active,
+#waOrderBtn:active{
+  animation:fuTapPop .38s ease both!important;
+}
+
+.btn,
+.genderBtn,
+.pill-link,
+#pAddBtn,
+#waOrderBtn{
+  position:relative!important;
+  overflow:hidden!important;
+}
+
+.btn::after,
+.genderBtn::after,
+.pill-link::after,
+#pAddBtn::after,
+#waOrderBtn::after{
+  content:"";
+  position:absolute;
+  top:-45%;
+  left:-45%;
+  width:34%;
+  height:190%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.62),transparent);
+  transform:translateX(-130%) skewX(-18deg);
+  pointer-events:none;
+  opacity:.75;
+}
+
+.btn:hover::after,
+.genderBtn:hover::after,
+.pill-link:hover::after,
+#pAddBtn:hover::after,
+#waOrderBtn:hover::after{
+  animation:fuGoldSweep .86s ease both!important;
+}
+
+.genderBtn--active{
+  box-shadow:0 14px 32px rgba(236,72,153,.18),inset 0 1px 0 rgba(255,255,255,.55)!important;
+  transform:translateY(-1px)!important;
+}
+
+.genderBtn--active::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  border-radius:inherit;
+  background:linear-gradient(135deg,rgba(255,242,189,.55),rgba(236,72,153,.42),rgba(139,92,246,.38));
+  z-index:-1;
+  filter:blur(10px);
+  opacity:.65;
+}
+
+.pmodal__card{
+  animation:fuModalLuxIn .32s cubic-bezier(.2,.8,.2,1) both!important;
+}
+
+#pAddBtn{
+  transform-origin:center!important;
+}
+
+#pAddBtn::before{
+  content:"🛒";
+  margin-right:8px;
+}
+
+.drawer[aria-hidden="false"],
+body.drawerOpen .drawer{
+  animation:fuModalLuxIn .32s cubic-bezier(.2,.8,.2,1) both!important;
+}
+
+.cartCount{
+  transition:transform .22s ease!important;
+}
+
+body.drawerOpen .cartCount,
+.cartCount:not(:empty){
+  animation:fuCartPulse .7s ease both!important;
+}
+
+.floatWa{
+  transition:transform .28s ease,filter .28s ease!important;
+}
+
+.floatWa:active{
+  transform:scale(.94)!important;
+}
+
+.pdot{
+  transition:width .25s ease,transform .25s ease,background .25s ease!important;
+}
+
+.pdot--on{
+  box-shadow:0 0 18px rgba(236,72,153,.34)!important;
+}
+
+.pslide img,
+.pslide video{
+  transition:transform .28s ease,filter .28s ease!important;
+}
+
+.pslide:active img,
+.pslide:active video{
+  filter:brightness(1.06) contrast(1.04)!important;
+}
+
+@media(max-width:720px){
+  .media::after{display:none!important}
+  .card:active{transform:scale(.982)!important}
+  .btn:hover::after,.genderBtn:hover::after,.pill-link:hover::after,#pAddBtn:hover::after,#waOrderBtn:hover::after{animation:none!important}
+  .btn:active::after,.genderBtn:active::after,#pAddBtn:active::after,#waOrderBtn:active::after{animation:fuGoldSweep .6s ease both!important}
+}
