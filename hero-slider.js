@@ -51,6 +51,14 @@
     document.body.classList.remove('pmodalOpen');
   };
 
+  const openCartClean = () => {
+    const drawer = document.getElementById('cartDrawer');
+    const backdrop = document.getElementById('backdrop');
+    document.body.classList.add('drawerOpen');
+    drawer?.setAttribute('aria-hidden','false');
+    backdrop?.setAttribute('aria-hidden','false');
+  };
+
   const fitHero = () => {
     const hero = document.querySelector('.hero__img');
     if (!hero) return;
@@ -214,16 +222,28 @@
   window.addEventListener('resize', fitHero);
   document.addEventListener('click', (e) => {
     const modal = document.getElementById('pModal');
-    if (!modal || modal.getAttribute('aria-hidden') !== 'false') {
+    const isOpen = modal && modal.getAttribute('aria-hidden') === 'false';
+
+    if (e.target.closest('#pAddBtn')) {
+      setTimeout(() => {
+        closeProductModal();
+        openCartClean();
+      }, 90);
+      return;
+    }
+
+    if (!isOpen) {
       setTimeout(fixProductModal, 80);
       return;
     }
+
     if (e.target.closest('.pmodal__close') || e.target.classList.contains('pmodal__back') || e.target === modal) {
       e.preventDefault();
       e.stopPropagation();
       closeProductModal();
       return;
     }
+
     setTimeout(fixProductModal, 80);
   }, true);
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeProductModal(); });
