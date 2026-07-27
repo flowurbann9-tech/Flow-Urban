@@ -18,6 +18,13 @@
       anim.href = 'wix-animations.css?v=2';
       document.head.appendChild(anim);
     }
+    if (!document.getElementById('premiumInteractionsCSS')) {
+      const inter = document.createElement('link');
+      inter.id = 'premiumInteractionsCSS';
+      inter.rel = 'stylesheet';
+      inter.href = 'premium-interactions.css?v=1';
+      document.head.appendChild(inter);
+    }
     if (!document.getElementById('modalFixCSS')) {
       const modal = document.createElement('link');
       modal.id = 'modalFixCSS';
@@ -133,6 +140,13 @@
     }
   };
 
+  const selectPulse = (target) => {
+    const card = target?.closest?.('.card');
+    if (!card) return;
+    card.classList.add('fu-selected');
+    setTimeout(() => card.classList.remove('fu-selected'), 720);
+  };
+
   const tuneImages = () => {
     document.querySelectorAll('img').forEach((img) => {
       if (img.classList.contains('hero__img') || img.id === 'brandLogo') return;
@@ -221,6 +235,7 @@
   window.addEventListener('load', boot, { once:true });
   window.addEventListener('resize', fitHero);
   document.addEventListener('click', (e) => {
+    selectPulse(e.target);
     const modal = document.getElementById('pModal');
     const isOpen = modal && modal.getAttribute('aria-hidden') === 'false';
 
