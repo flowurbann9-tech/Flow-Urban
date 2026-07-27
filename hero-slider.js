@@ -4,12 +4,20 @@
   let started = false;
 
   const loadPremium = () => {
-    if (document.getElementById('ultraPremiumCSS')) return;
-    const link = document.createElement('link');
-    link.id = 'ultraPremiumCSS';
-    link.rel = 'stylesheet';
-    link.href = 'ultra-premium.css?v=1';
-    document.head.appendChild(link);
+    if (!document.getElementById('ultraPremiumCSS')) {
+      const link = document.createElement('link');
+      link.id = 'ultraPremiumCSS';
+      link.rel = 'stylesheet';
+      link.href = 'ultra-premium.css?v=1';
+      document.head.appendChild(link);
+    }
+    if (!document.getElementById('wixAnimationsCSS')) {
+      const anim = document.createElement('link');
+      anim.id = 'wixAnimationsCSS';
+      anim.rel = 'stylesheet';
+      anim.href = 'wix-animations.css?v=1';
+      document.head.appendChild(anim);
+    }
   };
 
   const hideLoader = () => {
@@ -52,6 +60,27 @@
     });
   };
 
+  const setupReveal = () => {
+    const items = document.querySelectorAll('.card,.lux-banner,#contacto,.footer-premium,.flowExtras,#catalogo .filters');
+    items.forEach((el) => el.classList.add('fu-reveal'));
+
+    if (!('IntersectionObserver' in window)) {
+      items.forEach((el) => el.classList.add('fu-on'));
+      return;
+    }
+
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('fu-on');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: .12, rootMargin: '0px 0px -40px 0px' });
+
+    items.forEach((el) => obs.observe(el));
+  };
+
   const injectExtras = () => {
     if (!document.getElementById('flowExtrasMiniCSS')) {
       const st = document.createElement('style');
@@ -76,6 +105,7 @@
       : ['🧢','GORRAS','Gorras urbanas para completar tu estilo.',[['Gorra Flow Urban','$5,00','Cap, Streetwear','🧢'],['Gorra Negra Premium','$7,00','Premium, Urban','🖤']]];
 
     sec.innerHTML = `<div class="flowExtrasHead"><span>${data[0]} NUEVA SECCIÓN</span><h2>${data[1]}</h2><p>${data[2]}</p></div><div class="flowExtrasGrid">${data[3].map((it)=>`<article class="flowExtraCard"><div class="flowExtraTag">${it[2]}</div><div class="flowExtraIcon">${it[3]}</div><h3>${it[0]}</h3><strong>${it[1]}</strong><a href="#contacto">PEDIR</a></article>`).join('')}</div>`;
+    setTimeout(setupReveal, 80);
   };
 
   const startHero = () => {
@@ -99,6 +129,7 @@
     startHero();
     tuneImages();
     injectExtras();
+    setTimeout(setupReveal, 400);
     document.getElementById('btnWomen')?.addEventListener('click', () => setTimeout(injectExtras, 120));
     document.getElementById('btnMen')?.addEventListener('click', () => setTimeout(injectExtras, 120));
   };
