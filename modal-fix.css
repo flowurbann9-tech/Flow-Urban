@@ -1,148 +1,211 @@
-/* FLOW URBAN — MODAL DE PRODUCTO CORREGIDO */
+/* FLOW URBAN — MODAL DE PRODUCTO MINI PREMIUM FINAL */
 
-.pmodal[aria-hidden="false"]{
+body.pmodalOpen{overflow:hidden!important}
+
+.pmodal,
+#pModal,
+.pmodal[aria-hidden="false"],
+#pModal[aria-hidden="false"]{
   position:fixed!important;
   inset:0!important;
-  z-index:10000!important;
+  z-index:99999!important;
   display:flex!important;
   align-items:center!important;
   justify-content:center!important;
-  padding:14px!important;
+  padding:12px!important;
+  background:rgba(10,10,18,.48)!important;
+  backdrop-filter:blur(12px)!important;
+  -webkit-backdrop-filter:blur(12px)!important;
+  box-sizing:border-box!important;
+}
+
+.pmodal[aria-hidden="true"],
+#pModal[aria-hidden="true"]{
+  display:none!important;
 }
 
 .pmodal__back{
   position:absolute!important;
   inset:0!important;
-  background:rgba(13,10,18,.56)!important;
-  backdrop-filter:blur(10px)!important;
-  -webkit-backdrop-filter:blur(10px)!important;
+  background:radial-gradient(circle at center,rgba(236,72,153,.12),transparent 45%)!important;
 }
 
 .pmodal__card{
   position:relative!important;
-  width:min(94vw,720px)!important;
-  max-height:92dvh!important;
-  overflow:hidden auto!important;
-  border-radius:28px!important;
-  background:linear-gradient(180deg,#ffffff 0%,#fff7fd 52%,#f6edff 100%)!important;
-  border:1px solid rgba(236,72,153,.22)!important;
-  box-shadow:0 24px 70px rgba(0,0,0,.30),0 0 0 1px rgba(255,255,255,.28)!important;
+  z-index:2!important;
+  width:min(92vw,390px)!important;
+  max-width:390px!important;
+  max-height:84vh!important;
+  margin:auto!important;
+  overflow:hidden!important;
+  border-radius:26px!important;
+  background:linear-gradient(180deg,#fff 0%,#fff7fd 100%)!important;
+  border:1px solid rgba(255,255,255,.75)!important;
+  box-shadow:0 24px 60px rgba(0,0,0,.30),0 0 0 1px rgba(236,72,153,.14)!important;
+  display:flex!important;
+  flex-direction:column!important;
+  transform:none!important;
+  inset:auto!important;
 }
 
 .pmodal__close{
   position:absolute!important;
-  top:12px!important;
-  right:12px!important;
-  z-index:20!important;
-  width:44px!important;
-  height:44px!important;
-  border-radius:16px!important;
-  border:1px solid rgba(255,255,255,.5)!important;
-  background:rgba(22,22,27,.58)!important;
+  top:10px!important;
+  right:10px!important;
+  z-index:50!important;
+  width:40px!important;
+  height:40px!important;
+  border:0!important;
+  border-radius:50%!important;
+  background:rgba(20,20,26,.62)!important;
   color:#fff!important;
-  font-size:1.35rem!important;
+  font-size:22px!important;
   font-weight:1000!important;
-  box-shadow:0 10px 24px rgba(0,0,0,.22)!important;
+  display:grid!important;
+  place-items:center!important;
+  box-shadow:0 10px 22px rgba(0,0,0,.22)!important;
 }
 
-.pslider{
+.pslider,
+#pSlider{
   position:relative!important;
   width:100%!important;
-  height:min(56vh,480px)!important;
-  min-height:310px!important;
+  height:255px!important;
+  min-height:255px!important;
+  max-height:255px!important;
   overflow:hidden!important;
-  border-radius:28px 28px 0 0!important;
-  background:linear-gradient(135deg,#f7f2ff 0%,#ffffff 45%,#fff1f8 100%)!important;
+  border-radius:26px 26px 0 0!important;
+  background:linear-gradient(135deg,#f8f4ff 0%,#fff 45%,#fff1f8 100%)!important;
 }
 
-.pslider__track{
+.pslider__track,
+#pSliderTrack{
   display:flex!important;
   width:100%!important;
   height:100%!important;
+  align-items:stretch!important;
   transition:transform .28s ease!important;
 }
 
-.pslide{
+.pslide,
+#pSliderTrack .pslide{
   flex:0 0 100%!important;
   min-width:100%!important;
   width:100%!important;
   height:100%!important;
-  display:grid!important;
-  place-items:center!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
   overflow:hidden!important;
+  padding:16px!important;
+  box-sizing:border-box!important;
   background:transparent!important;
 }
 
 .pslide img,
-.pslide video{
-  display:block!important;
+.pslide video,
+#pSliderTrack img,
+#pSliderTrack video{
   width:100%!important;
   height:100%!important;
   max-width:100%!important;
   max-height:100%!important;
   object-fit:contain!important;
   object-position:center center!important;
-  background:transparent!important;
+  display:block!important;
+  margin:auto!important;
   padding:0!important;
+  border-radius:16px!important;
+  background:transparent!important;
+  transform:none!important;
+  box-shadow:none!important;
 }
 
-.pslider__dots{
+.pslider__dots,
+#pSliderDots{
   position:absolute!important;
   left:50%!important;
-  bottom:12px!important;
+  bottom:9px!important;
   transform:translateX(-50%)!important;
-  z-index:15!important;
+  z-index:20!important;
   display:flex!important;
   gap:7px!important;
-  padding:7px 10px!important;
+  padding:6px 11px!important;
   border-radius:999px!important;
-  background:rgba(255,255,255,.72)!important;
-  box-shadow:0 8px 18px rgba(0,0,0,.16)!important;
-  backdrop-filter:blur(8px)!important;
+  background:rgba(255,255,255,.78)!important;
+  box-shadow:0 8px 18px rgba(0,0,0,.12)!important;
 }
 
-.pdot{
+.pdot,
+#pSliderDots span,
+#pSliderDots button{
   width:8px!important;
   height:8px!important;
-  border-radius:999px!important;
+  min-width:8px!important;
+  border-radius:50%!important;
   background:rgba(139,92,246,.35)!important;
   display:block!important;
+  border:0!important;
 }
 
-.pdot--on{
-  width:22px!important;
+.pdot--on,
+#pSliderDots .pdot--on,
+#pSliderDots .active{
+  width:18px!important;
+  border-radius:999px!important;
   background:linear-gradient(135deg,#8b5cf6,#ec4899)!important;
 }
 
 .pmodal__body{
-  padding:20px 22px 24px!important;
-  background:linear-gradient(180deg,#fff 0%,#fff7fd 100%)!important;
+  padding:15px 17px 18px!important;
+  background:linear-gradient(180deg,#fff 0%,#fff8fd 100%)!important;
+  overflow:auto!important;
 }
 
 .pmodal__title{
   color:#17111f!important;
   font-weight:1000!important;
-  font-size:clamp(1.35rem,4vw,2rem)!important;
+  font-size:1.12rem!important;
   line-height:1.05!important;
+  margin:0 0 6px!important;
 }
 
 .pmodal__meta,
 .pmodal__sizes{
   color:#5b3b61!important;
   font-weight:850!important;
+  font-size:.92rem!important;
 }
 
 .pmodal__price{
   color:#8b5cf6!important;
-  font-size:1.45rem!important;
+  font-size:1.28rem!important;
   font-weight:1000!important;
-  margin:8px 0!important;
+  margin:6px 0!important;
 }
 
-@media(max-width:720px){
-  .pmodal[aria-hidden="false"]{align-items:flex-start!important;padding:10px!important;padding-top:16px!important}
-  .pmodal__card{width:96vw!important;max-height:90dvh!important;border-radius:24px!important}
-  .pslider{height:46vh!important;min-height:290px!important;border-radius:24px 24px 0 0!important}
-  .pmodal__body{padding:16px 18px 20px!important}
-  .pmodal__close{top:10px!important;right:10px!important;width:40px!important;height:40px!important;border-radius:14px!important}
+#pAddBtn,
+.pmodal__body .btn{
+  width:100%!important;
+  min-height:46px!important;
+  border-radius:999px!important;
+  border:0!important;
+  color:#fff!important;
+  font-weight:1000!important;
+  letter-spacing:.06em!important;
+  background:linear-gradient(135deg,#8b5cf6,#ec4899)!important;
+  box-shadow:0 14px 28px rgba(236,72,153,.24)!important;
+}
+
+@media(min-width:760px){
+  .pmodal__card{width:min(82vw,650px)!important;max-width:650px!important;display:grid!important;grid-template-columns:1fr .85fr!important;max-height:82vh!important}
+  .pslider,#pSlider{height:420px!important;min-height:420px!important;max-height:420px!important;border-radius:26px 0 0 26px!important}
+  .pmodal__body{padding:24px 22px!important}
+}
+
+@media(max-width:520px){
+  .pmodal,#pModal,.pmodal[aria-hidden="false"],#pModal[aria-hidden="false"]{padding:10px!important;align-items:center!important;justify-content:center!important}
+  .pmodal__card{width:calc(100vw - 20px)!important;max-width:390px!important;max-height:82vh!important;border-radius:24px!important}
+  .pslider,#pSlider{height:245px!important;min-height:245px!important;max-height:245px!important;border-radius:24px 24px 0 0!important}
+  .pslide{padding:14px!important}
 }
