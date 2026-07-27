@@ -1,0 +1,83 @@
+/* FLOW URBAN — ANIMACIONES TIPO WIX PREMIUM */
+
+@keyframes fuFadeUp{
+  from{opacity:0;transform:translateY(34px) scale(.98);filter:blur(8px)}
+  to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}
+}
+
+@keyframes fuFadeLeft{
+  from{opacity:0;transform:translateX(-34px);filter:blur(8px)}
+  to{opacity:1;transform:translateX(0);filter:blur(0)}
+}
+
+@keyframes fuZoomSoft{
+  from{transform:scale(1.08);filter:brightness(.85)}
+  to{transform:scale(1);filter:brightness(1)}
+}
+
+@keyframes fuFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
+}
+
+@keyframes fuGlow{
+  0%,100%{box-shadow:0 12px 28px rgba(236,72,153,.22)}
+  50%{box-shadow:0 18px 42px rgba(236,72,153,.42)}
+}
+
+@keyframes fuShine{
+  0%{transform:translateX(-140%) rotate(18deg)}
+  100%{transform:translateX(160%) rotate(18deg)}
+}
+
+.hero{animation:fuFadeUp .85s cubic-bezier(.2,.8,.2,1) both!important}
+.hero__img{animation:fuZoomSoft 1.25s ease both!important}
+.hero__kicker{animation:fuFadeLeft .8s .15s cubic-bezier(.2,.8,.2,1) both!important}
+.hero__desc{animation:fuFadeUp .8s .28s cubic-bezier(.2,.8,.2,1) both!important}
+.hero__actions{animation:fuFadeUp .8s .42s cubic-bezier(.2,.8,.2,1) both!important}
+
+.header,.ticker,.nav,.genderSwitch{animation:fuFadeUp .65s ease both!important}
+.nav{animation-delay:.08s!important}.genderSwitch{animation-delay:.14s!important}
+
+.btn,.genderBtn,.pill-link,.floatWa{position:relative!important;overflow:hidden!important}
+.btn::before,.genderBtn::before,.pill-link::before,.floatWa::before{
+  content:"";position:absolute;top:-45%;left:-40%;width:38%;height:190%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.65),transparent);
+  transform:translateX(-140%) rotate(18deg);pointer-events:none;opacity:.7
+}
+.btn:hover::before,.genderBtn:hover::before,.pill-link:hover::before,.floatWa:hover::before{animation:fuShine .85s ease both}
+.floatWa{animation:fuFloat 2.7s ease-in-out infinite, fuGlow 2.8s ease-in-out infinite!important}
+
+.card,.lux-banner,.section--dark,.footer-premium,.flowExtras,.filters{will-change:transform,opacity}
+.fu-reveal{opacity:0!important;transform:translateY(38px) scale(.985)!important;filter:blur(8px)!important;transition:opacity .78s ease,transform .78s cubic-bezier(.2,.8,.2,1),filter .78s ease!important}
+.fu-reveal.fu-on{opacity:1!important;transform:translateY(0) scale(1)!important;filter:blur(0)!important}
+
+.grid .card:nth-child(2n){transition-delay:.08s!important}
+.grid .card:nth-child(3n){transition-delay:.16s!important}
+.grid .card:nth-child(4n){transition-delay:.24s!important}
+
+.card:hover{transform:translateY(-9px) scale(1.015)!important}
+.card .media img,.card .media video{transition:transform .55s ease,filter .55s ease!important}
+.card:hover .media img,.card:hover .media video{transform:scale(1.07)!important;filter:brightness(1.06) contrast(1.04)!important}
+
+.lux-banner__inner{overflow:hidden!important}
+.lux-banner__inner::before{
+  content:"";position:absolute;inset:-40% auto -40% -35%;width:28%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);
+  transform:rotate(18deg);animation:fuShine 4.2s ease-in-out infinite;z-index:1;pointer-events:none
+}
+
+#catalogo .h2,.flowExtrasHead h2,#contacto .h2{animation:fuFadeLeft .85s ease both!important}
+
+.pmodal__card{animation:fuFadeUp .38s cubic-bezier(.2,.8,.2,1) both!important}
+.drawer{transition:transform .38s cubic-bezier(.2,.8,.2,1),opacity .38s ease!important}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .fu-reveal{opacity:1!important;transform:none!important;filter:none!important}
+}
+
+@media(max-width:720px){
+  .fu-reveal{transform:translateY(26px) scale(.99)!important}
+  .card:hover{transform:none!important}
+}
