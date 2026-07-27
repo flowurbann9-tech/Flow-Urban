@@ -1,0 +1,297 @@
+/* FLOW URBAN — MODAL DE PRODUCTO PREMIUM FIX */
+
+body.pmodalOpen{
+  overflow:hidden !important;
+}
+
+.pmodal,
+#pModal{
+  position:fixed !important;
+  inset:0 !important;
+  z-index:99999 !important;
+  display:none !important;
+  align-items:center !important;
+  justify-content:center !important;
+  padding:14px !important;
+  background:rgba(10,10,18,.48) !important;
+  backdrop-filter:blur(14px) !important;
+  -webkit-backdrop-filter:blur(14px) !important;
+}
+
+body.pmodalOpen #pModal,
+#pModal[aria-hidden="false"]{
+  display:flex !important;
+}
+
+.pmodal__back{
+  position:absolute !important;
+  inset:0 !important;
+  background:radial-gradient(circle at center,rgba(236,72,153,.14),transparent 45%) !important;
+}
+
+.pmodal__card{
+  position:relative !important;
+  z-index:2 !important;
+  width:min(92vw,430px) !important;
+  max-width:430px !important;
+  max-height:88vh !important;
+  margin:auto !important;
+  overflow:hidden !important;
+  border-radius:28px !important;
+  background:linear-gradient(180deg,#ffffff 0%,#faf7ff 100%) !important;
+  border:1px solid rgba(255,255,255,.75) !important;
+  box-shadow:0 28px 70px rgba(0,0,0,.32),0 0 0 1px rgba(236,72,153,.14) !important;
+  display:flex !important;
+  flex-direction:column !important;
+  transform:none !important;
+  animation:fuModalPremiumIn .24s cubic-bezier(.2,.8,.2,1) both !important;
+}
+
+@keyframes fuModalPremiumIn{
+  from{opacity:0;transform:translateY(16px) scale(.965)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+.pmodal__close{
+  position:absolute !important;
+  top:12px !important;
+  right:12px !important;
+  z-index:20 !important;
+  width:42px !important;
+  height:42px !important;
+  border:0 !important;
+  border-radius:50% !important;
+  background:rgba(18,18,22,.62) !important;
+  color:#fff !important;
+  font-size:22px !important;
+  font-weight:900 !important;
+  display:grid !important;
+  place-items:center !important;
+  box-shadow:0 12px 24px rgba(0,0,0,.22) !important;
+  backdrop-filter:blur(8px) !important;
+  -webkit-backdrop-filter:blur(8px) !important;
+}
+
+.pslider,
+#pSlider{
+  position:relative !important;
+  width:100% !important;
+  height:330px !important;
+  min-height:330px !important;
+  max-height:48vh !important;
+  background:radial-gradient(circle at 18% 12%,rgba(139,92,246,.18),transparent 34%),radial-gradient(circle at 82% 14%,rgba(236,72,153,.18),transparent 34%),linear-gradient(180deg,#fbf8ff 0%,#f2eef8 100%) !important;
+  overflow:hidden !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border-radius:28px 28px 0 0 !important;
+}
+
+.pslider__track,
+#pSliderTrack{
+  width:100% !important;
+  height:100% !important;
+  display:flex !important;
+  align-items:stretch !important;
+  transition:transform .32s cubic-bezier(.2,.8,.2,1) !important;
+  will-change:transform !important;
+}
+
+.pslide{
+  flex:0 0 100% !important;
+  min-width:100% !important;
+  width:100% !important;
+  height:100% !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  overflow:hidden !important;
+  background:transparent !important;
+  padding:18px !important;
+  box-sizing:border-box !important;
+}
+
+.pslide img,
+.pslide video,
+#pSliderTrack img,
+#pSliderTrack video{
+  width:100% !important;
+  height:100% !important;
+  max-width:100% !important;
+  max-height:100% !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  display:block !important;
+  margin:auto !important;
+  padding:0 !important;
+  border:0 !important;
+  border-radius:18px !important;
+  background:transparent !important;
+  box-shadow:0 12px 28px rgba(0,0,0,.08) !important;
+  transform:none !important;
+}
+
+.pslider__dots,
+#pSliderDots{
+  position:absolute !important;
+  left:50% !important;
+  bottom:10px !important;
+  transform:translateX(-50%) !important;
+  z-index:12 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:7px !important;
+  padding:7px 12px !important;
+  border-radius:999px !important;
+  background:rgba(255,255,255,.78) !important;
+  box-shadow:0 8px 20px rgba(0,0,0,.10) !important;
+  backdrop-filter:blur(7px) !important;
+  -webkit-backdrop-filter:blur(7px) !important;
+}
+
+.pdot,
+#pSliderDots span,
+#pSliderDots button{
+  width:8px !important;
+  height:8px !important;
+  min-width:8px !important;
+  border-radius:50% !important;
+  background:rgba(36,16,47,.28) !important;
+  border:0 !important;
+  display:block !important;
+}
+
+.pdot--on,
+#pSliderDots .pdot--on,
+#pSliderDots .active{
+  background:linear-gradient(135deg,#8b5cf6,#ec4899) !important;
+  transform:scale(1.18) !important;
+}
+
+.pmodal__body{
+  padding:18px 18px 20px !important;
+  overflow:auto !important;
+  background:linear-gradient(180deg,#fff 0%,#fff8fd 100%) !important;
+}
+
+.pmodal__title{
+  color:#17111f !important;
+  font-size:1.35rem !important;
+  line-height:1.05 !important;
+  font-weight:1000 !important;
+  letter-spacing:-.025em !important;
+  margin:0 0 7px !important;
+}
+
+.pmodal__meta{
+  color:#6b5574 !important;
+  font-size:.95rem !important;
+  font-weight:850 !important;
+  margin-bottom:8px !important;
+}
+
+.pmodal__price{
+  color:#8b5cf6 !important;
+  font-size:1.45rem !important;
+  font-weight:1000 !important;
+  margin-bottom:7px !important;
+}
+
+.pmodal__sizes{
+  color:#30213b !important;
+  font-weight:850 !important;
+  margin-bottom:14px !important;
+}
+
+#pAddBtn,
+.pmodal__body .btn{
+  width:100% !important;
+  min-height:48px !important;
+  border-radius:999px !important;
+  border:0 !important;
+  color:#fff !important;
+  font-weight:1000 !important;
+  letter-spacing:.07em !important;
+  background:linear-gradient(135deg,#8b5cf6 0%,#ec4899 100%) !important;
+  box-shadow:0 14px 28px rgba(236,72,153,.25) !important;
+}
+
+.floatWa,
+#floatWa{
+  position:fixed !important;
+  right:16px !important;
+  left:auto !important;
+  bottom:18px !important;
+  z-index:9999 !important;
+  transform:none !important;
+  animation:fuWaFloat 2.4s ease-in-out infinite !important;
+}
+
+@keyframes fuWaFloat{
+  0%,100%{translate:0 0}
+  50%{translate:0 -10px}
+}
+
+@media(min-width:760px){
+  .pmodal__card{
+    width:min(88vw,760px) !important;
+    max-width:760px !important;
+    max-height:86vh !important;
+    display:grid !important;
+    grid-template-columns:1.05fr .95fr !important;
+    grid-template-rows:1fr !important;
+  }
+
+  .pslider,
+  #pSlider{
+    height:520px !important;
+    max-height:86vh !important;
+    border-radius:28px 0 0 28px !important;
+  }
+
+  .pmodal__body{
+    padding:28px 24px 24px !important;
+  }
+}
+
+@media(max-width:520px){
+  .pmodal,
+  #pModal{
+    padding:10px !important;
+    align-items:center !important;
+  }
+
+  .pmodal__card{
+    width:calc(100vw - 20px) !important;
+    max-width:calc(100vw - 20px) !important;
+    max-height:86vh !important;
+    border-radius:24px !important;
+  }
+
+  .pslider,
+  #pSlider{
+    height:300px !important;
+    min-height:300px !important;
+    max-height:42vh !important;
+    border-radius:24px 24px 0 0 !important;
+  }
+
+  .pslide{
+    padding:14px !important;
+  }
+
+  .pmodal__title{
+    font-size:1.16rem !important;
+  }
+
+  .pmodal__price{
+    font-size:1.32rem !important;
+  }
+
+  .floatWa,
+  #floatWa{
+    right:14px !important;
+    bottom:14px !important;
+  }
+}
