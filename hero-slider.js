@@ -22,8 +22,15 @@
       const modal = document.createElement('link');
       modal.id = 'modalFixCSS';
       modal.rel = 'stylesheet';
-      modal.href = 'product-modal-fix.css?v=1';
+      modal.href = 'product-modal-fix.css?v=3';
       document.head.appendChild(modal);
+    }
+    if (!document.getElementById('oldModalFixCSS')) {
+      const modal2 = document.createElement('link');
+      modal2.id = 'oldModalFixCSS';
+      modal2.rel = 'stylesheet';
+      modal2.href = 'modal-fix.css?v=3';
+      document.head.appendChild(modal2);
     }
   };
 
@@ -67,20 +74,44 @@
     const track = modal.querySelector('#pSliderTrack,.pslider__track');
     if (modal.getAttribute('aria-hidden') === 'false') {
       modal.style.setProperty('display','flex','important');
+      modal.style.setProperty('align-items','center','important');
+      modal.style.setProperty('justify-content','center','important');
+      modal.style.setProperty('padding','10px','important');
       if (card) {
+        card.style.setProperty('width','min(92vw,390px)','important');
+        card.style.setProperty('max-width','390px','important');
+        card.style.setProperty('max-height','82vh','important');
         card.style.setProperty('margin','auto','important');
         card.style.setProperty('transform','none','important');
+        card.style.setProperty('inset','auto','important');
+        card.style.setProperty('display','flex','important');
+        card.style.setProperty('flex-direction','column','important');
       }
       if (slider) {
+        slider.style.setProperty('height','245px','important');
+        slider.style.setProperty('min-height','245px','important');
+        slider.style.setProperty('max-height','245px','important');
         slider.style.setProperty('overflow','hidden','important');
       }
       if (track) {
+        track.style.setProperty('height','100%','important');
+        track.querySelectorAll('.pslide').forEach((slide) => {
+          slide.style.setProperty('height','100%','important');
+          slide.style.setProperty('padding','14px','important');
+          slide.style.setProperty('display','flex','important');
+          slide.style.setProperty('align-items','center','important');
+          slide.style.setProperty('justify-content','center','important');
+        });
         track.querySelectorAll('img,video').forEach((m) => {
           m.style.setProperty('width','100%','important');
           m.style.setProperty('height','100%','important');
+          m.style.setProperty('max-width','100%','important');
+          m.style.setProperty('max-height','100%','important');
           m.style.setProperty('object-fit','contain','important');
           m.style.setProperty('object-position','center center','important');
           m.style.setProperty('transform','none','important');
+          m.style.setProperty('padding','0','important');
+          m.style.setProperty('margin','auto','important');
         });
       }
     }
