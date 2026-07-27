@@ -8,15 +8,22 @@
       const link = document.createElement('link');
       link.id = 'ultraPremiumCSS';
       link.rel = 'stylesheet';
-      link.href = 'ultra-premium.css?v=1';
+      link.href = 'ultra-premium.css?v=2';
       document.head.appendChild(link);
     }
     if (!document.getElementById('wixAnimationsCSS')) {
       const anim = document.createElement('link');
       anim.id = 'wixAnimationsCSS';
       anim.rel = 'stylesheet';
-      anim.href = 'wix-animations.css?v=1';
+      anim.href = 'wix-animations.css?v=2';
       document.head.appendChild(anim);
+    }
+    if (!document.getElementById('modalFixCSS')) {
+      const modal = document.createElement('link');
+      modal.id = 'modalFixCSS';
+      modal.rel = 'stylesheet';
+      modal.href = 'modal-fix.css?v=1';
+      document.head.appendChild(modal);
     }
   };
 
@@ -76,7 +83,7 @@
           obs.unobserve(entry.target);
         }
       });
-    }, { threshold: .12, rootMargin: '0px 0px -40px 0px' });
+    }, { threshold: .08, rootMargin: '0px 0px -20px 0px' });
 
     items.forEach((el) => obs.observe(el));
   };
@@ -105,7 +112,7 @@
       : ['🧢','GORRAS','Gorras urbanas para completar tu estilo.',[['Gorra Flow Urban','$5,00','Cap, Streetwear','🧢'],['Gorra Negra Premium','$7,00','Premium, Urban','🖤']]];
 
     sec.innerHTML = `<div class="flowExtrasHead"><span>${data[0]} NUEVA SECCIÓN</span><h2>${data[1]}</h2><p>${data[2]}</p></div><div class="flowExtrasGrid">${data[3].map((it)=>`<article class="flowExtraCard"><div class="flowExtraTag">${it[2]}</div><div class="flowExtraIcon">${it[3]}</div><h3>${it[0]}</h3><strong>${it[1]}</strong><a href="#contacto">PEDIR</a></article>`).join('')}</div>`;
-    setTimeout(setupReveal, 80);
+    setTimeout(setupReveal, 40);
   };
 
   const startHero = () => {
@@ -113,13 +120,13 @@
     if (!hero || started) return;
     started = true;
     hero.src = slides[current];
-    setTimeout(fitHero, 120);
-    setTimeout(() => { const img = new Image(); img.src = slides[1]; }, 900);
+    setTimeout(fitHero, 60);
+    setTimeout(() => { const img = new Image(); img.src = slides[1]; }, 600);
     setInterval(() => {
       current = (current + 1) % slides.length;
-      hero.style.transition = 'opacity .35s ease';
-      hero.style.opacity = '.35';
-      setTimeout(() => { hero.src = slides[current]; fitHero(); hero.style.opacity = '1'; }, 180);
+      hero.style.transition = 'opacity .28s ease';
+      hero.style.opacity = '.45';
+      setTimeout(() => { hero.src = slides[current]; fitHero(); hero.style.opacity = '1'; }, 130);
     }, 4200);
   };
 
@@ -129,9 +136,9 @@
     startHero();
     tuneImages();
     injectExtras();
-    setTimeout(setupReveal, 400);
-    document.getElementById('btnWomen')?.addEventListener('click', () => setTimeout(injectExtras, 120));
-    document.getElementById('btnMen')?.addEventListener('click', () => setTimeout(injectExtras, 120));
+    setTimeout(setupReveal, 60);
+    document.getElementById('btnWomen')?.addEventListener('click', () => setTimeout(injectExtras, 90));
+    document.getElementById('btnMen')?.addEventListener('click', () => setTimeout(injectExtras, 90));
   };
 
   boot();
