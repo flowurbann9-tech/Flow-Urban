@@ -15,246 +15,26 @@
   <link rel="stylesheet" href="premium.css?v=2" />
   <link rel="stylesheet" href="wa-polish.css?v=2" />
   <link rel="stylesheet" href="drops-title.css?v=1" />
+  <style>
+    .luminova-link{color:#ff3eb5!important;font-weight:900;letter-spacing:.08em;text-shadow:0 0 12px rgba(255,62,181,.48)}
+    .luminova-link:hover{color:#ff79cf!important;text-shadow:0 0 18px rgba(255,62,181,.72)}
+  </style>
 </head>
-
 <body>
-
-  <!-- MODAL PRODUCTO -->
-  <div class="pmodal" id="pModal" aria-hidden="true">
-    <div class="pmodal__back" id="pModalBack"></div>
-
-    <div class="pmodal__card" role="dialog" aria-label="Producto">
-      <button class="pmodal__close" id="pModalClose" type="button">✕</button>
-
-      <div class="pslider" id="pSlider">
-        <div class="pslider__track" id="pSliderTrack"></div>
-        <div class="pslider__dots" id="pSliderDots"></div>
-      </div>
-
-      <div class="pmodal__body">
-        <div class="pmodal__title" id="pTitle"></div>
-        <div class="pmodal__meta" id="pMeta"></div>
-        <div class="pmodal__price" id="pPrice"></div>
-        <div class="pmodal__sizes" id="pSizes"></div>
-
-        <button class="btn btn--gold btn--wide" id="pAddBtn" type="button">
-          Agregar al carrito
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- TOP TICKER -->
-  <div class="ticker">
-    <div class="ticker__inner">
-      <span>🚚 Envíos a todo el país</span>
-      <span class="dot">•</span>
-      <a class="pill-link" id="topWa" href="#" rel="noopener">📲 WhatsApp</a>
-      <span class="dot">•</span>
-      <span>🔥 Nuevos drops cada semana</span>
-    </div>
-  </div>
-
-  <!-- HEADER -->
-  <header class="header">
-    <div class="header__left">
-      <img id="brandLogo"
-           class="brand__logo"
-           src="assets/logo.png"
-           alt="Flow Urban"
-           loading="eager" />
-
-      <div class="brand__txt">
-        <div class="brand__name">FLOW URBAN</div>
-        <div class="brand__sub">Authentic store</div>
-      </div>
-    </div>
-
-    <div class="header__right">
-      <a class="btn btn--ghost btn--wa" id="waHeader" href="#" rel="noopener">WHATSAPP</a>
-      <button class="btn btn--cart" id="openCartBtn" type="button" aria-haspopup="dialog" aria-controls="cartDrawer">
-        <span class="cartIcon">🛒</span>
-        <span class="cartCount" id="cartCount">0</span>
-      </button>
-    </div>
-  </header>
-
-  <!-- NAV -->
-  <nav class="nav">
-    <a href="#inicio">INICIO</a>
-    <a href="#catalogo">CATÁLOGO</a>
-    <a href="#contacto">CONTACTO</a>
-  </nav>
-
-  <!-- SWITCH -->
-  <div class="genderSwitch">
-    <button id="btnWomen" class="genderBtn" type="button">💜 MUJER</button>
-    <button id="btnMen" class="genderBtn genderBtn--active" type="button">🖤 HOMBRE</button>
-  </div>
-
-  <!-- HERO -->
+  <div class="pmodal" id="pModal" aria-hidden="true"><div class="pmodal__back" id="pModalBack"></div><div class="pmodal__card" role="dialog" aria-label="Producto"><button class="pmodal__close" id="pModalClose" type="button">✕</button><div class="pslider" id="pSlider"><div class="pslider__track" id="pSliderTrack"></div><div class="pslider__dots" id="pSliderDots"></div></div><div class="pmodal__body"><div class="pmodal__title" id="pTitle"></div><div class="pmodal__meta" id="pMeta"></div><div class="pmodal__price" id="pPrice"></div><div class="pmodal__sizes" id="pSizes"></div><button class="btn btn--gold btn--wide" id="pAddBtn" type="button">Agregar al carrito</button></div></div></div>
+  <div class="ticker"><div class="ticker__inner"><span>🚚 Envíos a todo el país</span><span class="dot">•</span><a class="pill-link" id="topWa" href="#" rel="noopener">📲 WhatsApp</a><span class="dot">•</span><span>🔥 Nuevos drops cada semana</span></div></div>
+  <header class="header"><div class="header__left"><img id="brandLogo" class="brand__logo" src="assets/logo.png" alt="Flow Urban" loading="eager" /><div class="brand__txt"><div class="brand__name">FLOW URBAN</div><div class="brand__sub">Authentic store</div></div></div><div class="header__right"><a class="btn btn--ghost btn--wa" id="waHeader" href="#" rel="noopener">WHATSAPP</a><button class="btn btn--cart" id="openCartBtn" type="button" aria-haspopup="dialog" aria-controls="cartDrawer"><span class="cartIcon">🛒</span><span class="cartCount" id="cartCount">0</span></button></div></header>
+  <nav class="nav"><a href="#inicio">INICIO</a><a href="#catalogo">CATÁLOGO</a><a href="#beauty-style">BEAUTY &amp; STYLE</a><a href="#beauty-style" class="luminova-link">LUMINOVA</a><a href="#contacto">CONTACTO</a></nav>
+  <div class="genderSwitch"><button id="btnWomen" class="genderBtn" type="button">💜 MUJER</button><button id="btnMen" class="genderBtn genderBtn--active" type="button">🖤 HOMBRE</button></div>
   <main id="inicio">
-    <section class="hero">
-      <img class="hero__img" src="assets/SmartSelect_20260625_142913_ChatGPT.jpg?v=2" alt="Flow Urban" loading="eager" decoding="async" fetchpriority="high" />
-      <div class="hero__overlay">
-        <div class="hero__kicker">URBAN NIGHTS</div>
-        <div class="hero__desc">Streetwear auténtico. Oversize, básicos y drops con flow.</div>
-        <div class="hero__actions">
-          <a class="btn btn--gold" href="#catalogo">SHOP NOW</a>
-          <a class="btn btn--ghost" href="#catalogo">LOOKBOOK</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- BANNER PREMIUM -->
-    <section class="lux-banner" aria-label="Drop ilimitado">
-      <div class="lux-banner__inner">
-        <span class="lux-banner__tag">✦ DROP ILIMITADO</span>
-        <h3 class="lux-banner__title">Streetwear sin límites</h3>
-        <p class="lux-banner__text">
-          Nuevos estilos, flow urbano y prendas con actitud para elevar tu outfit todos los días.
-        </p>
-        <a href="#catalogo" class="lux-banner__btn">VER COLECCIÓN</a>
-      </div>
-    </section>
-
-    <!-- CATÁLOGO -->
-    <section class="section" id="catalogo">
-      <h2 class="h2">NEW DROPS</h2>
-      <p class="muted">Busca tu estilo, elige talla y arma tu carrito.</p>
-
-      <div class="filters">
-        <div class="field">
-          <label>Buscar</label>
-          <input id="searchInput" type="search" placeholder="Ej: hoodie, oversize, negro" />
-        </div>
-
-        <div class="field">
-          <label>Categoría</label>
-          <select id="categorySelect"></select>
-        </div>
-
-        <div class="field">
-          <label>Orden</label>
-          <select id="sortSelect">
-            <option value="featured">Destacados</option>
-            <option value="priceAsc">Precio: menor a mayor</option>
-            <option value="priceDesc">Precio: mayor a menor</option>
-            <option value="nameAsc">Nombre: A–Z</option>
-          </select>
-        </div>
-
-        <button class="btn btn--dark" id="clearBtn" type="button">Limpiar</button>
-      </div>
-
-      <div class="count" id="resultsCount"></div>
-      <div class="grid" id="productsGrid"></div>
-    </section>
-
-    <!-- CONTACTO -->
-    <section class="section section--dark" id="contacto">
-      <h2 class="h2">Contacto</h2>
-      <p class="muted">¿Quieres armar tu pedido rápido? Escríbenos por WhatsApp.</p>
-      <div class="contactBtns">
-        <a class="btn btn--ghost" href="#" id="igBtn" rel="noopener">Instagram</a>
-        <a class="btn btn--ghost" href="#" id="ttBtn" rel="noopener">TikTok</a>
-      </div>
-      <a class="btn btn--gold btn--wide" id="waContact" href="#" rel="noopener">
-        Hablar por WhatsApp
-      </a>
-    </section>
+    <section class="hero"><img class="hero__img" src="assets/SmartSelect_20260625_142913_ChatGPT.jpg?v=2" alt="Flow Urban" loading="eager" decoding="async" fetchpriority="high" /><div class="hero__overlay"><div class="hero__kicker">URBAN NIGHTS</div><div class="hero__desc">Streetwear auténtico. Oversize, básicos y drops con flow.</div><div class="hero__actions"><a class="btn btn--gold" href="#catalogo">SHOP NOW</a><a class="btn btn--ghost" href="#catalogo">LOOKBOOK</a></div></div></section>
+    <section class="lux-banner" aria-label="Drop ilimitado"><div class="lux-banner__inner"><span class="lux-banner__tag">✦ DROP ILIMITADO</span><h3 class="lux-banner__title">Streetwear sin límites</h3><p class="lux-banner__text">Nuevos estilos, flow urbano y prendas con actitud para elevar tu outfit todos los días.</p><a href="#catalogo" class="lux-banner__btn">VER COLECCIÓN</a></div></section>
+    <section class="section" id="catalogo"><h2 class="h2">NEW DROPS</h2><p class="muted">Busca tu estilo, elige talla y arma tu carrito.</p><div class="filters"><div class="field"><label>Buscar</label><input id="searchInput" type="search" placeholder="Ej: hoodie, oversize, negro" /></div><div class="field"><label>Categoría</label><select id="categorySelect"></select></div><div class="field"><label>Orden</label><select id="sortSelect"><option value="featured">Destacados</option><option value="priceAsc">Precio: menor a mayor</option><option value="priceDesc">Precio: mayor a menor</option><option value="nameAsc">Nombre: A–Z</option></select></div><button class="btn btn--dark" id="clearBtn" type="button">Limpiar</button></div><div class="count" id="resultsCount"></div><div class="grid" id="productsGrid"></div></section>
+    <section class="section section--dark" id="contacto"><h2 class="h2">Contacto</h2><p class="muted">¿Quieres armar tu pedido rápido? Escríbenos por WhatsApp.</p><div class="contactBtns"><a class="btn btn--ghost" href="#" id="igBtn" rel="noopener">Instagram</a><a class="btn btn--ghost" href="#" id="ttBtn" rel="noopener">TikTok</a></div><a class="btn btn--gold btn--wide" id="waContact" href="#" rel="noopener">Hablar por WhatsApp</a></section>
   </main>
-
-  <!-- FOOTER PREMIUM -->
-  <footer class="footer-premium">
-    <div class="footer-premium__top">
-      <div class="footer-brand">
-        <img src="assets/logo.png" alt="Flow Urban" class="footer-brand__logo" loading="lazy" />
-        <div>
-          <h3 class="footer-brand__name">FLOW URBAN</h3>
-          <p class="footer-brand__sub">Authentic store · Tienda virtual</p>
-        </div>
-      </div>
-
-      <p class="footer-premium__desc">
-        Flow Urban es una tienda virtual de streetwear creada para personas que buscan estilo,
-        actitud y autenticidad en cada outfit.
-      </p>
-    </div>
-
-    <div class="footer-premium__grid">
-      <div class="footer-box">
-        <h4>Compra</h4>
-        <a href="#inicio">Inicio</a>
-        <a href="#catalogo">Catálogo</a>
-        <a href="#contacto">Contacto</a>
-      </div>
-
-      <div class="footer-box">
-        <h4>Atención</h4>
-        <p>Pedidos por WhatsApp</p>
-        <p>Tienda 100% virtual</p>
-        <p>Atención rápida y personalizada</p>
-      </div>
-
-      <div class="footer-box">
-        <h4>Flow Urban</h4>
-        <p>Moda urbana premium</p>
-        <p>Drops exclusivos</p>
-        <p>Outfits con flow y actitud</p>
-      </div>
-    </div>
-
-    <div class="footer-premium__bottom">
-      <span>© 2026 Flow Urban. Todos los derechos reservados.</span>
-      <span>Tienda virtual · Streetwear premium</span>
-    </div>
-  </footer>
-
-  <!-- FLOATING WHATSAPP -->
-  <a id="floatWa" class="floatWa" href="#" target="_blank" rel="noopener" aria-label="WhatsApp">
-    <img src="assets/wa-premium.svg?v=1" alt="WhatsApp" class="waIcon" />
-  </a>
-
-  <!-- CART DRAWER -->
-  <div class="backdrop" id="backdrop" aria-hidden="true"></div>
-
-  <aside class="drawer" id="cartDrawer" aria-hidden="true" role="dialog" aria-label="Carrito">
-    <div class="drawer__top">
-      <div class="drawer__title">Carrito</div>
-      <button class="iconBtn" id="closeCartBtn" type="button" aria-label="Cerrar">✕</button>
-    </div>
-
-    <div class="drawer__body" id="cartItems"></div>
-
-    <div class="drawer__bottom">
-      <div class="totalRow">
-        <span>Total</span>
-        <strong id="cartTotal">$0,00</strong>
-      </div>
-      <a class="btn btn--gold btn--wide" id="waOrderBtn" href="#" rel="noopener">
-        Pedir por WhatsApp
-      </a>
-      <div class="small muted">
-        Te armamos el pedido por WhatsApp con tallas y cantidades.
-      </div>
-    </div>
-  </aside>
-
-  <!-- LOADER -->
-  <div class="loader" id="loader" aria-hidden="false">
-    <div class="loader__card">
-      <img class="loader__img" src="assets/loader.png" alt="Cargando Flow Urban" loading="eager" />
-      <div class="loader__txt">Cargando Flow Urban…</div>
-      <div class="loader__bar">
-        <div class="loader__barFill" id="barFill"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- JS -->
-  <script type="module" src="app.js"></script>
-  <script src="hero-slider.js?v=3"></script>
-
-</body>
-</html>
+  <footer class="footer-premium"><div class="footer-premium__top"><div class="footer-brand"><img src="assets/logo.png" alt="Flow Urban" class="footer-brand__logo" loading="lazy" /><div><h3 class="footer-brand__name">FLOW URBAN</h3><p class="footer-brand__sub">Authentic store · Tienda virtual</p></div></div><p class="footer-premium__desc">Flow Urban es una tienda virtual de streetwear creada para personas que buscan estilo, actitud y autenticidad en cada outfit.</p></div><div class="footer-premium__grid"><div class="footer-box"><h4>Compra</h4><a href="#inicio">Inicio</a><a href="#catalogo">Catálogo</a><a href="#contacto">Contacto</a></div><div class="footer-box"><h4>Atención</h4><p>Pedidos por WhatsApp</p><p>Tienda 100% virtual</p><p>Atención rápida y personalizada</p></div><div class="footer-box"><h4>Flow Urban</h4><p>Moda urbana premium</p><p>Drops exclusivos</p><p>Outfits con flow y actitud</p></div></div><div class="footer-premium__bottom"><span>© 2026 Flow Urban. Todos los derechos reservados.</span><span>Tienda virtual · Streetwear premium</span></div></footer>
+  <a id="floatWa" class="floatWa" href="#" target="_blank" rel="noopener" aria-label="WhatsApp"><img src="assets/wa-premium.svg?v=1" alt="WhatsApp" class="waIcon" /></a>
+  <div class="backdrop" id="backdrop" aria-hidden="true"></div><aside class="drawer" id="cartDrawer" aria-hidden="true" role="dialog" aria-label="Carrito"><div class="drawer__top"><div class="drawer__title">Carrito</div><button class="iconBtn" id="closeCartBtn" type="button" aria-label="Cerrar">✕</button></div><div class="drawer__body" id="cartItems"></div><div class="drawer__bottom"><div class="totalRow"><span>Total</span><strong id="cartTotal">$0,00</strong></div><a class="btn btn--gold btn--wide" id="waOrderBtn" href="#" rel="noopener">Pedir por WhatsApp</a><div class="small muted">Te armamos el pedido por WhatsApp con tallas y cantidades.</div></div></aside>
+  <div class="loader" id="loader" aria-hidden="false"><div class="loader__card"><img class="loader__img" src="assets/loader.png" alt="Cargando Flow Urban" loading="eager" /><div class="loader__txt">Cargando Flow Urban…</div><div class="loader__bar"><div class="loader__barFill" id="barFill"></div></div></div></div>
+  <script type="module" src="app.js"></script><script src="hero-slider.js?v=3"></script>
+</body></html>
