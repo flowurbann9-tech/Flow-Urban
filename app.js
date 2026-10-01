@@ -240,7 +240,11 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
   // FILTERS
   // =========================
   function buildCategorySelect() {
-    const cats = ["Todas", ...Array.from(new Set(PRODUCTS.map((p) => p.category))).sort()];
+    const theme = localStorage.getItem("flowurban_theme") || "men";
+    const visibleProducts = PRODUCTS.filter((p) =>
+      theme === "women" ? p.category === "Maquillaje" : p.category !== "Maquillaje"
+    );
+    const cats = ["Todas", ...Array.from(new Set(visibleProducts.map((p) => p.category))).sort()];
     if (!els.categorySelect) return;
     els.categorySelect.innerHTML = cats.map((c) => `<option value="${c}">${c}</option>`).join("");
   }
@@ -248,11 +252,15 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
   function applyFilters() {
     const q = (els.searchInput?.value || "").trim().toLowerCase();
     const cat = els.categorySelect?.value || "Todas";
+    const theme = localStorage.getItem("flowurban_theme") || "men";
 
     let out = PRODUCTS.filter((p) => {
+      const matchGender = theme === "women"
+        ? p.category === "Maquillaje"
+        : p.category !== "Maquillaje";
       const matchQ = !q || `${p.name} ${p.category}`.toLowerCase().includes(q);
       const matchCat = cat === "Todas" || p.category === cat;
-      return matchQ && matchCat;
+      return matchGender && matchQ && matchCat;
     });
 
     const sort = els.sortSelect?.value || "featured";
@@ -810,6 +818,9 @@ btnMen.addEventListener("click", () => {
       btnWomen.classList.toggle("genderBtn--active", t === "women");
       btnMen.classList.toggle("genderBtn--active", t === "men");
       localStorage.setItem("flowurban_theme", t);
+      if (els.categorySelect) els.categorySelect.value = "Todas";
+      buildCategorySelect();
+      renderProducts();
     };
 
     applyTheme(localStorage.getItem("flowurban_theme") || "men");
