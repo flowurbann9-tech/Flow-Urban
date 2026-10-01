@@ -1,7 +1,7 @@
 id,name,category,price,sizes,tag,media,featured
-FU-107,Rubor DoDo Girl Blush Crush - Tono 1,Maquillaje,5.00,Única,"DoDo Girl, Blush",assets/rubor-dodo-girl-1.jpg,Yes
-FU-108,Rubor DoDo Girl Blush Crush - Tono 2,Maquillaje,5.00,Única,"DoDo Girl, Blush",assets/rubor-dodo-girl-2.jpg,No
-FU-109,Rubor DoDo Girl Blush Crush - Tono 3,Maquillaje,5.00,Única,"DoDo Girl, Blush",assets/rubor-dodo-girl-3.jpg,No
+FU-107,Rubor DoDo Girl Blush Crush - Tono 1,Maquillaje,5.00,Producto único,"DoDo Girl, Blush",assets/rubor-dodo-girl-1.jpg,Yes
+FU-108,Rubor DoDo Girl Blush Crush - Tono 2,Maquillaje,5.00,Producto único,"DoDo Girl, Blush",assets/rubor-dodo-girl-2.jpg,No
+FU-109,Rubor DoDo Girl Blush Crush - Tono 3,Maquillaje,5.00,Producto único,"DoDo Girl, Blush",assets/rubor-dodo-girl-3.jpg,No
 FU-001,Camisetas Básicas,Camisetas,2.50,"S, M, L","Urban, Basic","assets/p1-1.jpg|assets/p1-2.jpg|assets/p1-3.jpg",No
 FU-002,Chompas Urban,Abrigos,15.00,"M, L, XL","Urban, Streetwear","assets/p1-1.jpg|assets/p1-2.jpg|assets/p1-3.jpg",No
 FU-003,Polos Flow,Camisetas,5.00,"S, M, L","Casual, Urban","assets/p1-1.jpg|assets/p1-2.jpg|assets/p1-3.jpg",No
