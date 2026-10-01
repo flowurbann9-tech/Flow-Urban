@@ -7,10 +7,4 @@ FU-005,Pantalones Street,Pantalones,7.00,"30, 32, 34","Streetwear, Urban","asset
 FU-006,Chompa de Algodón,Abrigos,20.00,"M, L","Algodón, Premium","assets/p1-1.jpg|assets/p1-2.jpg|assets/p1-3.jpg",Yes
 FU-007,Camisetas Oversize,Camisetas,4.50,"M, L, XL","Oversize, Streetwear","assets/p1-1.jpg|assets/p1-2.jpg|assets/p1-3.jpg",Yes
 FU-008,Pantalones Cargo,Pantalones,8.00,"30, 32, 34","Cargo, Streetwear","assets/p1-1.jpg|assets/p1-2.jpg|assets/p1-3.jpg",No
-FU-101,Base Glow Luminova,Maquillaje,12.00,Única,"Luminova, Beauty","assets/makeup-luminova-glow.svg",Yes
-FU-102,Rubor Luminova,Maquillaje,8.50,Única,"Luminova, Blush","assets/makeup-luminova-blush.svg",Yes
-FU-103,Labial Velvet Luminova,Maquillaje,7.00,Única,"Luminova, Velvet","assets/makeup-luminova-lip.svg",Yes
-FU-104,Iluminador Diamond Luminova,Maquillaje,9.50,Única,"Luminova, Glow","assets/makeup-luminova-highlighter.svg",Yes
-FU-105,Paleta Nude Luminova,Maquillaje,15.00,Única,"Luminova, Palette","assets/makeup-luminova-palette.svg",Yes
-FU-106,Máscara Lash Luminova,Maquillaje,8.00,Única,"Luminova, Lash","assets/makeup-luminova-mascara.svg",Yes
 FU-107,Rubor DoDo Girl Blush Crush,Maquillaje,5.00,Única,"DoDo Girl, Blush","assets/rubor-dodo-girl-1.jpg|assets/rubor-dodo-girl-2.jpg|assets/rubor-dodo-girl-3.jpg",Yes
