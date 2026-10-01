@@ -289,14 +289,25 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
     const plus = `<div class="plus" aria-hidden="true">+</div>`;
 
     const media0 = firstMedia(p);
-    const mediaHTML = isVideo(media0)
-      ? `<video src="${media0}" muted playsinline loop></video>`
-      : `<img src="${media0}" alt="${p.name}" loading="lazy"
-            onerror="this.onerror=null; this.src='assets/logo.png'; this.style.objectFit='contain'; this.style.padding='18px';" />`;
+    const mediaList = splitMedia(p.media);
+    const isThreeToneBlush = p.id === "FU-107" && mediaList.length >= 3;
+
+    const mediaHTML = isThreeToneBlush
+      ? `<div class="three-tones" aria-label="Tres tonos del rubor">
+          ${mediaList.slice(0,3).map((url, i) => `
+            <div class="tone-item">
+              <img src="${url}" alt="${p.name} tono ${i + 1}" loading="lazy"
+                onerror="this.onerror=null; this.src='assets/logo.png'; this.style.objectFit='contain';" />
+            </div>`).join("")}
+        </div>`
+      : isVideo(media0)
+        ? `<video src="${media0}" muted playsinline loop></video>`
+        : `<img src="${media0}" alt="${p.name}" loading="lazy"
+              onerror="this.onerror=null; this.src='assets/logo.png'; this.style.objectFit='contain'; this.style.padding='18px';" />`;
 
     return `
       <article class="card">
-        <div class="media" data-open="${p.id}">
+        <div class="media ${isThreeToneBlush ? "media--three-tones" : ""}" data-open="${p.id}">
           ${badge}
           ${mediaHTML}
 
