@@ -223,11 +223,11 @@
     hideLoader();
     startHero();
     tuneImages();
-    injectExtras();
+
     fixProductModal();
     setTimeout(setupReveal, 60);
-    document.getElementById('btnWomen')?.addEventListener('click', () => setTimeout(injectExtras, 90));
-    document.getElementById('btnMen')?.addEventListener('click', () => setTimeout(injectExtras, 90));
+
+
   };
 
   boot();

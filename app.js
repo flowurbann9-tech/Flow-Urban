@@ -240,10 +240,7 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
   // FILTERS
   // =========================
   function buildCategorySelect() {
-    const theme = localStorage.getItem("flowurban_theme") || "men";
-    const visibleProducts = PRODUCTS.filter((p) =>
-      theme === "women" ? p.category === "Maquillaje" : p.category !== "Maquillaje"
-    );
+    const visibleProducts = PRODUCTS;
     const cats = ["Todas", ...Array.from(new Set(visibleProducts.map((p) => p.category))).sort()];
     if (!els.categorySelect) return;
     els.categorySelect.innerHTML = cats.map((c) => `<option value="${c}">${c}</option>`).join("");
@@ -252,15 +249,10 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
   function applyFilters() {
     const q = (els.searchInput?.value || "").trim().toLowerCase();
     const cat = els.categorySelect?.value || "Todas";
-    const theme = localStorage.getItem("flowurban_theme") || "men";
-
     let out = PRODUCTS.filter((p) => {
-      const matchGender = theme === "women"
-        ? p.category === "Maquillaje"
-        : p.category !== "Maquillaje";
       const matchQ = !q || `${p.name} ${p.category}`.toLowerCase().includes(q);
       const matchCat = cat === "Todas" || p.category === cat;
-      return matchGender && matchQ && matchCat;
+      return matchQ && matchCat;
     });
 
     const sort = els.sortSelect?.value || "featured";
@@ -797,36 +789,18 @@ import { STORE, PRODUCTS as FALLBACK_PRODUCTS } from "./products.js";
     const btnWomen = document.getElementById("btnWomen");
     const btnMen = document.getElementById("btnMen");
     const brandLogo = document.querySelector(".brand__logo");
-
-// Guardar logo original
-const defaultLogo = "assets/logo.png";
-const womenLogo = "assets/logo-women.png";
-
-btnWomen.addEventListener("click", () => {
-  document.body.classList.add("theme-women");
-  brandLogo.src = womenLogo;
-});
-
-btnMen.addEventListener("click", () => {
-  document.body.classList.remove("theme-women");
-  brandLogo.src = defaultLogo;
-});
-    if (!btnWomen || !btnMen) return;
-
-    const applyTheme = (t) => {
-      document.body.classList.toggle("theme-women", t === "women");
-      btnWomen.classList.toggle("genderBtn--active", t === "women");
-      btnMen.classList.toggle("genderBtn--active", t === "men");
-      localStorage.setItem("flowurban_theme", t);
-      if (els.categorySelect) els.categorySelect.value = "Todas";
-      buildCategorySelect();
-      renderProducts();
-    };
-
-    applyTheme(localStorage.getItem("flowurban_theme") || "men");
-
-    btnWomen.addEventListener("click", () => applyTheme("women"));
-    btnMen.addEventListener("click", () => applyTheme("men"));
+    document.body.classList.add("theme-women");
+    btnWomen?.classList.add("genderBtn--active");
+    if (btnMen) btnMen.hidden = true;
+    if (brandLogo) brandLogo.src = "assets/logo-women.png";
+    localStorage.setItem("flowurban_theme", "women");
+    btnWomen?.addEventListener("click", () => {
+      document.body.classList.add("theme-women");
+      btnWomen.classList.add("genderBtn--active");
+      if (brandLogo) brandLogo.src = "assets/logo-women.png";
+    });
+    buildCategorySelect();
+    renderProducts();
   }
 
   // =========================
@@ -1015,40 +989,3 @@ document.addEventListener(
   },
   { passive: false }
 );
-const btnWomen = document.getElementById("btnWomen");
-const btnMen = document.getElementById("btnMen");
-const logo = document.getElementById("brandLogo");
-
-// Cambiar imagen con animación
-function changeLogo(src){
-  logo.classList.add("fade-out");
-
-  setTimeout(() => {
-    logo.src = src;
-    logo.classList.remove("fade-out");
-    logo.classList.add("fade-in");
-
-    setTimeout(() => {
-      logo.classList.remove("fade-in");
-    }, 250);
-
-  }, 250);
-}
-
-// MUJER
-btnWomen.addEventListener("click", () => {
-  document.body.classList.add("theme-women");
-  btnWomen.classList.add("genderBtn--active");
-  btnMen.classList.remove("genderBtn--active");
-
-  changeLogo("assets/logo-women.png"); // ← tu segunda imagen
-});
-
-// HOMBRE
-btnMen.addEventListener("click", () => {
-  document.body.classList.remove("theme-women");
-  btnMen.classList.add("genderBtn--active");
-  btnWomen.classList.remove("genderBtn--active");
-
-  changeLogo("assets/logo.png"); // ← logo normal
-});
