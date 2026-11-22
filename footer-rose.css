@@ -1,0 +1,12 @@
+/* FLOW URBAN — footer femenino editorial */
+.footer-premium{background:linear-gradient(145deg,#5b3049 0%,#392438 54%,#251c2b 100%)!important;color:#fff4f7!important;border:1px solid rgba(255,213,230,.26)!important;box-shadow:0 28px 65px rgba(78,32,58,.22)!important}
+.footer-premium__top{color:#fff5f9!important}
+.footer-premium__desc,.footer-premium__bottom,.footer-box p,.footer-box a,.footer-brand__sub{color:#f3dce7!important}
+.footer-brand__name,.footer-box h4{color:#ffd9e7!important;letter-spacing:.13em!important}
+.footer-premium__grid{gap:14px!important}
+.footer-box{background:linear-gradient(140deg,rgba(255,223,235,.15),rgba(255,255,255,.045))!important;border:1px solid rgba(255,221,234,.25)!important;border-radius:23px!important;box-shadow:0 12px 30px rgba(18,9,19,.12)!important}
+.footer-box a{transition:color .2s ease,transform .2s ease}
+.footer-box a:hover{color:#fff!important;transform:translateX(3px)}
+.footer-premium__bottom{border-top:1px solid rgba(255,219,233,.22)!important}
+.footer-brand__logo{border:2px solid rgba(255,216,232,.5)!important;border-radius:19px!important}
+@media(max-width:720px){.footer-premium{border-radius:26px 26px 0 0!important}.footer-box{padding:20px!important}.footer-premium__grid{gap:13px!important}}
