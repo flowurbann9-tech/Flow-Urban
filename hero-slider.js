@@ -1,9 +1,10 @@
 (() => {
+  // Fotografías editoriales de modelos: maquillaje, pulseras y joyería.
   const slides = [
-    'https://images.unsplash.com/photo-1702904484943-55f37d656ae2?auto=format&fit=crop&w=1600&q=85',
-    'https://unsplash.com/photos/woman-wearing-stacked-gold-and-black-bracelets-JZfdb4F6Bro/download?force=true&w=1600',
-    'https://unsplash.com/photos/a-beautiful-young-woman-wearing-a-bracelet-and-smiling-KkSu4Iecbgw/download?force=true&w=1600',
-    'assets/SmartSelect_20260625_142913_ChatGPT.jpg?v=2'
+    'https://unsplash.com/photos/woman-getting-lips-applied-with-lipstick-YGmk9UZMdZg/download?force=true&w=1600',
+    'https://unsplash.com/photos/a-woman-putting-lipstick-on-her-lips-o8tu5zMyQJg/download?force=true&w=1600',
+    'https://www.satine.paris/themes/satine/assets/img/modules/appagebuilder/images/bracelets.jpg',
+    'https://ouzel.in/cdn/shop/collections/gold-oyster-watchstrap-braceletjewellery-751891.png?v=1748603039'
   ];
   let current = 0;
   let started = false;
