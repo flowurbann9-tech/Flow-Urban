@@ -1,5 +1,10 @@
 (() => {
-  const slides = ['assets/hero.jpg?v=6','assets/SmartSelect_20260625_142913_ChatGPT.jpg?v=2'];
+  const slides = [
+    'https://images.unsplash.com/photo-1702904484943-55f37d656ae2?auto=format&fit=crop&w=1600&q=85',
+    'https://unsplash.com/photos/woman-wearing-stacked-gold-and-black-bracelets-JZfdb4F6Bro/download?force=true&w=1600',
+    'https://unsplash.com/photos/a-beautiful-young-woman-wearing-a-bracelet-and-smiling-KkSu4Iecbgw/download?force=true&w=1600',
+    'assets/SmartSelect_20260625_142913_ChatGPT.jpg?v=2'
+  ];
   let current = 0;
   let started = false;
 
@@ -209,7 +214,7 @@
     started = true;
     hero.src = slides[current];
     setTimeout(fitHero, 60);
-    setTimeout(() => { const img = new Image(); img.src = slides[1]; }, 600);
+    slides.slice(1).forEach((src) => { const img = new Image(); img.src = src; });
     setInterval(() => {
       current = (current + 1) % slides.length;
       hero.style.transition = 'opacity .28s ease';
