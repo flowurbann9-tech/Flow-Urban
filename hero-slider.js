@@ -1,10 +1,8 @@
 (() => {
-  // Fotografías editoriales de modelos: maquillaje, pulseras y joyería.
+  // Usar imágenes alojadas en la tienda para evitar fallos de enlaces externos.
   const slides = [
-    'https://unsplash.com/photos/woman-getting-lips-applied-with-lipstick-YGmk9UZMdZg/download?force=true&w=1600',
-    'https://unsplash.com/photos/a-woman-putting-lipstick-on-her-lips-o8tu5zMyQJg/download?force=true&w=1600',
-    'https://www.satine.paris/themes/satine/assets/img/modules/appagebuilder/images/bracelets.jpg',
-    'https://ouzel.in/cdn/shop/collections/gold-oyster-watchstrap-braceletjewellery-751891.png?v=1748603039'
+    'assets/hero.jpg?v=6',
+    'assets/SmartSelect_20260625_142913_ChatGPT.jpg?v=2'
   ];
   let current = 0;
   let started = false;
@@ -213,14 +211,38 @@
     const hero = fitHero();
     if (!hero || started) return;
     started = true;
-    hero.src = slides[current];
-    setTimeout(fitHero, 60);
-    slides.slice(1).forEach((src) => { const img = new Image(); img.src = src; });
+    let transitioning = false;
+    const loaded = slides.map((src) => {
+      const img = new Image();
+      img.src = src;
+      return img;
+    });
+    const usable = (img) => img.complete && img.naturalWidth > 0;
+    const first = loaded.findIndex(usable);
+    if (first >= 0) {
+      current = first;
+      hero.src = slides[current];
+    }
+    hero.addEventListener('error', () => {
+      const fallback = loaded.findIndex((img, i) => i !== current && usable(img));
+      if (fallback >= 0) {
+        current = fallback;
+        hero.src = slides[fallback];
+      }
+    });
     setInterval(() => {
-      current = (current + 1) % slides.length;
-      hero.style.transition = 'opacity .28s ease';
-      hero.style.opacity = '.45';
-      setTimeout(() => { hero.src = slides[current]; fitHero(); hero.style.opacity = '1'; }, 130);
+      if (transitioning || document.hidden) return;
+      const next = loaded.findIndex((img, i) => i !== current && usable(img));
+      if (next < 0) return;
+      transitioning = true;
+      hero.style.transition = 'opacity .25s ease';
+      hero.style.opacity = '.65';
+      setTimeout(() => {
+        current = next;
+        hero.src = slides[current];
+        hero.style.opacity = '1';
+        transitioning = false;
+      }, 250);
     }, 4200);
   };
 
