@@ -1,8 +1,8 @@
 (() => {
   // Usar imágenes alojadas en la tienda para evitar fallos de enlaces externos.
   const slides = [
-    'assets/hero.jpg?v=6',
-    'assets/SmartSelect_20260625_142913_ChatGPT.jpg?v=2'
+    'assets/flow-urban-modelo-1.jpg',
+    'assets/flow-urban-modelo-2.jpg'
   ];
   let current = 0;
   let started = false;
